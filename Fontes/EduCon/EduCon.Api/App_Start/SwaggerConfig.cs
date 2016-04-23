@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using System.Web.Http.Description;
 using EduCon.Api;
 using Swashbuckle.Application;
-using Swashbuckle.Swagger;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
@@ -98,7 +95,7 @@ namespace EduCon.Api
                         // ProductsController will be listed before those from a CustomersController. This is typically
                         // used to customize the order of groupings in the swagger-ui.
                         //
-                        c.OrderActionGroupsBy(StringComparer.Ordinal);
+                        //c.OrderActionGroupsBy(StringComparer.Ordinal);
 
                         // If you annotate Controllers and API Types with
                         // Xml comments (http://msdn.microsoft.com/en-us/library/b2s063f7(v=vs.110).aspx), you can incorporate
@@ -147,7 +144,7 @@ namespace EduCon.Api
                         // enum type. Swashbuckle will honor this change out-of-the-box. However, if you use a different
                         // approach to serialize enums as strings, you can also force Swashbuckle to describe them as strings.
                         // 
-                        //c.DescribeAllEnumsAsStrings();
+                        c.DescribeAllEnumsAsStrings();
 
                         // Similar to Schema filters, Swashbuckle also supports Operation and Document filters:
                         //
@@ -168,14 +165,13 @@ namespace EduCon.Api
                         // before using this option.
                         //
                         //c.DocumentFilter<ApplyDocumentVendorExtensions>();
-                        c.DocumentFilter<CustomDocumentFilter>();
 
                         // In contrast to WebApi, Swagger 2.0 does not include the query string component when mapping a URL
                         // to an action. As a result, Swashbuckle will raise an exception if it encounters multiple actions
                         // with the same path (sans query string) and HTTP method. You can workaround this by providing a
                         // custom strategy to pick a winner or merge the descriptions for the purposes of the Swagger docs 
                         //
-                        //c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                        c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
                         // Wrap the default SwaggerGenerator with additional behavior (e.g. caching) or provide an
                         // alternative implementation for ISwaggerProvider with the CustomProvider option.
@@ -206,7 +202,7 @@ namespace EduCon.Api
                         // in a badge at the bottom of the page. Use these options to set a different validator URL or to disable the
                         // feature entirely.
                         //c.SetValidatorUrl("http://localhost/validator");
-                        //c.DisableValidator();
+                        c.DisableValidator();
 
                         // Use this option to control how the Operation listing is displayed.
                         // It can be set to "None" (default), "List" (shows operations for each resource),
@@ -239,15 +235,6 @@ namespace EduCon.Api
         private static string GetXmlCommentsPath()
         {
             return string.Format(@"{0}\XmlComments.xml", AppDomain.CurrentDomain.BaseDirectory);
-        }
-    }
-
-    public class CustomDocumentFilter : IDocumentFilter
-    {
-        public void Apply(SwaggerDocument swaggerDoc, SchemaRegistry schemaRegistry, IApiExplorer apiExplorer)
-        {
-            var paths = swaggerDoc.paths.OrderBy(e => e.Key).ToList();
-            swaggerDoc.paths = paths.ToDictionary(e => e.Key, e => e.Value);
         }
     }
 }

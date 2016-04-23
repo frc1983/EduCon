@@ -50,16 +50,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContextoEF.cs" />
+    <Compile Include="Mapeadores\CategoriaMap.cs" />
+    <Compile Include="Mapeadores\DadoMap.cs" />
+    <Compile Include="Mapeadores\DataMap.cs" />
+    <Compile Include="Mapeadores\MunicipioMap.cs" />
+    <Compile Include="Mapeadores\TipoEnsinoMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mapeadores\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EduCon.Objetos\EduCon.Objetos.csproj">
+      <Project>{d8b7c32c-6a3f-4af1-b0cf-df34f74f2806}</Project>
+      <Name>EduCon.Objetos</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EduCon.Utilitarios\EduCon.Utilitarios.csproj">
       <Project>{F601B786-8136-4BBA-9B82-44FF0383C08E}</Project>
       <Name>EduCon.Utilitarios</Name>
