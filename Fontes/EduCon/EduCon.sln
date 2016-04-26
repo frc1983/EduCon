@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Apresentação", "1 - A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Aplicação", "2 - Aplicação", "{136D1F78-2F3E-4DD7-B418-FC7D399EA9E4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serviços", "Serviços", "{B8FD6A03-FD24-49B8-A001-2FFE40CBA3F2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6 - Serviços", "6 - Serviços", "{B8FD6A03-FD24-49B8-A001-2FFE40CBA3F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduCon.Aplicacao", "EduCon.Aplicacao\EduCon.Aplicacao.csproj", "{D082995B-951E-4A6F-BB7D-7F4F10087DEB}"
 EndProject
@@ -23,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domínio", "3 - Domíni
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infraestrutura", "4 - Infraestrutura", "{A42AEF3C-2A9A-4D4A-8CB4-BA627C31F9D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduCon.ImportaFee", "EduCon.ImportaFee\EduCon.ImportaFee.csproj", "{AEE8BB82-2F8E-4026-BDED-2469A985280B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Transversal", "5 - Transversal", "{811F3CA9-AAD8-46EA-9F2B-A5D58DCC0939}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduCon.Objetos", "EduCon.Objetos\EduCon.Objetos.csproj", "{D8B7C32C-6A3F-4AF1-B0CF-DF34F74F2806}"
@@ -32,6 +30,30 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduCon.Injecao", "EduCon.Injecao\EduCon.Injecao.csproj", "{F8991811-32DD-4DF2-92D6-2D752C55E585}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduCon.Utilitarios", "EduCon.Utilitarios\EduCon.Utilitarios.csproj", "{F601B786-8136-4BBA-9B82-44FF0383C08E}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "EduCon.Web", "EduCon.Web\", "{27AC41F1-9EA4-4CFE-B3E4-8B6FF457A2AF}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_60516"
+		Debug.AspNetCompiler.PhysicalPath = "EduCon.Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_60516\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_60516"
+		Release.AspNetCompiler.PhysicalPath = "EduCon.Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_60516\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "60516"
+		SlnRelativePath = "EduCon.Web\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduCon.ImportaFee", "EduCon.ImportaFee\EduCon.ImportaFee.csproj", "{B720A9CF-6AE5-4828-8D3F-D8A94A49621E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,10 +81,6 @@ Global
 		{7987E309-DA7B-4714-9F47-6363268CC962}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7987E309-DA7B-4714-9F47-6363268CC962}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7987E309-DA7B-4714-9F47-6363268CC962}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AEE8BB82-2F8E-4026-BDED-2469A985280B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEE8BB82-2F8E-4026-BDED-2469A985280B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEE8BB82-2F8E-4026-BDED-2469A985280B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEE8BB82-2F8E-4026-BDED-2469A985280B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D8B7C32C-6A3F-4AF1-B0CF-DF34F74F2806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D8B7C32C-6A3F-4AF1-B0CF-DF34F74F2806}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8B7C32C-6A3F-4AF1-B0CF-DF34F74F2806}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,6 +93,14 @@ Global
 		{F601B786-8136-4BBA-9B82-44FF0383C08E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F601B786-8136-4BBA-9B82-44FF0383C08E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F601B786-8136-4BBA-9B82-44FF0383C08E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27AC41F1-9EA4-4CFE-B3E4-8B6FF457A2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27AC41F1-9EA4-4CFE-B3E4-8B6FF457A2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27AC41F1-9EA4-4CFE-B3E4-8B6FF457A2AF}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{27AC41F1-9EA4-4CFE-B3E4-8B6FF457A2AF}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{B720A9CF-6AE5-4828-8D3F-D8A94A49621E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B720A9CF-6AE5-4828-8D3F-D8A94A49621E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B720A9CF-6AE5-4828-8D3F-D8A94A49621E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B720A9CF-6AE5-4828-8D3F-D8A94A49621E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,9 +111,10 @@ Global
 		{A7F7FCA5-810C-4BD3-97CD-716B08ADBC79} = {6F33A364-6CEB-4787-ACEA-62BF465BCEC9}
 		{AB727C8F-A538-4F2D-9B5B-7C525560CB19} = {A42AEF3C-2A9A-4D4A-8CB4-BA627C31F9D3}
 		{7987E309-DA7B-4714-9F47-6363268CC962} = {A42AEF3C-2A9A-4D4A-8CB4-BA627C31F9D3}
-		{AEE8BB82-2F8E-4026-BDED-2469A985280B} = {B8FD6A03-FD24-49B8-A001-2FFE40CBA3F2}
 		{D8B7C32C-6A3F-4AF1-B0CF-DF34F74F2806} = {811F3CA9-AAD8-46EA-9F2B-A5D58DCC0939}
 		{F8991811-32DD-4DF2-92D6-2D752C55E585} = {811F3CA9-AAD8-46EA-9F2B-A5D58DCC0939}
 		{F601B786-8136-4BBA-9B82-44FF0383C08E} = {811F3CA9-AAD8-46EA-9F2B-A5D58DCC0939}
+		{27AC41F1-9EA4-4CFE-B3E4-8B6FF457A2AF} = {368D4C9D-13C9-4AD3-A2B2-9A8F481EEA31}
+		{B720A9CF-6AE5-4828-8D3F-D8A94A49621E} = {B8FD6A03-FD24-49B8-A001-2FFE40CBA3F2}
 	EndGlobalSection
 EndGlobal

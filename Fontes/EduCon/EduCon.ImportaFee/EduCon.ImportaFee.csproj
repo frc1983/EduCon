@@ -4,8 +4,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AEE8BB82-2F8E-4026-BDED-2469A985280B}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{B720A9CF-6AE5-4828-8D3F-D8A94A49621E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EduCon.ImportaFee</RootNamespace>
     <AssemblyName>EduCon.ImportaFee</AssemblyName>
@@ -32,50 +32,70 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>EduCon.ImportaFee.Infra.TesteServico</StartupObject>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonServiceLocator.SimpleInjectorAdapter, Version=2.8.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.SimpleInjectorAdapter.2.8.2\lib\portable-net4+sl4+wp8+win8+wpa81\CommonServiceLocator.SimpleInjectorAdapter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=3.1.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.3.1.3\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector.Extensions.ExecutionContextScoping, Version=3.1.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Extensions.ExecutionContextScoping.3.1.3\lib\net45\SimpleInjector.Extensions.ExecutionContextScoping.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infra\ConfigManager.cs" />
     <Compile Include="Infra\Executor.cs" />
-    <Compile Include="Infra\TesteServico.cs" />
-    <Compile Include="EduCon.ImportaFee.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="EduCon.ImportaFee.Designer.cs">
-      <DependentUpon>EduCon.ImportaFee.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="ProjectInstaller.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ProjectInstaller.Designer.cs">
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Infra\InjecaoInicializa.cs" />
     <Compile Include="Infra\Log.cs" />
+    <Compile Include="Objetos\AnoValor.cs" />
+    <Compile Include="Objetos\Arquivo.cs" />
+    <Compile Include="Objetos\UnidadesGeograficas.cs" />
+    <Compile Include="Objetos\Variavel.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ProjectInstaller.resx">
-      <DependentUpon>ProjectInstaller.cs</DependentUpon>
-    </EmbeddedResource>
+    <ProjectReference Include="..\EduCon.Aplicacao\EduCon.Aplicacao.csproj">
+      <Project>{d082995b-951e-4a6f-bb7d-7f4f10087deb}</Project>
+      <Name>EduCon.Aplicacao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EduCon.Injecao\EduCon.Injecao.csproj">
+      <Project>{f8991811-32dd-4df2-92d6-2d752c55e585}</Project>
+      <Name>EduCon.Injecao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EduCon.Objetos\EduCon.Objetos.csproj">
+      <Project>{D8B7C32C-6A3F-4AF1-B0CF-DF34F74F2806}</Project>
+      <Name>EduCon.Objetos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EduCon.Utilitarios\EduCon.Utilitarios.csproj">
+      <Project>{F601B786-8136-4BBA-9B82-44FF0383C08E}</Project>
+      <Name>EduCon.Utilitarios</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

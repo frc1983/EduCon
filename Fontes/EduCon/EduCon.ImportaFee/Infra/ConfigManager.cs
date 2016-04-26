@@ -4,19 +4,9 @@ namespace EduCon.ImportaFee
 {
     internal class ConfigManager
     {
-        public static int PeriodoSono
+        public static string DiretorioArquivos
         {
-            get { return int.Parse(ConfigurationManager.AppSettings["periodo.processamento"]); }
-        }
-
-        public static int PeriodoSonoErro
-        {
-            get { return int.Parse(ConfigurationManager.AppSettings["periodo.erro"]); }
-        }
-
-        public static void AtualizarAppSettings()
-        {
-            ConfigurationManager.RefreshSection("appSettings");
+            get { return ConfigurationManager.AppSettings["diretorio.arquivos"]; }
         }
     }
 }

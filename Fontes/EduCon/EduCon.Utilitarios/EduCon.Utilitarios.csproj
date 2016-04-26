@@ -63,6 +63,7 @@
     <Compile Include="Contexto\ContextoBase.cs" />
     <Compile Include="Contexto\Interfaces\IContexto.cs" />
     <Compile Include="Contexto\RepositorioBase.cs" />
+    <Compile Include="Conversores\UTF8.cs" />
     <Compile Include="Dominio\Interfaces\IRepositorio.cs" />
     <Compile Include="Dominio\Interfaces\ITransacao.cs" />
     <Compile Include="Dominio\Servico.cs" />

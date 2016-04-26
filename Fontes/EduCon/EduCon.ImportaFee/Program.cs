@@ -1,20 +1,28 @@
-﻿using System.ServiceProcess;
+﻿using System;
+using EduCon.ImportaFee.Infra;
+using SimpleInjector.Extensions.ExecutionContextScoping;
 
 namespace EduCon.ImportaFee
 {
-    static class Program
+    class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        static void Main()
+        static void Main(string[] args)
         {
-            var servicesToRun = new ServiceBase[]
+            try
             {
-                new EduConSvc()
-            };
+                var container = InjecaoInicializa.Initialize();
+                using (container.BeginExecutionContextScope())
+                {
+                    var executor = new Executor();
+                    executor.Executa();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro inesperado: " + ex.Message);
+            }
 
-            ServiceBase.Run(servicesToRun);
+            Console.ReadKey();
         }
     }
 }

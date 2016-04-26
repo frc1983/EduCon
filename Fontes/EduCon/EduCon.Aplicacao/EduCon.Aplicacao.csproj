@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InicializaAplicacao.cs" />
     <Compile Include="Interfaces\IMunicipioAplServico.cs" />
     <Compile Include="Mapeamento\Base\Mapeadores.cs" />
     <Compile Include="Mapeamento\MunicipioMapeador.cs" />
