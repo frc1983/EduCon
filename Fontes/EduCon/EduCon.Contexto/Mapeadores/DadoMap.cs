@@ -42,13 +42,13 @@ namespace EduCon.Contexto.Mapeadores
                 .HasMaxLength(200);
 
             // Navegação
-            HasRequired(b => b.Categoria)
-                .WithMany(a => a.Dados)
-                .HasForeignKey(b => b.IdCategoria);
+            HasRequired(m => m.Categoria)
+                .WithMany(m => m.DadosCategoria)
+                .HasForeignKey(m => m.IdCategoria);
 
-            HasOptional(b => b.Subcategoria)
-                .WithMany(a => a.Dados)
-                .HasForeignKey(b => b.IdSubcategoria);
+            HasOptional(m => m.Subcategoria)
+                .WithMany(m => m.DadosSubcategoria)
+                .HasForeignKey(m => m.IdSubcategoria);
         }
     }
 }

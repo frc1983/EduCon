@@ -7,6 +7,7 @@ namespace EduCon.Objetos.Entidades
         public int Id { get; set; }
         public string Nome { get; set; }
 
-        public ICollection<Dado> Dados { get; set; }
+        public virtual ICollection<Dado> DadosCategoria { get; set; }
+        public virtual ICollection<Dado> DadosSubcategoria { get; set; }
     }
 }
