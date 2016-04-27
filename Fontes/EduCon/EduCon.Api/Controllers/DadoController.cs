@@ -5,23 +5,23 @@ using EduCon.Objetos.DTOs;
 
 namespace EduCon.Api.Controllers
 {
-    public class MunicipioController : ApiController
+    public class DadoController : ApiController
     {
-        private IMunicipioAplServico _servico;
+        private IDadoAplServico _servico;
 
-        public MunicipioController(IMunicipioAplServico municipioServico)
+        public DadoController(IDadoAplServico DadoServico)
         {
-            _servico = municipioServico;
+            _servico = DadoServico;
         }
 
         [HttpGet]
-        public MunicipioDTO Consulta(int id)
+        public DadoDTO Consulta(int id)
         {
             return _servico.Consulta(id);
         }
 
         [HttpGet]
-        public IEnumerable<MunicipioDTO> Lista()
+        public IEnumerable<DadoDTO> Lista()
         {
             return _servico.ListaTodos();
         }

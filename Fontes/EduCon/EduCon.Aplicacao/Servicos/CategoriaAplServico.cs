@@ -8,13 +8,13 @@ using EduCon.Objetos.Entidades;
 
 namespace EduCon.Aplicacao.Servicos
 {
-    public class MunicipioAplServico : AplServico, IMunicipioAplServico
+    public class CategoriaAplServico : AplServico, ICategoriaAplServico
     {
-        private IMunicipioServico _servico;
+        private ICategoriaServico _servico;
 
-        public MunicipioAplServico(IMunicipioServico municipioServico)
+        public CategoriaAplServico(ICategoriaServico CategoriaServico)
         {
-            _servico = municipioServico;
+            _servico = CategoriaServico;
         }
 
         public void Dispose()
@@ -22,18 +22,18 @@ namespace EduCon.Aplicacao.Servicos
             GC.SuppressFinalize(this);
         }
 
-        public void Inclui(MunicipioDTO dto)
+        public void Inclui(CategoriaDTO dto)
         {
             Transacao.Begin();
 
-            var ent = Mapper.Map<Municipio>(dto);
+            var ent = Mapper.Map<Categoria>(dto);
             _servico.Inclui(ent);
 
             Transacao.Commit();
             dto.Id = ent.Id;
         }
 
-        public void Altera(MunicipioDTO dto)
+        public void Altera(CategoriaDTO dto)
         {
             Transacao.Begin();
 
@@ -43,25 +43,25 @@ namespace EduCon.Aplicacao.Servicos
             Transacao.Commit();
         }
 
-        public void Exclui(MunicipioDTO dto)
+        public void Exclui(CategoriaDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public MunicipioDTO Consulta(int id)
+        public CategoriaDTO Consulta(int id)
         {
-            return Mapper.Map<MunicipioDTO>(_servico.Consulta(id));
+            return Mapper.Map<CategoriaDTO>(_servico.Consulta(id));
         }
 
-        public IEnumerable<MunicipioDTO> ListaTodos()
+        public IEnumerable<CategoriaDTO> ListaTodos()
         {
-            return Mapper.Map<IEnumerable<MunicipioDTO>>(_servico.ListaTodos());
+            return Mapper.Map<IEnumerable<CategoriaDTO>>(_servico.ListaTodos());
         }
 
-        public IEnumerable<MunicipioDTO> Lista(MunicipioDTO filtro)
+        public IEnumerable<CategoriaDTO> Lista(CategoriaDTO filtro)
         {
             var lista = _servico.Lista(null);
-            return Mapper.Map<IEnumerable<MunicipioDTO>>(lista);
+            return Mapper.Map<IEnumerable<CategoriaDTO>>(lista);
         }
     }
 }

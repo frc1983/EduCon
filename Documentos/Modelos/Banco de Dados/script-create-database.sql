@@ -31,10 +31,12 @@ create table EDC_DADO (
     ID_TIPO_ENSINO int,
     ID_CATEGORIA int,
     ID_SUBCATEGORIA int,
+    ID_DATA int,
     VALOR varchar(200),
     foreign key (ID_MUNICIPIO) references EDC_MUNICIPIO,
     foreign key (ID_TIPO_ENSINO) references EDC_TIPO_ENSINO,
     foreign key (ID_CATEGORIA) references EDC_CATEGORIA,
-    foreign key (ID_SUBCATEGORIA) references EDC_CATEGORIA
+    foreign key (ID_SUBCATEGORIA) references EDC_CATEGORIA,
+    foreign key (ID_DATA) references EDC_DATA
 );
 go

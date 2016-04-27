@@ -20,6 +20,12 @@ namespace EduCon.Contexto.Mapeadores
             Property(o => o.Ano)
                 .HasColumnName("ANO")
                 .IsRequired();
+
+            // Navegação
+            HasMany(o => o.Dados)
+                .WithRequired(o => o.Data)
+                .HasForeignKey(o => o.IdData)
+                .WillCascadeOnDelete();
         }
     }
 }

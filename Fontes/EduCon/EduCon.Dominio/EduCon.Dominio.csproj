@@ -40,9 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\Repositorio\IDataRepositorio.cs" />
+    <Compile Include="Interfaces\Repositorio\ITipoEnsinoRepositorio.cs" />
+    <Compile Include="Interfaces\Repositorio\ICategoriaRepositorio.cs" />
+    <Compile Include="Interfaces\Repositorio\IDadoRepositorio.cs" />
     <Compile Include="Interfaces\Repositorio\IMunicipioRepositorio.cs" />
+    <Compile Include="Interfaces\Servico\ICategoriaServico.cs" />
+    <Compile Include="Interfaces\Servico\IDataServico.cs" />
+    <Compile Include="Interfaces\Servico\IDadoServico.cs" />
+    <Compile Include="Interfaces\Servico\ITipoEnsinoServico.cs" />
     <Compile Include="Interfaces\Servico\IMunicipioServico.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicos\TipoEnsinoServico.cs" />
+    <Compile Include="Servicos\CategoriaServico.cs" />
+    <Compile Include="Servicos\DadoServico.cs" />
+    <Compile Include="Servicos\DataServico.cs" />
     <Compile Include="Servicos\MunicipioServico.cs" />
   </ItemGroup>
   <ItemGroup />

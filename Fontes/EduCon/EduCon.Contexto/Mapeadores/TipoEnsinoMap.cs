@@ -21,6 +21,12 @@ namespace EduCon.Contexto.Mapeadores
                 .HasColumnName("NOME")
                 .IsRequired()
                 .HasMaxLength(200);
+
+            // Navegação
+            HasMany(o => o.Dados)
+                .WithRequired(o => o.TipoEnsino)
+                .HasForeignKey(o => o.IdTipoEnsino)
+                .WillCascadeOnDelete();
         }
     }
 }

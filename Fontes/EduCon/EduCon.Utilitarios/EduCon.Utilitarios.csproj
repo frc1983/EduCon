@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\DecimalConverter.cs" />
-    <Compile Include="Aplicacao\AplServico.cs" />
     <Compile Include="Aplicacao\Interfaces\IAplServico.cs" />
     <Compile Include="Contexto\ContextoBase.cs" />
     <Compile Include="Contexto\Interfaces\IContexto.cs" />

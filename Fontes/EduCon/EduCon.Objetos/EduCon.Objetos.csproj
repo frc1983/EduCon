@@ -49,7 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\CategoriaDTO.cs" />
+    <Compile Include="DTOs\DadoDTO.cs" />
+    <Compile Include="DTOs\DataDTO.cs" />
     <Compile Include="DTOs\MunicipioDTO.cs" />
+    <Compile Include="DTOs\TipoEnsinoDTO.cs" />
     <Compile Include="Entidades\Data.cs" />
     <Compile Include="Entidades\Categoria.cs" />
     <Compile Include="Entidades\Dado.cs" />

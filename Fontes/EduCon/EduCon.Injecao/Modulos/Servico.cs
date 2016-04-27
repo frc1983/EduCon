@@ -14,6 +14,10 @@ namespace EduCon.Injecao.Modulos
             container.Register(typeof(IServico<>), typeof(Servico<>), Lifestyle.Scoped);
 
             container.Register<IMunicipioServico, MunicipioServico>(Lifestyle.Scoped);
+            container.Register<IDataServico, DataServico>(Lifestyle.Scoped);
+            container.Register<ITipoEnsinoServico, TipoEnsinoServico>(Lifestyle.Scoped);
+            container.Register<ICategoriaServico, CategoriaServico>(Lifestyle.Scoped);
+            container.Register<IDadoServico, DadoServico>(Lifestyle.Scoped);
         }
     }
 }

@@ -34,6 +34,10 @@
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,10 +49,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InicializaAplicacao.cs" />
+    <Compile Include="Interfaces\IDataAplServico.cs" />
+    <Compile Include="Interfaces\ITipoEnsinoAplServico.cs" />
+    <Compile Include="Interfaces\IDadoAplServico.cs" />
+    <Compile Include="Interfaces\ICategoriaAplServico.cs" />
     <Compile Include="Interfaces\IMunicipioAplServico.cs" />
     <Compile Include="Mapeamento\Base\Mapeadores.cs" />
+    <Compile Include="Mapeamento\CategoriaMapeador.cs" />
+    <Compile Include="Mapeamento\DataMapeador.cs" />
+    <Compile Include="Mapeamento\DadoMapeador.cs" />
+    <Compile Include="Mapeamento\TipoEnsinoMapeador.cs" />
     <Compile Include="Mapeamento\MunicipioMapeador.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicos\Base\AplServico.cs" />
+    <Compile Include="Servicos\DadoAplServico.cs" />
+    <Compile Include="Servicos\TipoEnsinoAplServico.cs" />
+    <Compile Include="Servicos\CategoriaAplServico.cs" />
+    <Compile Include="Servicos\DataAplServico.cs" />
     <Compile Include="Servicos\MunicipioAplServico.cs" />
   </ItemGroup>
   <ItemGroup />

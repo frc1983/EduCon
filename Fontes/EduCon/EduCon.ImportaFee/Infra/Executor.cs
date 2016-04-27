@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using EduCon.Aplicacao;
 using EduCon.Aplicacao.Interfaces;
-using EduCon.Objetos.Entidades;
+using EduCon.Objetos.DTOs;
 using EduCon.Utilitarios.Conversores;
 using Microsoft.Practices.ServiceLocation;
 
@@ -11,34 +12,41 @@ namespace EduCon.ImportaFee.Infra
 {
     public class Executor
     {
-        private IList<Dado> lista;
-        private IList<TipoEnsino> tiposEnsino;
-        private IList<Categoria> categorias;
-        private IList<Municipio> municipios;
-        private IList<Data> datas;
+        private IList<DadoDTO> lista;
+        private IList<TipoEnsinoDTO> tiposEnsino;
+        private IList<CategoriaDTO> categorias;
+        private IList<MunicipioDTO> municipios;
+        private IList<DataDTO> datas;
 
         private IMunicipioAplServico _municipioServico;
+        private IDataAplServico _dataServico;
+        private ITipoEnsinoAplServico _tipoEnsinoServico;
+        private ICategoriaAplServico _categoriaServico;
+        private IDadoAplServico _dadoServico;
 
         public Executor()
         {
-            lista = new List<Dado>();
-            tiposEnsino = new List<TipoEnsino>();
-            categorias = new List<Categoria>();
-            municipios = new List<Municipio>();
-            datas = new List<Data>();
+            lista = new List<DadoDTO>();
+            tiposEnsino = new List<TipoEnsinoDTO>();
+            categorias = new List<CategoriaDTO>();
+            municipios = new List<MunicipioDTO>();
+            datas = new List<DataDTO>();
 
             _municipioServico = ServiceLocator.Current.GetInstance<IMunicipioAplServico>();
+            _dataServico = ServiceLocator.Current.GetInstance<IDataAplServico>();
+            _tipoEnsinoServico = ServiceLocator.Current.GetInstance<ITipoEnsinoAplServico>();
+            _categoriaServico = ServiceLocator.Current.GetInstance<ICategoriaAplServico>();
+            _dadoServico = ServiceLocator.Current.GetInstance<IDadoAplServico>();
         }
 
         public void Executa()
         {
             try
             {
+                ValidaDiretorio();
+
                 // Lógica do processamento
                 ImportaDados();
-
-                ResumoExecucao();
-
             }
             catch (Exception ex)
             {
@@ -46,7 +54,7 @@ namespace EduCon.ImportaFee.Infra
             }
         }
 
-        private void ImportaDados()
+        private void ValidaDiretorio()
         {
             var pasta = new DirectoryInfo(ConfigManager.DiretorioArquivos);
             if (!pasta.Exists)
@@ -58,7 +66,11 @@ namespace EduCon.ImportaFee.Infra
             {
                 throw new Exception("Nenhum arquivo encontrado no diretório informado.");
             }
+        }
 
+        private void ImportaDados()
+        {
+            var pasta = new DirectoryInfo(ConfigManager.DiretorioArquivos);
             foreach (var file in pasta.GetFiles())
             {
                 var stream = UTF8.Converte(file.FullName);
@@ -76,15 +88,16 @@ namespace EduCon.ImportaFee.Infra
                         var munic = _municipioServico.ListaTodos().Where(o => o.CodIBGE == int.Parse(unidadeGeografica.Ibge)).FirstOrDefault();
                         if (munic == null)
                         {
-                            var municipio = new Municipio()
+                            var municipio = new MunicipioDTO()
                             {
                                 CodIBGE = int.Parse(unidadeGeografica.Ibge),
-                                Nome = unidadeGeografica.Nome,
+                                Nome = unidadeGeografica.Nome.Trim(),
                                 Latitude = decimal.Parse(unidadeGeografica.Latitude),
                                 Longitude = decimal.Parse(unidadeGeografica.Longitude)
-                            });
+                            };
 
-                            _municipioServico.Inclui(municipio)
+                            _municipioServico.Inclui(municipio);
+                            codMunicipio = municipio.Id;
                         }
                         else
                         {
@@ -99,17 +112,20 @@ namespace EduCon.ImportaFee.Infra
 
                         int codTipoEnsino = 0;
 
-                        var tipoEnsino = (caminho.Length > 3 ? caminho[2] : string.Empty);
+                        var tipoEnsinoDescr = (caminho.Length > 3 ? caminho[2] : string.Empty);
 
-                        if (!string.IsNullOrEmpty(tipoEnsino))
+                        if (!string.IsNullOrEmpty(tipoEnsinoDescr))
                         {
-                            var tipoEns = tiposEnsino.Where(o => o.Nome == tipoEnsino).FirstOrDefault();
+                            var tipoEns = _tipoEnsinoServico.ListaTodos().Where(o => o.Nome.Equals(tipoEnsinoDescr)).FirstOrDefault();
                             if (tipoEns == null)
                             {
-                                tiposEnsino.Add(new TipoEnsino()
+                                var tipoEnsino = new TipoEnsinoDTO()
                                 {
-                                    Nome = tipoEnsino
-                                });
+                                    Nome = tipoEnsinoDescr.Trim()
+                                };
+
+                                _tipoEnsinoServico.Inclui(tipoEnsino);
+                                codMunicipio = tipoEnsino.Id;
                             }
                             else
                             {
@@ -124,18 +140,21 @@ namespace EduCon.ImportaFee.Infra
                         int codCategoria = 0;
                         int? codSubcategoria = null;
 
-                        var categoria = (caminho.Length > 4 ? caminho[3] : string.Empty);
-                        var subcategoria = (caminho.Length > 5 ? caminho[4] : string.Empty);
+                        var categoriaDescr = (caminho.Length > 4 ? caminho[3] : string.Empty);
+                        var subcategoriaDescr = (caminho.Length == 5 ? caminho[4] : string.Empty);
 
-                        if (!string.IsNullOrEmpty(categoria))
+                        if (!string.IsNullOrEmpty(categoriaDescr))
                         {
-                            var categ = categorias.Where(o => o.Nome == categoria).FirstOrDefault();
+                            var categ = _categoriaServico.ListaTodos().Where(o => o.Nome.Equals(categoriaDescr)).FirstOrDefault();
                             if (categ == null)
                             {
-                                categorias.Add(new Categoria()
+                                var categoria = new CategoriaDTO()
                                 {
-                                    Nome = categoria
-                                });
+                                    Nome = categoriaDescr.Trim()
+                                };
+
+                                _categoriaServico.Inclui(categoria);
+                                codCategoria = categoria.Id;
                             }
                             else
                             {
@@ -143,15 +162,18 @@ namespace EduCon.ImportaFee.Infra
                             }
                         }
 
-                        if (!string.IsNullOrEmpty(subcategoria))
+                        if (!string.IsNullOrEmpty(subcategoriaDescr))
                         {
-                            var categ = categorias.Where(o => o.Nome == subcategoria).FirstOrDefault();
+                            var categ = _categoriaServico.ListaTodos().Where(o => o.Nome.Equals(subcategoriaDescr)).FirstOrDefault();
                             if (categ == null)
                             {
-                                categorias.Add(new Categoria()
+                                var subcategoria = new CategoriaDTO()
                                 {
-                                    Nome = subcategoria
-                                });
+                                    Nome = subcategoriaDescr.Trim()
+                                };
+
+                                _categoriaServico.Inclui(subcategoria);
+                                codSubcategoria = subcategoria.Id;
                             }
                             else
                             {
@@ -165,22 +187,25 @@ namespace EduCon.ImportaFee.Infra
 
                         var codData = 0;
 
-                        var data = datas.Where(o => o.Ano == int.Parse(valor.Ano)).FirstOrDefault();
-                        if (data == null)
+                        var dt = _dataServico.ListaTodos().Where(o => o.Ano == int.Parse(valor.Ano)).FirstOrDefault();
+                        if (dt == null)
                         {
-                            datas.Add(new Data()
+                            var data = new DataDTO()
                             {
                                 Ano = int.Parse(valor.Ano)
-                            });
+                            };
+
+                            _dataServico.Inclui(data);
+                            codData = data.Id;
                         }
                         else
                         {
-                            codMunicipio = munic.Id;
+                            codData = dt.Id;
                         }
 
                         #endregion
 
-                        lista.Add(new Dado()
+                        var dado = new DadoDTO()
                         {
                             IdTipoEnsino = codTipoEnsino,
                             IdCategoria = codCategoria,
@@ -188,23 +213,12 @@ namespace EduCon.ImportaFee.Infra
                             IdMunicipio = codMunicipio,
                             IdData = codData,
                             Valor = valor.Valor
-                        });
+                        };
+
+                        _dadoServico.Inclui(dado);
                     }
                 }
             }
-        }
-
-        private void ResumoExecucao()
-        {
-            var total = lista.Count;
-            var comValor = lista.Count(o => o.Valor != "-");
-            var comPerc = decimal.Round(comValor * 1m / total * 100m, 2);
-            var semValor = lista.Count(o => o.Valor == "-");
-            var semPerc = decimal.Round(semValor * 1m / total * 100m, 2);
-
-            Console.WriteLine("Com valor: " + comPerc + "% (" + comValor + ")");
-            Console.WriteLine("Sem valor: " + semPerc + "% (" + semValor + ")");
-            Console.WriteLine("Total: " + lista.Count);
         }
     }
 }

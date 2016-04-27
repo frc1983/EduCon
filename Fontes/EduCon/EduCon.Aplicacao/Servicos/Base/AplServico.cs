@@ -1,12 +1,15 @@
-﻿using EduCon.Utilitarios.Dominio;
+﻿using AutoMapper;
+using EduCon.Aplicacao.Mapeamento.Base;
 using EduCon.Utilitarios.Dominio.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 
-namespace EduCon.Utilitarios.Aplicacao
+namespace EduCon.Aplicacao.Servicos.Base
 {
     public class AplServico
     {
-        public ITransacao Transacao { get; private set; }
+        protected IMapper Mapper { get { return Mapeadores.Mapper; } }
+
+        protected ITransacao Transacao { get; private set; }
 
         public AplServico()
         {

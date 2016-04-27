@@ -33,6 +33,12 @@ namespace EduCon.Contexto.Mapeadores
 
             Property(o => o.Longitude)
                 .HasColumnName("LONGITUDE");
+
+            // Navegação
+            HasMany(o => o.Dados)
+                .WithRequired(o => o.Municipio)
+                .HasForeignKey(o => o.IdMunicipio)
+                .WillCascadeOnDelete();
         }
     }
 }

@@ -11,6 +11,10 @@ namespace EduCon.Aplicacao.Mapeamento.Base
             Mapper = new MapperConfiguration((m) =>
             {
                 m.AddProfile<MunicipioMapeador>();
+                m.AddProfile<TipoEnsinoMapeador>();
+                m.AddProfile<DataMapeador>();
+                m.AddProfile<CategoriaMapeador>();
+                m.AddProfile<DadoMapeador>();
             }).CreateMapper();
         }
     }

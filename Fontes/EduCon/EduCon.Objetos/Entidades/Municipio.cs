@@ -1,4 +1,6 @@
-﻿namespace EduCon.Objetos.Entidades
+﻿using System.Collections.Generic;
+
+namespace EduCon.Objetos.Entidades
 {
     public class Municipio
     {
@@ -8,5 +10,7 @@
         public string Nome { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
+
+        public ICollection<Dado> Dados { get; set; }
     }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EduCon.Api</name>
+    </assembly>
+    <members>
+        <member name="M:EduCon.Api.App_Start.SimpleInjectorWebApiInitializer.Initialize">
+            <summary>
+            Initialize the container and register it as Web API Dependency Resolver.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Web API configuration and services
+            </summary>
+            <param name="config"></param>
+        </member>
+    </members>
+</doc>
