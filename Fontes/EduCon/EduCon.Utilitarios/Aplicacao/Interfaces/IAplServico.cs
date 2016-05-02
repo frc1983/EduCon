@@ -7,6 +7,7 @@ namespace EduCon.Utilitarios.Aplicacao.Interfaces
         where T : class
     {
         void Inclui(T dto);
+        void Inclui(IEnumerable<T> dtos);
         void Altera(T dto);
         void Exclui(T dto);
 

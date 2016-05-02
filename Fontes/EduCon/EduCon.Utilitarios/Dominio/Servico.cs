@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using EduCon.Utilitarios.Dominio.Interfaces;
 
@@ -30,6 +31,16 @@ namespace EduCon.Utilitarios.Dominio
             }
 
             _repositorio.Inclui(entidade);
+        }
+
+        public virtual void Inclui(IEnumerable<T> entidades)
+        {
+            if (entidades == null || entidades.Count() == 0)
+            {
+                throw new ArgumentException("Não é possível incluir uma lista de entidades vazia", "entidade");
+            }
+
+            _repositorio.Inclui(entidades);
         }
 
         public virtual void Altera(T entidade)

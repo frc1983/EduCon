@@ -34,6 +34,21 @@ namespace EduCon.Aplicacao.Servicos
             dto.Id = ent.Id;
         }
 
+        public void Inclui(IEnumerable<CategoriaDTO> dtos)
+        {
+            Transacao.Begin();
+
+            var entidades = new List<Categoria>();
+            foreach (var dto in dtos)
+            {
+                entidades.Add(Mapper.Map<Categoria>(dto));
+            }
+
+            _servico.Inclui(entidades);
+
+            Transacao.Commit();
+        }
+
         public void Altera(CategoriaDTO dto)
         {
             Transacao.Begin();

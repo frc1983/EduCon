@@ -38,6 +38,20 @@ namespace EduCon.Utilitarios.Contexto
             DbSet.Add(entidade);
         }
 
+        public virtual void Inclui(IEnumerable<T> entidades)
+        {
+            Contexto.Configuration.AutoDetectChangesEnabled = false;
+            Contexto.Configuration.ValidateOnSaveEnabled = false;
+
+            foreach (var entidade in entidades)
+            {
+                DbSet.Add(entidade);
+            }
+
+            Contexto.Configuration.AutoDetectChangesEnabled = true;
+            Contexto.Configuration.ValidateOnSaveEnabled = true;
+        }
+
         public virtual void Altera(T entidade)
         {
             var entry = Contexto.Entry(entidade);

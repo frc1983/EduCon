@@ -8,6 +8,7 @@ namespace EduCon.Utilitarios.Dominio.Interfaces
         where T : class
     {
         void Inclui(T entidade);
+        void Inclui(IEnumerable<T> entidades);
         void Altera(T entidade);
         void Exclui(T entidade);
 

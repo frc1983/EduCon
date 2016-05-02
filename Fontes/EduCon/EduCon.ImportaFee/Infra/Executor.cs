@@ -104,7 +104,12 @@ namespace EduCon.ImportaFee.Infra
                     if (Municipio == null || Municipio.CodIBGE != int.Parse(unidadeGeografica.Ibge))
                     {
                         Municipio = new MunicipioDTO();
-                        var munic = _municipioServico.Lista(new MunicipioDTO() { CodIBGE = int.Parse(unidadeGeografica.Ibge) }).FirstOrDefault();
+                        var munic = municipios.Where(o => o.CodIBGE == int.Parse(unidadeGeografica.Ibge)).FirstOrDefault();
+                        if (munic == null)
+                        {
+                            munic = _municipioServico.Lista(new MunicipioDTO() { CodIBGE = int.Parse(unidadeGeografica.Ibge) }).FirstOrDefault();
+                        }
+
                         if (munic == null)
                         {
                             var municipio = new MunicipioDTO()
@@ -137,7 +142,12 @@ namespace EduCon.ImportaFee.Infra
                         TipoEnsino = new TipoEnsinoDTO();
                         if (!string.IsNullOrEmpty(tipoEnsinoDescr))
                         {
-                            var tipoEns = _tipoEnsinoServico.Lista(new TipoEnsinoDTO() { Nome = tipoEnsinoDescr }).FirstOrDefault();
+                            var tipoEns = tiposEnsino.Where(o => o.Nome.Equals(tipoEnsinoDescr)).FirstOrDefault();
+                            if (tipoEns == null)
+                            {
+                                tipoEns = _tipoEnsinoServico.Lista(new TipoEnsinoDTO() { Nome = tipoEnsinoDescr }).FirstOrDefault();
+                            }
+
                             if (tipoEns == null)
                             {
                                 var tipoEnsino = new TipoEnsinoDTO()
@@ -166,7 +176,12 @@ namespace EduCon.ImportaFee.Infra
                         Categoria = new CategoriaDTO();
                         if (!string.IsNullOrEmpty(categoriaDescr))
                         {
-                            var categ = _categoriaServico.Lista(new CategoriaDTO() { Nome = categoriaDescr }).FirstOrDefault();
+                            var categ = categorias.Where(o => o.Nome.Equals(categoriaDescr)).FirstOrDefault();
+                            if (categ == null)
+                            {
+                                categ = _categoriaServico.Lista(new CategoriaDTO() { Nome = categoriaDescr }).FirstOrDefault();
+                            }
+
                             if (categ == null)
                             {
                                 var categoria = new CategoriaDTO()
@@ -199,7 +214,12 @@ namespace EduCon.ImportaFee.Infra
                         Subcategoria = new CategoriaDTO();
                         if (!string.IsNullOrEmpty(subcategoriaDescr))
                         {
-                            var subcateg = _categoriaServico.Lista(new CategoriaDTO() { Nome = subcategoriaDescr }).FirstOrDefault();
+                            var subcateg = categorias.Where(o => o.Nome.Equals(subcategoriaDescr)).FirstOrDefault();
+                            if (subcateg == null)
+                            {
+                                subcateg = _categoriaServico.Lista(new CategoriaDTO() { Nome = subcategoriaDescr }).FirstOrDefault();
+                            }
+
                             if (subcateg == null)
                             {
                                 var subcategoria = new CategoriaDTO()
@@ -224,7 +244,13 @@ namespace EduCon.ImportaFee.Infra
                     if (Data == null || Data.Ano != int.Parse(valor.Ano))
                     {
                         Data = new DataDTO();
-                        var dt = _dataServico.Lista(new DataDTO() { Ano = int.Parse(valor.Ano) }).FirstOrDefault();
+
+                        var dt = datas.Where(o => o.Ano == int.Parse(valor.Ano)).FirstOrDefault();
+                        if (dt == null)
+                        {
+                            dt = _dataServico.Lista(new DataDTO() { Ano = int.Parse(valor.Ano) }).FirstOrDefault();
+                        }
+
                         if (dt == null)
                         {
                             var data = new DataDTO()
@@ -243,16 +269,33 @@ namespace EduCon.ImportaFee.Infra
 
                     #endregion
 
-                    var d = new DadoDTO()
-                    {
-                        IdMunicipio = Municipio.Id,
-                        IdTipoEnsino = TipoEnsino.Id,
-                        IdCategoria = Categoria.Id,
-                        IdSubcategoria = Subcategoria.Id,
-                        IdData = Data.Id
-                    };
+                    var existe = dados.Any(o => o.Municipio.Nome == Municipio.Nome
+                        && o.TipoEnsino.Nome == TipoEnsino.Nome
+                        && o.Categoria.Nome == Categoria.Nome
+                        && o.Subcategoria.Nome == Subcategoria.Nome
+                        && o.Data.Ano == Data.Ano);
 
-                    var existe = _dadoServico.Lista(d).Any();
+                    if (!existe)
+                    {
+                        if (Municipio.Id != 0
+                            && TipoEnsino.Id != 0
+                            && Categoria.Id != 0
+                            && Subcategoria.Id != 0
+                            && Data.Id != 0)
+                        {
+                            var d = new DadoDTO()
+                            {
+                                IdMunicipio = Municipio.Id,
+                                IdTipoEnsino = TipoEnsino.Id,
+                                IdCategoria = Categoria.Id,
+                                IdSubcategoria = Subcategoria.Id,
+                                IdData = Data.Id
+                            };
+
+                            existe = _dadoServico.Lista(d).Any();
+                        }
+                    }
+
                     if (!existe)
                     {
                         var dado = new Dado()
@@ -283,14 +326,9 @@ namespace EduCon.ImportaFee.Infra
                 Console.Write(text);
                 foreach (var municipio in municipios)
                 {
-                    Console.SetCursorPosition(text.Length, Console.CursorTop);
-                    Console.Write(count);
-
-                    var existe = _municipioServico.Lista(new MunicipioDTO() { CodIBGE = municipio.CodIBGE }).Any();
-                    if (!existe)
-                    {
-                        _municipioServico.Inclui(municipio);
-                    }
+                    AtualizaStatus(text.Length, count);
+                    _municipioServico.Inclui(municipio);
+                    count++;
                 }
                 Console.WriteLine();
             }
@@ -302,14 +340,9 @@ namespace EduCon.ImportaFee.Infra
                 Console.Write(text);
                 foreach (var tipoEnsino in tiposEnsino)
                 {
-                    Console.SetCursorPosition(text.Length, Console.CursorTop);
-                    Console.Write(count);
-
-                    var existe = _tipoEnsinoServico.Lista(new TipoEnsinoDTO() { Nome = tipoEnsino.Nome }).Any();
-                    if (!existe)
-                    {
-                        _tipoEnsinoServico.Inclui(tipoEnsino);
-                    }
+                    AtualizaStatus(text.Length, count);
+                    _tipoEnsinoServico.Inclui(tipoEnsino);
+                    count++;
                 }
                 Console.WriteLine();
             }
@@ -321,14 +354,9 @@ namespace EduCon.ImportaFee.Infra
                 Console.Write(text);
                 foreach (var categoria in categorias)
                 {
-                    Console.SetCursorPosition(text.Length, Console.CursorTop);
-                    Console.Write(count);
-
-                    var existe = _categoriaServico.Lista(new CategoriaDTO() { Nome = categoria.Nome }).Any();
-                    if (!existe)
-                    {
-                        _categoriaServico.Inclui(categoria);
-                    }
+                    AtualizaStatus(text.Length, count);
+                    _categoriaServico.Inclui(categoria);
+                    count++;
                 }
                 Console.WriteLine();
             }
@@ -340,34 +368,26 @@ namespace EduCon.ImportaFee.Infra
                 Console.Write(text);
                 foreach (var data in datas)
                 {
-                    Console.SetCursorPosition(text.Length, Console.CursorTop);
-                    Console.Write(count);
-
-                    var existe = _dataServico.Lista(new DataDTO() { Ano = data.Ano }).Any();
-                    if (!existe)
-                    {
-                        _dataServico.Inclui(data);
-                    }
+                    AtualizaStatus(text.Length, count);
+                    _dataServico.Inclui(data);
+                    count++;
                 }
                 Console.WriteLine();
             }
 
             if (dados.Count > 0)
             {
-                text = "Dados a incluir: " + dados.Count + " | ";
-                count = 1;
-                Console.Write(text);
+                var dtos = new List<DadoDTO>();
                 foreach (var dado in dados)
                 {
-                    Console.SetCursorPosition(text.Length, Console.CursorTop);
-                    Console.Write(count);
                     var d = new DadoDTO()
                     {
                         IdMunicipio = dado.Municipio.Id,
                         IdTipoEnsino = dado.TipoEnsino.Id,
                         IdCategoria = dado.Categoria.Id,
                         IdSubcategoria = dado.Subcategoria.Id,
-                        IdData = dado.Data.Id
+                        IdData = dado.Data.Id,
+                        Valor = dado.Valor
                     };
 
                     if (d.IdSubcategoria.HasValue && d.IdSubcategoria.Value == 0)
@@ -375,17 +395,38 @@ namespace EduCon.ImportaFee.Infra
                         d.IdSubcategoria = null;
                     }
 
-                    var existe = _dadoServico.Lista(d).Any();
-                    if (!existe)
-                    {
-                        d.Valor = dado.Valor;
-
-                        _dadoServico.Inclui(d);
-                        count++;
-                    }
+                    dtos.Add(d);
                 }
+
+                text = "Dados a incluir: " + dtos.Count + " | ";
+                count = 0;
+                Console.Write(text);
+                do
+                {
+                    AtualizaStatus(text.Length, count);
+
+                    var extrato = dtos.Take(100).ToList();
+                    foreach (var dado in extrato)
+                    {
+                        dtos.Remove(dado);
+                    }
+
+                    count += extrato.Count();
+
+                    _dadoServico.Inclui(extrato);
+                }
+                while (dtos.Count > 0);
+
+                AtualizaStatus(text.Length, count);
+
                 Console.WriteLine();
             }
+        }
+
+        private void AtualizaStatus(int tamanho, int quantidade)
+        {
+            Console.SetCursorPosition(tamanho, Console.CursorTop);
+            Console.Write(quantidade);
         }
     }
 }
