@@ -8,6 +8,9 @@ namespace EduCon.ImportaFee
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("> EduCon.ImportaFee");
+            Console.WriteLine("Iniciando rotina de carregamento...");
+
             try
             {
                 var container = InjecaoInicializa.Initialize();
@@ -16,6 +19,8 @@ namespace EduCon.ImportaFee
                     var executor = new Executor();
                     executor.Executa();
                 }
+
+                Console.WriteLine("Fim da execução.");
             }
             catch (Exception ex)
             {

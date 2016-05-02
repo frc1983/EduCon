@@ -79,6 +79,7 @@
     <Compile Include="Infra\Log.cs" />
     <Compile Include="Objetos\AnoValor.cs" />
     <Compile Include="Objetos\Arquivo.cs" />
+    <Compile Include="Objetos\Dado.cs" />
     <Compile Include="Objetos\UnidadesGeograficas.cs" />
     <Compile Include="Objetos\Variavel.cs" />
     <Compile Include="Program.cs" />

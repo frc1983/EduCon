@@ -5,6 +5,7 @@ using EduCon.Aplicacao.Servicos.Base;
 using EduCon.Dominio.Interfaces.Servico;
 using EduCon.Objetos.DTOs;
 using EduCon.Objetos.Entidades;
+using EduCon.Utilitarios.Aplicacao.Utilitarios;
 
 namespace EduCon.Aplicacao.Servicos
 {
@@ -60,7 +61,7 @@ namespace EduCon.Aplicacao.Servicos
 
         public IEnumerable<CategoriaDTO> Lista(CategoriaDTO filtro)
         {
-            var lista = _servico.Lista(null);
+            var lista = _servico.Lista(Expressao.CriaExpressao<Categoria>(Filtro.Filtros(Mapper.Map<Categoria>(filtro))));
             return Mapper.Map<IEnumerable<CategoriaDTO>>(lista);
         }
     }

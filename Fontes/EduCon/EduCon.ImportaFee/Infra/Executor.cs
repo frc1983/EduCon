@@ -12,7 +12,7 @@ namespace EduCon.ImportaFee.Infra
 {
     public class Executor
     {
-        private IList<DadoDTO> dados;
+        private IList<Dado> dados;
         private IList<TipoEnsinoDTO> tiposEnsino;
         private IList<CategoriaDTO> categorias;
         private IList<MunicipioDTO> municipios;
@@ -26,12 +26,6 @@ namespace EduCon.ImportaFee.Infra
 
         public Executor()
         {
-            dados = new List<DadoDTO>();
-            tiposEnsino = new List<TipoEnsinoDTO>();
-            categorias = new List<CategoriaDTO>();
-            municipios = new List<MunicipioDTO>();
-            datas = new List<DataDTO>();
-
             _municipioServico = ServiceLocator.Current.GetInstance<IMunicipioAplServico>();
             _dataServico = ServiceLocator.Current.GetInstance<IDataAplServico>();
             _tipoEnsinoServico = ServiceLocator.Current.GetInstance<ITipoEnsinoAplServico>();
@@ -45,9 +39,28 @@ namespace EduCon.ImportaFee.Infra
             {
                 ValidaDiretorio();
 
-                CarregaDados();
+                var pasta = new DirectoryInfo(ConfigManager.DiretorioArquivos);
 
-                IncluiDados();
+                var atualArquivo = 1;
+                var totalArquivos = pasta.GetFiles().Count();
+
+                Console.WriteLine("Arquivos encontrados: " + totalArquivos);
+                foreach (var arquivo in pasta.GetFiles())
+                {
+                    Console.WriteLine("Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
+
+                    dados = new List<Dado>();
+                    tiposEnsino = new List<TipoEnsinoDTO>();
+                    categorias = new List<CategoriaDTO>();
+                    municipios = new List<MunicipioDTO>();
+                    datas = new List<DataDTO>();
+
+                    CarregaDados(arquivo);
+
+                    IncluiDados();
+
+                    atualArquivo++;
+                }
             }
             catch (Exception ex)
             {
@@ -69,339 +82,244 @@ namespace EduCon.ImportaFee.Infra
             }
         }
 
-        private void CarregaDados()
+        private void CarregaDados(FileInfo arquivo)
         {
-            var pasta = new DirectoryInfo(ConfigManager.DiretorioArquivos);
-            foreach (var file in pasta.GetFiles())
+            var stream = UTF8.Converte(arquivo.FullName);
+            var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Objetos.Arquivo>(stream);
+
+            var variavel = obj.Variavel.First();
+
+            foreach (var unidadeGeografica in obj.UnidadesGeograficas)
             {
-                var stream = UTF8.Converte(file.FullName);
-                var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Objetos.Arquivo>(stream);
+                MunicipioDTO Municipio = null;
+                TipoEnsinoDTO TipoEnsino = null;
+                CategoriaDTO Categoria = null;
+                CategoriaDTO Subcategoria = null;
+                DataDTO Data = null;
 
-                var variavel = obj.Variavel.First();
-
-                foreach (var unidadeGeografica in obj.UnidadesGeograficas)
+                foreach (var valor in unidadeGeografica.Valores)
                 {
-                    MunicipioDTO Municipio = null;
-                    TipoEnsinoDTO TipoEnsino = null;
-                    CategoriaDTO Categoria = null;
-                    CategoriaDTO Subcategoria = null;
-                    DataDTO Data = null;
+                    #region Município
 
-                    foreach (var valor in unidadeGeografica.Valores)
+                    if (Municipio == null || Municipio.CodIBGE != int.Parse(unidadeGeografica.Ibge))
                     {
-                        #region Município
-
-                        if (Municipio == null || Municipio.CodIBGE != int.Parse(unidadeGeografica.Ibge))
+                        Municipio = new MunicipioDTO();
+                        var munic = _municipioServico.Lista(new MunicipioDTO() { CodIBGE = int.Parse(unidadeGeografica.Ibge) }).FirstOrDefault();
+                        if (munic == null)
                         {
-                            Municipio = new MunicipioDTO();
-                            var munic = _municipioServico.ListaTodos().Where(o => o.CodIBGE == int.Parse(unidadeGeografica.Ibge)).FirstOrDefault();
-                            if (munic == null)
+                            var municipio = new MunicipioDTO()
                             {
-                                var municipio = new MunicipioDTO()
-                                {
-                                    CodIBGE = int.Parse(unidadeGeografica.Ibge),
-                                    Nome = unidadeGeografica.Nome.Trim(),
-                                    Latitude = decimal.Parse(unidadeGeografica.Latitude),
-                                    Longitude = decimal.Parse(unidadeGeografica.Longitude)
-                                };
+                                CodIBGE = int.Parse(unidadeGeografica.Ibge),
+                                Nome = unidadeGeografica.Nome.Trim(),
+                                Latitude = decimal.Parse(unidadeGeografica.Latitude),
+                                Longitude = decimal.Parse(unidadeGeografica.Longitude)
+                            };
 
-                                _municipioServico.Inclui(municipio);
-                                Municipio = municipio;
-                            }
-                            else
-                            {
-                                Municipio = munic;
-                            }
+                            municipios.Add(municipio);
+                            Municipio = municipio;
                         }
-
-                        #endregion
-
-                        var caminho = variavel.Caminho.Split('/');
-
-                        #region Tipo de Ensino
-
-                        var tipoEnsinoDescr = (caminho.Length > 3 ? caminho[2] : string.Empty);
-
-                        if (TipoEnsino == null || !TipoEnsino.Nome.Equals(tipoEnsinoDescr))
+                        else
                         {
-                            TipoEnsino = new TipoEnsinoDTO();
-                            if (!string.IsNullOrEmpty(tipoEnsinoDescr))
-                            {
-                                var tipoEns = _tipoEnsinoServico.ListaTodos().Where(o => o.Nome.Equals(tipoEnsinoDescr)).FirstOrDefault();
-                                if (tipoEns == null)
-                                {
-                                    var tipoEnsino = new TipoEnsinoDTO()
-                                    {
-                                        Nome = tipoEnsinoDescr.Trim()
-                                    };
-
-                                    _tipoEnsinoServico.Inclui(tipoEnsino);
-                                    TipoEnsino = tipoEnsino;
-                                }
-                                else
-                                {
-                                    TipoEnsino = tipoEns;
-                                }
-                            }
+                            Municipio = munic;
                         }
-
-                        #endregion
-
-                        #region Categoria
-
-                        var categoriaDescr = (caminho.Length > 4 ? caminho[3] : string.Empty);
-
-                        if (Categoria == null || !Categoria.Nome.Equals(categoriaDescr))
-                        {
-                            Categoria = new CategoriaDTO();
-                            if (!string.IsNullOrEmpty(categoriaDescr))
-                            {
-                                var categ = _categoriaServico.ListaTodos().Where(o => o.Nome.Equals(categoriaDescr)).FirstOrDefault();
-                                if (categ == null)
-                                {
-                                    var categoria = new CategoriaDTO()
-                                    {
-                                        Nome = categoriaDescr.Trim()
-                                    };
-
-                                    _categoriaServico.Inclui(categoria);
-                                    Categoria = categoria;
-                                }
-                                else
-                                {
-                                    Categoria = categ;
-                                }
-                            }
-                        }
-
-                        var subcategoriaDescr = (caminho.Length == 5 ? caminho[4] : string.Empty);
-
-                        if (Subcategoria == null || !Subcategoria.Nome.Equals(subcategoriaDescr))
-                        {
-                            Subcategoria = new CategoriaDTO();
-                            if (!string.IsNullOrEmpty(subcategoriaDescr))
-                            {
-                                var subcateg = _categoriaServico.ListaTodos().Where(o => o.Nome.Equals(subcategoriaDescr)).FirstOrDefault();
-                                if (subcateg == null)
-                                {
-                                    var subcategoria = new CategoriaDTO()
-                                    {
-                                        Nome = subcategoriaDescr.Trim()
-                                    };
-
-                                    _categoriaServico.Inclui(subcategoria);
-                                    Subcategoria = subcategoria;
-                                }
-                                else
-                                {
-                                    Subcategoria = subcateg;
-                                }
-                            }
-                        }
-
-                        #endregion
-
-                        #region Ano
-
-                        if (Data == null || Data.Ano != int.Parse(valor.Ano))
-                        {
-                            Data = new DataDTO();
-                            var dt = _dataServico.ListaTodos().Where(o => o.Ano == int.Parse(valor.Ano)).FirstOrDefault();
-                            if (dt == null)
-                            {
-                                var data = new DataDTO()
-                                {
-                                    Ano = int.Parse(valor.Ano)
-                                };
-
-                                _dataServico.Inclui(data);
-                                Data = data;
-                            }
-                            else
-                            {
-                                Data = dt;
-                            }
-                        }
-
-                        #endregion
-
-                        var dado = new DadoDTO()
-                        {
-                            IdTipoEnsino = TipoEnsino.Id,
-                            IdCategoria = Categoria.Id,
-                            IdSubcategoria = Subcategoria.Id,
-                            IdMunicipio = Municipio.Id,
-                            IdData = Data.Id,
-                            Valor = valor.Valor
-                        };
-
-                        _dadoServico.Inclui(dado);
                     }
+
+                    #endregion
+
+                    var caminho = variavel.Caminho.Split('/');
+
+                    #region Tipo de Ensino
+
+                    var tipoEnsinoDescr = (caminho.Length > 3 ? caminho[2] : string.Empty).Trim();
+
+                    if (TipoEnsino == null || !TipoEnsino.Nome.Equals(tipoEnsinoDescr))
+                    {
+                        TipoEnsino = new TipoEnsinoDTO();
+                        if (!string.IsNullOrEmpty(tipoEnsinoDescr))
+                        {
+                            var tipoEns = _tipoEnsinoServico.Lista(new TipoEnsinoDTO() { Nome = tipoEnsinoDescr }).FirstOrDefault();
+                            if (tipoEns == null)
+                            {
+                                var tipoEnsino = new TipoEnsinoDTO()
+                                {
+                                    Nome = tipoEnsinoDescr
+                                };
+
+                                tiposEnsino.Add(tipoEnsino);
+                                TipoEnsino = tipoEnsino;
+                            }
+                            else
+                            {
+                                TipoEnsino = tipoEns;
+                            }
+                        }
+                    }
+
+                    #endregion
+
+                    #region Categoria
+
+                    var categoriaDescr = (caminho.Length > 4 ? caminho[3] : string.Empty).Trim();
+
+                    if (Categoria == null || !Categoria.Nome.Equals(categoriaDescr))
+                    {
+                        Categoria = new CategoriaDTO();
+                        if (!string.IsNullOrEmpty(categoriaDescr))
+                        {
+                            var categ = _categoriaServico.Lista(new CategoriaDTO() { Nome = categoriaDescr }).FirstOrDefault();
+                            if (categ == null)
+                            {
+                                var categoria = new CategoriaDTO()
+                                {
+                                    Nome = categoriaDescr
+                                };
+
+                                categorias.Add(categoria);
+                                Categoria = categoria;
+                            }
+                            else
+                            {
+                                Categoria = categ;
+                            }
+                        }
+                    }
+
+                    var subcategoriaDescr = string.Empty;
+                    if (caminho.Length == 5)
+                    {
+                        subcategoriaDescr = caminho[4].Trim();
+                    }
+                    else if (caminho.Length > 5)
+                    {
+                        subcategoriaDescr = caminho[4].Trim() + ' ' + caminho[5].Trim();
+                    }
+
+                    if (Subcategoria == null || !Subcategoria.Nome.Equals(subcategoriaDescr))
+                    {
+                        Subcategoria = new CategoriaDTO();
+                        if (!string.IsNullOrEmpty(subcategoriaDescr))
+                        {
+                            var subcateg = _categoriaServico.Lista(new CategoriaDTO() { Nome = subcategoriaDescr }).FirstOrDefault();
+                            if (subcateg == null)
+                            {
+                                var subcategoria = new CategoriaDTO()
+                                {
+                                    Nome = subcategoriaDescr
+                                };
+
+                                categorias.Add(subcategoria);
+                                Subcategoria = subcategoria;
+                            }
+                            else
+                            {
+                                Subcategoria = subcateg;
+                            }
+                        }
+                    }
+
+                    #endregion
+
+                    #region Ano
+
+                    if (Data == null || Data.Ano != int.Parse(valor.Ano))
+                    {
+                        Data = new DataDTO();
+                        var dt = _dataServico.Lista(new DataDTO() { Ano = int.Parse(valor.Ano) }).FirstOrDefault();
+                        if (dt == null)
+                        {
+                            var data = new DataDTO()
+                            {
+                                Ano = int.Parse(valor.Ano)
+                            };
+
+                            datas.Add(data);
+                            Data = data;
+                        }
+                        else
+                        {
+                            Data = dt;
+                        }
+                    }
+
+                    #endregion
+
+                    var dado = new Dado()
+                    {
+                        TipoEnsino = TipoEnsino,
+                        Categoria = Categoria,
+                        Subcategoria = Subcategoria,
+                        Municipio = Municipio,
+                        Data = Data,
+                        Valor = valor.Valor
+                    };
+
+                    dados.Add(dado);
                 }
             }
         }
 
         private void IncluiDados()
         {
-            //foreach (var unidadeGeografica in obj.UnidadesGeograficas)
-            //{
-            //    MunicipioDTO Municipio = null;
-            //    TipoEnsinoDTO TipoEnsino = null;
-            //    CategoriaDTO Categoria = null;
-            //    CategoriaDTO Subcategoria = null;
-            //    DataDTO Data = null;
+            foreach (var municipio in municipios)
+            {
+                var existe = _municipioServico.Lista(new MunicipioDTO() { CodIBGE = municipio.CodIBGE }).Any();
+                if (!existe)
+                {
+                    _municipioServico.Inclui(municipio);
+                }
+            }
 
-            //    foreach (var valor in unidadeGeografica.Valores)
-            //    {
-            //        #region Município
+            foreach (var tipoEnsino in tiposEnsino)
+            {
+                var existe = _tipoEnsinoServico.Lista(new TipoEnsinoDTO() { Nome = tipoEnsino.Nome }).Any();
+                if (!existe)
+                {
+                    _tipoEnsinoServico.Inclui(tipoEnsino);
+                }
+            }
 
-            //        if (Municipio == null || Municipio.CodIBGE != int.Parse(unidadeGeografica.Ibge))
-            //        {
-            //            Municipio = new MunicipioDTO();
-            //            var munic = _municipioServico.ListaTodos().Where(o => o.CodIBGE == int.Parse(unidadeGeografica.Ibge)).FirstOrDefault();
-            //            if (munic == null)
-            //            {
-            //                var municipio = new MunicipioDTO()
-            //                {
-            //                    CodIBGE = int.Parse(unidadeGeografica.Ibge),
-            //                    Nome = unidadeGeografica.Nome.Trim(),
-            //                    Latitude = decimal.Parse(unidadeGeografica.Latitude),
-            //                    Longitude = decimal.Parse(unidadeGeografica.Longitude)
-            //                };
+            foreach (var categoria in categorias)
+            {
+                var existe = _categoriaServico.Lista(new CategoriaDTO() { Nome = categoria.Nome }).Any();
+                if (!existe)
+                {
+                    _categoriaServico.Inclui(categoria);
+                }
+            }
 
-            //                _municipioServico.Inclui(municipio);
-            //                Municipio = municipio;
-            //            }
-            //            else
-            //            {
-            //                Municipio = munic;
-            //            }
-            //        }
+            foreach (var data in datas)
+            {
+                var existe = _dataServico.Lista(new DataDTO() { Ano = data.Ano }).Any();
+                if (!existe)
+                {
+                    _dataServico.Inclui(data);
+                }
+            }
 
-            //        #endregion
+            foreach (var dado in dados)
+            {
+                var d = new DadoDTO()
+                {
+                    IdMunicipio = dado.Municipio.Id,
+                    IdTipoEnsino = dado.TipoEnsino.Id,
+                    IdCategoria = dado.Categoria.Id,
+                    IdSubcategoria = dado.Subcategoria.Id,
+                    IdData = dado.Data.Id
+                };
 
-            //        var caminho = variavel.Caminho.Split('/');
+                if (d.IdSubcategoria.HasValue && d.IdSubcategoria.Value == 0)
+                {
+                    d.IdSubcategoria = null;
+                }
 
-            //        #region Tipo de Ensino
+                var existe = _dadoServico.Lista(d).Any();
+                if (!existe)
+                {
+                    d.Valor = dado.Valor;
 
-            //        var tipoEnsinoDescr = (caminho.Length > 3 ? caminho[2] : string.Empty);
-
-            //        if (TipoEnsino == null || !TipoEnsino.Nome.Equals(tipoEnsinoDescr))
-            //        {
-            //            TipoEnsino = new TipoEnsinoDTO();
-            //            if (!string.IsNullOrEmpty(tipoEnsinoDescr))
-            //            {
-            //                var tipoEns = _tipoEnsinoServico.ListaTodos().Where(o => o.Nome.Equals(tipoEnsinoDescr)).FirstOrDefault();
-            //                if (tipoEns == null)
-            //                {
-            //                    var tipoEnsino = new TipoEnsinoDTO()
-            //                    {
-            //                        Nome = tipoEnsinoDescr.Trim()
-            //                    };
-
-            //                    _tipoEnsinoServico.Inclui(tipoEnsino);
-            //                    TipoEnsino = tipoEnsino;
-            //                }
-            //                else
-            //                {
-            //                    TipoEnsino = tipoEns;
-            //                }
-            //            }
-            //        }
-
-            //        #endregion
-
-            //        #region Categoria
-
-            //        var categoriaDescr = (caminho.Length > 4 ? caminho[3] : string.Empty);
-
-            //        if (Categoria == null || !Categoria.Nome.Equals(categoriaDescr))
-            //        {
-            //            Categoria = new CategoriaDTO();
-            //            if (!string.IsNullOrEmpty(categoriaDescr))
-            //            {
-            //                var categ = _categoriaServico.ListaTodos().Where(o => o.Nome.Equals(categoriaDescr)).FirstOrDefault();
-            //                if (categ == null)
-            //                {
-            //                    var categoria = new CategoriaDTO()
-            //                    {
-            //                        Nome = categoriaDescr.Trim()
-            //                    };
-
-            //                    _categoriaServico.Inclui(categoria);
-            //                    Categoria = categoria;
-            //                }
-            //                else
-            //                {
-            //                    Categoria = categ;
-            //                }
-            //            }
-            //        }
-
-            //        var subcategoriaDescr = (caminho.Length == 5 ? caminho[4] : string.Empty);
-
-            //        if (Subcategoria == null || !Subcategoria.Nome.Equals(subcategoriaDescr))
-            //        {
-            //            Subcategoria = new CategoriaDTO();
-            //            if (!string.IsNullOrEmpty(subcategoriaDescr))
-            //            {
-            //                var subcateg = _categoriaServico.ListaTodos().Where(o => o.Nome.Equals(subcategoriaDescr)).FirstOrDefault();
-            //                if (subcateg == null)
-            //                {
-            //                    var subcategoria = new CategoriaDTO()
-            //                    {
-            //                        Nome = subcategoriaDescr.Trim()
-            //                    };
-
-            //                    _categoriaServico.Inclui(subcategoria);
-            //                    Subcategoria = subcategoria;
-            //                }
-            //                else
-            //                {
-            //                    Subcategoria = subcateg;
-            //                }
-            //            }
-            //        }
-
-            //        #endregion
-
-            //        #region Ano
-
-            //        if (Data == null || Data.Ano != int.Parse(valor.Ano))
-            //        {
-            //            Data = new DataDTO();
-            //            var dt = _dataServico.ListaTodos().Where(o => o.Ano == int.Parse(valor.Ano)).FirstOrDefault();
-            //            if (dt == null)
-            //            {
-            //                var data = new DataDTO()
-            //                {
-            //                    Ano = int.Parse(valor.Ano)
-            //                };
-
-            //                _dataServico.Inclui(data);
-            //                Data = data;
-            //            }
-            //            else
-            //            {
-            //                Data = dt;
-            //            }
-            //        }
-
-            //        #endregion
-
-            //        var dado = new DadoDTO()
-            //        {
-            //            IdTipoEnsino = TipoEnsino.Id,
-            //            IdCategoria = Categoria.Id,
-            //            IdSubcategoria = Subcategoria.Id,
-            //            IdMunicipio = Municipio.Id,
-            //            IdData = Data.Id,
-            //            Valor = valor.Valor
-            //        };
-
-            //        _dadoServico.Inclui(dado);
-            //    }
-            //}
+                    _dadoServico.Inclui(d);
+                }
+            }
         }
     }
 }

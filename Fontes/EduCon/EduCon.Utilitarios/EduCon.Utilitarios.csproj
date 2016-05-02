@@ -59,6 +59,9 @@
   <ItemGroup>
     <Compile Include="Api\DecimalConverter.cs" />
     <Compile Include="Aplicacao\Interfaces\IAplServico.cs" />
+    <Compile Include="Aplicacao\Utilitarios\EnumOperador.cs" />
+    <Compile Include="Aplicacao\Utilitarios\Expressao.cs" />
+    <Compile Include="Aplicacao\Utilitarios\Filtro.cs" />
     <Compile Include="Contexto\ContextoBase.cs" />
     <Compile Include="Contexto\Interfaces\IContexto.cs" />
     <Compile Include="Contexto\RepositorioBase.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="Dominio\Servico.cs" />
     <Compile Include="Dominio\Interfaces\IServico.cs" />
     <Compile Include="Dominio\Transacao.cs" />
+    <Compile Include="Extensoes\Extensoes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
