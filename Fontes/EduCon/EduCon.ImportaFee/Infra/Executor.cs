@@ -33,19 +33,28 @@ namespace EduCon.ImportaFee.Infra
             _dadoServico = ServiceLocator.Current.GetInstance<IDadoAplServico>();
         }
 
-        public void Executa()
+        public void Executa(bool copia)
         {
             try
             {
                 ValidaDiretorio();
 
-                var pasta = new DirectoryInfo(ConfigManager.DiretorioArquivos);
+                var diretorioEntrada = new DirectoryInfo(AppContext.BaseDirectory + @"entrada\");
+                if (!diretorioEntrada.Exists)
+                {
+                    diretorioEntrada.Create();
+                }
+
+                if (copia)
+                {
+                    CopiaArquivosEntrada(diretorioEntrada);
+                }
 
                 var atualArquivo = 1;
-                var totalArquivos = pasta.GetFiles().Count();
+                var totalArquivos = diretorioEntrada.GetFiles().Count();
 
                 Console.WriteLine("Arquivos encontrados: " + totalArquivos);
-                foreach (var arquivo in pasta.GetFiles())
+                foreach (var arquivo in diretorioEntrada.GetFiles())
                 {
                     Console.WriteLine("Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
 
@@ -59,12 +68,23 @@ namespace EduCon.ImportaFee.Infra
 
                     IncluiDados();
 
+                    MoverArquivo(arquivo);
+
                     atualArquivo++;
                 }
             }
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        private void CopiaArquivosEntrada(DirectoryInfo diretorioEntrada)
+        {
+            var diretorioFonte = new DirectoryInfo(ConfigManager.DiretorioArquivos);
+            foreach (var arquivo in diretorioFonte.GetFiles())
+            {
+                arquivo.CopyTo(Path.Combine(diretorioEntrada.FullName, arquivo.Name), false);
             }
         }
 
@@ -427,6 +447,17 @@ namespace EduCon.ImportaFee.Infra
         {
             Console.SetCursorPosition(tamanho, Console.CursorTop);
             Console.Write(quantidade);
+        }
+
+        private void MoverArquivo(FileInfo arquivo)
+        {
+            var diretorioSaida = new DirectoryInfo(AppContext.BaseDirectory + @"saida\");
+            if (!diretorioSaida.Exists)
+            {
+                diretorioSaida.Create();
+            }
+
+            File.Move(arquivo.FullName, diretorioSaida.FullName + "/" + arquivo.Name);
         }
     }
 }
