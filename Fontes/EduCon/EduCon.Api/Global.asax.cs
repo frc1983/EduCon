@@ -1,5 +1,8 @@
 ﻿using System.Web.Http;
 using System.Web.Http.ModelBinding;
+using EduCon.Aplicacao;
+using SimpleInjector;
+using SimpleInjector.Integration.WebApi;
 
 namespace EduCon.Api
 {
@@ -19,11 +22,11 @@ namespace EduCon.Api
                 return string.Format("'{0}' não é um valor válido", value.ToString());
             };
 
-            //AplicacaoInit.Inicia();
+            InicializaAplicacao.Inicia();
 
-            //var container = new Container();
-            //container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
-            //Inversao.IoC.GetSimpleInjectorModules(container);
+            var container = new Container();
+            container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
+            Injecao.Injeta.GetSimpleInjectorModules(container);
         }
     }
 }
