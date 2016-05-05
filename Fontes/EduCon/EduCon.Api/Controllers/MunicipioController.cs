@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Http;
 using EduCon.Aplicacao.Interfaces;
 using EduCon.Objetos.DTOs;
+using System.Web.Http.Cors;
 
 namespace EduCon.Api.Controllers
 {
