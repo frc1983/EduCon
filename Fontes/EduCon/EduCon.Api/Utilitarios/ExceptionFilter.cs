@@ -19,6 +19,8 @@ namespace EduCon.Api.Utilitarios
             //context.Exception;
 
             var mensagemErro = "Um erro inesperado aconteceu ao realizar a operação. A equipe responsável será notificada. Tente novamente mais tarde";
+            mensagemErro += Environment.NewLine + context.Exception.Message;
+            mensagemErro += Environment.NewLine + context.Exception.StackTrace;
             context.Response = context.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Mensagem = mensagemErro });
         }
     }
