@@ -19,7 +19,7 @@ namespace EduCon.Api
             // Permite tudo
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
-            config.MapHttpAttributeRoutes();
+            //config.MapHttpAttributeRoutes();
 
             // Configuração das rotas
             config.MapHttpAttributeRoutes();
