@@ -17,7 +17,7 @@ namespace EduCon.Api
         public static void Register(HttpConfiguration config)
         {
             // Permite tudo
-            var cors = new EnableCorsAttribute("http://localhost:3000", "*", "*");
+            var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
 
             // Configuração das rotas
