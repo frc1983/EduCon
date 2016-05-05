@@ -5,6 +5,7 @@ using EduCon.Objetos.DTOs;
 
 namespace EduCon.Api.Controllers
 {
+    [RoutePrefix("api/municipio")]
     public class MunicipioController : ApiController
     {
         private IMunicipioAplServico _servico;
@@ -24,6 +25,13 @@ namespace EduCon.Api.Controllers
         public IEnumerable<MunicipioDTO> Lista()
         {
             return _servico.ListaTodos();
+        }
+
+        [Route("ConsultaPorNome")]
+        [HttpGet]
+        public IEnumerable<MunicipioDTO> ConsultaPorNome(string municipio)
+        {
+            return _servico.Lista(new MunicipioDTO { Nome = municipio });
         }
     }
 }
