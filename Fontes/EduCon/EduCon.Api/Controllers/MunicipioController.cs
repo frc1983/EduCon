@@ -8,7 +8,6 @@ using System.Web.Http.Cors;
 namespace EduCon.Api.Controllers
 {
     [RoutePrefix("api/municipio")]
-    [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     public class MunicipioController : ApiController
     {
         private IMunicipioAplServico _servico;
