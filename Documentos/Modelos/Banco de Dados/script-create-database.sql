@@ -1,6 +1,9 @@
 create database educon_bd;
 go
 
+use educon_bd;
+go
+
 create table EDC_MUNICIPIO (
     ID int primary key identity,
     COD_IBGE int,
