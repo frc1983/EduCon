@@ -19,7 +19,7 @@ namespace EduCon.ImportaFee
                     var resposta = string.Empty;
                     do
                     {
-                        Console.Write(@"Copia arquivos do diretório configurado? (S/N) \> ");
+                        Console.Write(@"Copiar arquivos do diretório configurado? (S/N) \> ");
                         resposta = Console.ReadLine().ToLower();
                     } while (!resposta.Equals("s") && !resposta.Equals("n"));
 

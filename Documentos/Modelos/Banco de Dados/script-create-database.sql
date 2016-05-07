@@ -9,8 +9,8 @@ create table EDC_MUNICIPIO (
     COD_IBGE int,
     AGRUPADOR int,
     NOME varchar(200),
-    LATITUDE decimal(9, 6),
-    LONGITUDE decimal(9, 6)
+    LATITUDE decimal(17, 12),
+    LONGITUDE decimal(17, 12)
 );
 
 create table EDC_TIPO_ENSINO (

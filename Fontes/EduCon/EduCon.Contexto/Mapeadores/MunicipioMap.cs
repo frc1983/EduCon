@@ -29,10 +29,12 @@ namespace EduCon.Contexto.Mapeadores
                 .HasColumnName("AGRUPADOR");
 
             Property(o => o.Latitude)
-                .HasColumnName("LATITUDE");
+                .HasColumnName("LATITUDE")
+                .HasPrecision(17, 12);
 
             Property(o => o.Longitude)
-                .HasColumnName("LONGITUDE");
+                .HasColumnName("LONGITUDE")
+                .HasPrecision(17, 12);
 
             // Navegação
             HasMany(o => o.Dados)
