@@ -31,16 +31,6 @@ namespace EduCon.Api
 
             // Tratamento de exceções
             config.Filters.Add(new ExceptionFilter());
-
-            // Configura formatações retorno de dados
-            var jsonConfigSettings = config.Formatters.JsonFormatter.SerializerSettings;
-            jsonConfigSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            jsonConfigSettings.Converters.Add(new StringEnumConverter());
-            jsonConfigSettings.Converters.Add(new DecimalConverter());
-            jsonConfigSettings.Formatting = Formatting.Indented;
-            jsonConfigSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            jsonConfigSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-            jsonConfigSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
         }
     }
 }
