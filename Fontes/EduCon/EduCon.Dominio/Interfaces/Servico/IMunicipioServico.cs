@@ -5,5 +5,6 @@ namespace EduCon.Dominio.Interfaces.Servico
 {
     public interface IMunicipioServico : IServico<Municipio>
     {
+        Municipio ConsultaPorNome(string municipio);
     }
 }

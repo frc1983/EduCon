@@ -79,5 +79,10 @@ namespace EduCon.Aplicacao.Servicos
             var lista = _servico.Lista(Expressao.CriaExpressao<Municipio>(Filtro.Filtros(Mapper.Map<Municipio>(filtro))));
             return Mapper.Map<IEnumerable<MunicipioDTO>>(lista);
         }
+
+        public MunicipioDTO ConsultaPorNome(string municipio)
+        {
+            return Mapper.Map<MunicipioDTO>(_servico.ConsultaPorNome(municipio));
+        }
     }
 }

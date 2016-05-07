@@ -1,7 +1,9 @@
-﻿using EduCon.Dominio.Interfaces.Servico;
+﻿using System;
+using EduCon.Dominio.Interfaces.Servico;
 using EduCon.Objetos.Entidades;
 using EduCon.Utilitarios.Dominio;
 using EduCon.Utilitarios.Dominio.Interfaces;
+using EduCon.Dominio.Interfaces.Repositorio;
 
 namespace EduCon.Dominio.Servicos
 {
@@ -9,6 +11,11 @@ namespace EduCon.Dominio.Servicos
     {
         public MunicipioServico(IRepositorio<Municipio> repositorio) : base(repositorio)
         {
+        }
+
+        public Municipio ConsultaPorNome(string municipio)
+        {
+            return Repositorio.Consulta(x => x.Nome.Equals(municipio.Trim()));
         }
     }
 }

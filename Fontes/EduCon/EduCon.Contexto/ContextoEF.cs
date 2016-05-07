@@ -19,6 +19,7 @@ namespace EduCon.Contexto
             : base("Name=EduConBD")
         {
             Database.Log = GravaLog;
+            var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
