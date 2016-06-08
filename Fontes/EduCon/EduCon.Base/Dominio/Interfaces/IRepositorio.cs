@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace EduCon.Utilitarios.Dominio.Interfaces
+namespace EduCon.Base.Dominio.Interfaces
 {
-    public interface IServico<T>
+    public interface IRepositorio<T>
         where T : class
     {
         void Inclui(T entidade);

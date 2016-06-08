@@ -1,7 +1,7 @@
-﻿using EduCon.Contexto;
-using EduCon.Utilitarios.Contexto.Interfaces;
-using EduCon.Utilitarios.Dominio;
-using EduCon.Utilitarios.Dominio.Interfaces;
+﻿using EduCon.Base.Contexto.Interfaces;
+using EduCon.Base.Dominio;
+using EduCon.Base.Dominio.Interfaces;
+using EduCon.Contexto;
 using SimpleInjector;
 using SimpleInjector.Packaging;
 

@@ -1,4 +1,4 @@
-﻿namespace EduCon.Utilitarios.Aplicacao.Utilitarios
+﻿namespace EduCon.Utilitarios.Aplicacao
 {
     public enum EnumOperador
     {

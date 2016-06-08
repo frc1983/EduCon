@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
-using EduCon.Utilitarios.Contexto.Interfaces;
+using EduCon.Base.Contexto.Interfaces;
 
-namespace EduCon.Utilitarios.Contexto
+namespace EduCon.Base.Contexto
 {
     public class ContextoBase : DbContext, IContexto
     {

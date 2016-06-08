@@ -1,5 +1,5 @@
-﻿using EduCon.Objetos.DTOs;
-using EduCon.Utilitarios.Aplicacao.Interfaces;
+﻿using EduCon.Base.Aplicacao.Interfaces;
+using EduCon.Objetos.DTOs;
 
 namespace EduCon.Aplicacao.Interfaces
 {

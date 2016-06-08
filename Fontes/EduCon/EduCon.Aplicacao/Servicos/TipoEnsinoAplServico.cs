@@ -5,7 +5,7 @@ using EduCon.Aplicacao.Servicos.Base;
 using EduCon.Dominio.Interfaces.Servico;
 using EduCon.Objetos.DTOs;
 using EduCon.Objetos.Entidades;
-using EduCon.Utilitarios.Aplicacao.Utilitarios;
+using EduCon.Utilitarios.Aplicacao;
 
 namespace EduCon.Aplicacao.Servicos
 {

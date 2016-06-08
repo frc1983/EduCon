@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using EduCon.Utilitarios.Contexto.Interfaces;
-using EduCon.Utilitarios.Dominio.Interfaces;
+using EduCon.Base.Contexto.Interfaces;
+using EduCon.Base.Dominio.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 
-namespace EduCon.Utilitarios.Contexto
+namespace EduCon.Base.Contexto
 {
     public class RepositorioBase<T> : IRepositorio<T>, IDisposable
         where T : class

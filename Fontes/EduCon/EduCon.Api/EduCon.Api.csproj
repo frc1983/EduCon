@@ -188,6 +188,10 @@
       <Project>{D082995B-951E-4A6F-BB7D-7F4F10087DEB}</Project>
       <Name>EduCon.Aplicacao</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EduCon.Base\EduCon.Base.csproj">
+      <Project>{7aa3f1e7-8f4f-4c91-8c00-31240f7b62ef}</Project>
+      <Name>EduCon.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EduCon.Injecao\EduCon.Injecao.csproj">
       <Project>{f8991811-32dd-4df2-92d6-2d752c55e585}</Project>
       <Name>EduCon.Injecao</Name>
@@ -197,7 +201,7 @@
       <Name>EduCon.Objetos</Name>
     </ProjectReference>
     <ProjectReference Include="..\EduCon.Utilitarios\EduCon.Utilitarios.csproj">
-      <Project>{f601b786-8136-4bba-9b82-44ff0383c08e}</Project>
+      <Project>{F601B786-8136-4BBA-9B82-44FF0383C08E}</Project>
       <Name>EduCon.Utilitarios</Name>
     </ProjectReference>
   </ItemGroup>

@@ -81,6 +81,10 @@
       <Project>{d082995b-951e-4a6f-bb7d-7f4f10087deb}</Project>
       <Name>EduCon.Aplicacao</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EduCon.Base\EduCon.Base.csproj">
+      <Project>{7aa3f1e7-8f4f-4c91-8c00-31240f7b62ef}</Project>
+      <Name>EduCon.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EduCon.Contexto\EduCon.Contexto.csproj">
       <Project>{7987e309-da7b-4714-9f47-6363268cc962}</Project>
       <Name>EduCon.Contexto</Name>
@@ -92,10 +96,6 @@
     <ProjectReference Include="..\EduCon.Repositorio\EduCon.Repositorio.csproj">
       <Project>{ab727c8f-a538-4f2d-9b5b-7c525560cb19}</Project>
       <Name>EduCon.Repositorio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EduCon.Utilitarios\EduCon.Utilitarios.csproj">
-      <Project>{f601b786-8136-4bba-9b82-44ff0383c08e}</Project>
-      <Name>EduCon.Utilitarios</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

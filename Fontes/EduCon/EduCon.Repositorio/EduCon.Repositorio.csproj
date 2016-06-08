@@ -50,6 +50,10 @@
     <Compile Include="MunicipioRepositorio.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EduCon.Base\EduCon.Base.csproj">
+      <Project>{7AA3F1E7-8F4F-4C91-8C00-31240F7B62EF}</Project>
+      <Name>EduCon.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EduCon.Dominio\EduCon.Dominio.csproj">
       <Project>{A7F7FCA5-810C-4BD3-97CD-716B08ADBC79}</Project>
       <Name>EduCon.Dominio</Name>
@@ -57,10 +61,6 @@
     <ProjectReference Include="..\EduCon.Objetos\EduCon.Objetos.csproj">
       <Project>{D8B7C32C-6A3F-4AF1-B0CF-DF34F74F2806}</Project>
       <Name>EduCon.Objetos</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EduCon.Utilitarios\EduCon.Utilitarios.csproj">
-      <Project>{f601b786-8136-4bba-9b82-44ff0383c08e}</Project>
-      <Name>EduCon.Utilitarios</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

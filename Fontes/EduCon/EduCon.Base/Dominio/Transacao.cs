@@ -1,9 +1,9 @@
 ﻿using System;
-using EduCon.Utilitarios.Contexto.Interfaces;
-using EduCon.Utilitarios.Dominio.Interfaces;
+using EduCon.Base.Contexto.Interfaces;
+using EduCon.Base.Dominio.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 
-namespace EduCon.Utilitarios.Dominio
+namespace EduCon.Base.Dominio
 {
     public class Transacao : ITransacao
     {

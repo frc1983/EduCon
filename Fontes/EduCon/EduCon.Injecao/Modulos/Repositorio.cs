@@ -1,7 +1,7 @@
-﻿using EduCon.Dominio.Interfaces.Repositorio;
+﻿using EduCon.Base.Dominio.Interfaces;
+using EduCon.Dominio.Interfaces.Repositorio;
 using EduCon.Repositorio;
 using EduCon.Repositorio.Base;
-using EduCon.Utilitarios.Dominio.Interfaces;
 using SimpleInjector;
 using SimpleInjector.Packaging;
 

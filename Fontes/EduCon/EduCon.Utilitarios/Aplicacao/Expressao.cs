@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace EduCon.Utilitarios.Aplicacao.Utilitarios
+namespace EduCon.Utilitarios.Aplicacao
 {
     public class Expressao
     {

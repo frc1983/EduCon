@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
-namespace EduCon.Utilitarios.Contexto.Interfaces
+namespace EduCon.Base.Contexto.Interfaces
 {
     public interface IContexto
     {

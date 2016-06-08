@@ -1,9 +1,9 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
+using EduCon.Base.Contexto;
 using EduCon.Contexto.Mapeadores;
 using EduCon.Objetos.Entidades;
-using EduCon.Utilitarios.Contexto;
 
 namespace EduCon.Contexto
 {

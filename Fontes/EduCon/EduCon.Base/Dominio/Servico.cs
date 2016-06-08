@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using EduCon.Utilitarios.Dominio.Interfaces;
+using EduCon.Base.Dominio.Interfaces;
 
-namespace EduCon.Utilitarios.Dominio
+namespace EduCon.Base.Dominio
 {
     public class Servico<T> : IServico<T>
         where T : class

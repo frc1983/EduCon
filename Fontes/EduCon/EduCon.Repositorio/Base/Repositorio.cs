@@ -1,4 +1,4 @@
-﻿using EduCon.Utilitarios.Contexto;
+﻿using EduCon.Base.Contexto;
 
 namespace EduCon.Repositorio.Base
 {

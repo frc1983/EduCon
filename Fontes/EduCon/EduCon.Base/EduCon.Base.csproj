@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B720A9CF-6AE5-4828-8D3F-D8A94A49621E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{7AA3F1E7-8F4F-4C91-8C00-31240F7B62EF}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EduCon.ImportaFee</RootNamespace>
-    <AssemblyName>EduCon.ImportaFee</AssemblyName>
+    <RootNamespace>EduCon.Base</RootNamespace>
+    <AssemblyName>EduCon.Base</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonServiceLocator.SimpleInjectorAdapter, Version=2.8.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.SimpleInjectorAdapter.2.8.2\lib\portable-net4+sl4+wp8+win8+wpa81\CommonServiceLocator.SimpleInjectorAdapter.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -49,21 +42,8 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SimpleInjector, Version=3.1.5.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.3.1.5\lib\net45\SimpleInjector.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SimpleInjector.Extensions.ExecutionContextScoping, Version=3.1.5.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.Extensions.ExecutionContextScoping.3.1.5\lib\net45\SimpleInjector.Extensions.ExecutionContextScoping.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -73,43 +53,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infra\ConfigManager.cs" />
-    <Compile Include="Infra\Executor.cs" />
-    <Compile Include="Infra\InjecaoInicializa.cs" />
-    <Compile Include="Infra\Log.cs" />
-    <Compile Include="Objetos\AnoValor.cs" />
-    <Compile Include="Objetos\Arquivo.cs" />
-    <Compile Include="Objetos\Dado.cs" />
-    <Compile Include="Objetos\UnidadesGeograficas.cs" />
-    <Compile Include="Objetos\Variavel.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Aplicacao\Interfaces\IAplServico.cs" />
+    <Compile Include="Contexto\ContextoBase.cs" />
+    <Compile Include="Contexto\Interfaces\IContexto.cs" />
+    <Compile Include="Contexto\RepositorioBase.cs" />
+    <Compile Include="Dominio\Interfaces\IRepositorio.cs" />
+    <Compile Include="Dominio\Interfaces\IServico.cs" />
+    <Compile Include="Dominio\Interfaces\ITransacao.cs" />
+    <Compile Include="Dominio\Servico.cs" />
+    <Compile Include="Dominio\Transacao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EduCon.Aplicacao\EduCon.Aplicacao.csproj">
-      <Project>{d082995b-951e-4a6f-bb7d-7f4f10087deb}</Project>
-      <Name>EduCon.Aplicacao</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EduCon.Base\EduCon.Base.csproj">
-      <Project>{7aa3f1e7-8f4f-4c91-8c00-31240f7b62ef}</Project>
-      <Name>EduCon.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EduCon.Injecao\EduCon.Injecao.csproj">
-      <Project>{f8991811-32dd-4df2-92d6-2d752c55e585}</Project>
-      <Name>EduCon.Injecao</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EduCon.Objetos\EduCon.Objetos.csproj">
-      <Project>{D8B7C32C-6A3F-4AF1-B0CF-DF34F74F2806}</Project>
-      <Name>EduCon.Objetos</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EduCon.Utilitarios\EduCon.Utilitarios.csproj">
-      <Project>{F601B786-8136-4BBA-9B82-44FF0383C08E}</Project>
-      <Name>EduCon.Utilitarios</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

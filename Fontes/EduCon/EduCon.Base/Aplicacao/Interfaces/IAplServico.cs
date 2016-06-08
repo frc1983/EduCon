@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EduCon.Utilitarios.Aplicacao.Interfaces
+namespace EduCon.Base.Aplicacao.Interfaces
 {
     public interface IAplServico<T> : IDisposable
         where T : class

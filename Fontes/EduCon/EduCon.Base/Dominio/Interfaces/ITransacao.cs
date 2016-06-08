@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EduCon.Utilitarios.Dominio.Interfaces
+namespace EduCon.Base.Dominio.Interfaces
 {
     public interface ITransacao : IDisposable
     {

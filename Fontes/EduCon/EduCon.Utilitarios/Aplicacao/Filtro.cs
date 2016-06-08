@@ -2,7 +2,7 @@
 using System.Linq;
 using EduCon.Utilitarios.Extensoes;
 
-namespace EduCon.Utilitarios.Aplicacao.Utilitarios
+namespace EduCon.Utilitarios.Aplicacao
 {
     public class Filtro
     {
