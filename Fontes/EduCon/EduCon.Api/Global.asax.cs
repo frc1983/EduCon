@@ -2,17 +2,18 @@
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using EduCon.Aplicacao;
-using SimpleInjector;
-using SimpleInjector.Integration.WebApi;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json.Converters;
 using EduCon.Utilitarios.Api;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace EduCon.Api
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
+        /// <summary>
+        /// Método análago de inicialização da aplicação Web.
+        /// </summary>
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
@@ -22,9 +23,11 @@ namespace EduCon.Api
 
         protected void Application_StartConfig()
         {
+            // Remove os formatadores e inclui apenas o de JSON.
             GlobalConfiguration.Configuration.Formatters.Clear();
             GlobalConfiguration.Configuration.Formatters.Add(new JsonMediaTypeFormatter());
-            // Configura formatações retorno de dados
+
+            // Configura formatações retorno de dados JSON.
             var jsonConfigSettings = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings;
             jsonConfigSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             jsonConfigSettings.Converters.Add(new StringEnumConverter());
@@ -34,16 +37,14 @@ namespace EduCon.Api
             jsonConfigSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
             jsonConfigSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             
+            // Define a mensagem de erro de conversão de valor.
             ModelBinderConfig.TypeConversionErrorMessageProvider = (context, metadata, value) =>
             {
                 return string.Format("'{0}' não é um valor válido", value.ToString());
             };
 
+            // Inicializa as configurações da camada de aplicação.
             InicializaAplicacao.Inicia();
-
-            var container = new Container();
-            container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
-            Injecao.Injeta.GetSimpleInjectorModules(container);
         }
     }
 }

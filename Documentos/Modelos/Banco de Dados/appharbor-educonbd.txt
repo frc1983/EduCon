@@ -1,0 +1,10 @@
+Hostname
+3dc5425a-b1a2-4bf8-9594-a5fa0117feba.sqlserver.sequelizer.com
+
+Username
+zuhnvgyvvsysvzfq
+
+Password
+dmEkaQP3HijpkbBZXnv5NCwrGMUR33ARHcUFG3cphx7ReRMXqg3KJq7HWoLv478N
+
+Server=3dc5425a-b1a2-4bf8-9594-a5fa0117feba.sqlserver.sequelizer.com;Database=db3dc5425ab1a24bf89594a5fa0117feba;User ID=zuhnvgyvvsysvzfq;Password=dmEkaQP3HijpkbBZXnv5NCwrGMUR33ARHcUFG3cphx7ReRMXqg3KJq7HWoLv478N;

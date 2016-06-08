@@ -53,10 +53,10 @@ namespace EduCon.ImportaFee.Infra
                 var atualArquivo = 1;
                 var totalArquivos = diretorioEntrada.GetFiles().Count();
 
-                Console.WriteLine("Arquivos encontrados: " + totalArquivos);
+                Console.WriteLine(DateTime.Now.ToString() + " - Arquivos encontrados: " + totalArquivos);
                 foreach (var arquivo in diretorioEntrada.GetFiles())
                 {
-                    Console.WriteLine("Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
+                    Console.WriteLine(DateTime.Now.ToString() + " - Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
 
                     dados = new List<Dado>();
                     tiposEnsino = new List<TipoEnsinoDTO>();
@@ -341,7 +341,7 @@ namespace EduCon.ImportaFee.Infra
 
             if (municipios.Count > 0)
             {
-                text = "Municípios a incluir: " + municipios.Count + " | ";
+                text = DateTime.Now.ToString() + " - Municípios a incluir: " + municipios.Count + " | ";
                 count = 1;
                 Console.Write(text);
                 foreach (var municipio in municipios)
@@ -355,7 +355,7 @@ namespace EduCon.ImportaFee.Infra
 
             if (tiposEnsino.Count > 0)
             {
-                text = "Tipos de ensino a incluir: " + tiposEnsino.Count + " | ";
+                text = DateTime.Now.ToString() + " - Tipos de ensino a incluir: " + tiposEnsino.Count + " | ";
                 count = 1;
                 Console.Write(text);
                 foreach (var tipoEnsino in tiposEnsino)
@@ -369,7 +369,7 @@ namespace EduCon.ImportaFee.Infra
 
             if (categorias.Count > 0)
             {
-                text = "Categorias a incluir: " + categorias.Count + " | ";
+                text = DateTime.Now.ToString() + " - Categorias a incluir: " + categorias.Count + " | ";
                 count = 1;
                 Console.Write(text);
                 foreach (var categoria in categorias)
@@ -383,7 +383,7 @@ namespace EduCon.ImportaFee.Infra
 
             if (datas.Count > 0)
             {
-                text = "Datas a incluir: " + datas.Count + " | ";
+                text = DateTime.Now.ToString() + " - Datas a incluir: " + datas.Count + " | ";
                 count = 1;
                 Console.Write(text);
                 foreach (var data in datas)
@@ -418,7 +418,7 @@ namespace EduCon.ImportaFee.Infra
                     dtos.Add(d);
                 }
 
-                text = "Dados a incluir: " + dtos.Count + " | ";
+                text = DateTime.Now.ToString() + " - Dados a incluir: " + dtos.Count + " | ";
                 count = 0;
                 Console.Write(text);
                 do

@@ -8,10 +8,13 @@ namespace EduCon.Api.App_Start
     using SimpleInjector;
     using SimpleInjector.Integration.WebApi;
 
+    /// <summary>
+    /// Classe inicializadora do SimpleInjector.
+    /// </summary>
     public static class SimpleInjectorWebApiInitializer
     {
         /// <summary>
-        /// Initialize the container and register it as Web API Dependency Resolver.
+        /// Inicializa o container e carrega do resolvedor de dependências para a Web API.
         /// </summary>
         public static void Initialize()
         {
@@ -34,6 +37,10 @@ namespace EduCon.Api.App_Start
             }
         }
 
+        /// <summary>
+        /// Carrega no container as configurações do projeto de Injeção.
+        /// </summary>
+        /// <param name="container"></param>
         private static void InitializeContainer(Container container)
         {
             Injeta.GetSimpleInjectorModules(container);

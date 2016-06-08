@@ -11,6 +11,9 @@ namespace EduCon.Api
 {
     public class SwaggerConfig
     {
+        /// <summary>
+        /// Define as configurações do Swagger.
+        /// </summary>
         public static void Register()
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;

@@ -9,7 +9,7 @@ namespace EduCon.ImportaFee
         static void Main(string[] args)
         {
             Console.WriteLine("> EduCon.ImportaFee");
-            Console.WriteLine("Iniciando rotina de carregamento...");
+            Console.WriteLine(DateTime.Now.ToString() + " - Iniciando rotina de carregamento...");
 
             try
             {
@@ -29,11 +29,11 @@ namespace EduCon.ImportaFee
                     executor.Executa(copia);
                 }
 
-                Console.WriteLine("Fim da execução.");
+                Console.WriteLine(DateTime.Now.ToString() + " - Fim da execução.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Erro inesperado: " + ex.Message);
+                Console.WriteLine(DateTime.Now.ToString() + " - Erro inesperado: " + ex.Message);
             }
 
             Console.ReadKey();
