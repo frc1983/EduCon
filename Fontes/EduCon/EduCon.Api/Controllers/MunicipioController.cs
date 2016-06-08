@@ -3,11 +3,10 @@ using System.Linq;
 using System.Web.Http;
 using EduCon.Aplicacao.Interfaces;
 using EduCon.Objetos.DTOs;
-using System.Web.Http.Cors;
 
 namespace EduCon.Api.Controllers
 {
-    [RoutePrefix("api/municipio")]
+    [RoutePrefix("api/v1/municipios")]
     public class MunicipioController : ApiController
     {
         private IMunicipioAplServico _servico;
@@ -17,32 +16,40 @@ namespace EduCon.Api.Controllers
             _servico = municipioServico;
         }
 
+        #region Métodos padrão
+
         [HttpGet]
-        [Route("ConsultaPorId")]
+        [Route("{id:int}")]
         public MunicipioDTO Consulta(int id)
         {
             return _servico.Consulta(id);
         }
 
         [HttpGet]
-        [Route("ConsultaPorCodIbge")]
+        [Route("")]
+        public IEnumerable<MunicipioDTO> Lista()
+        {
+            return _servico.ListaTodos();
+        }
+
+        #endregion
+
+        #region Métodos customizados
+
+        [HttpGet]
+        [Route("porCodIbge/{codIbge:int}")]
         public MunicipioDTO ConsultaPorCodIBGE(int codIbge)
         {
             return _servico.Lista(new MunicipioDTO { CodIBGE = codIbge }).FirstOrDefault();
         }
 
         [HttpGet]
-        [Route("Lista")]
-        public IEnumerable<MunicipioDTO> Lista()
-        {
-            return _servico.ListaTodos();
-        }
-
-        [HttpGet]
-        [Route("ListaPorNome")]
+        [Route("porNome/{nome}")]
         public IEnumerable<MunicipioDTO> ListaPorNome(string nome)
         {
             return _servico.Lista(new MunicipioDTO { Nome = nome });
         }
+
+        #endregion
     }
 }

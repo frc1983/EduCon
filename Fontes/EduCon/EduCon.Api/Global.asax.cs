@@ -43,6 +43,9 @@ namespace EduCon.Api
                 return string.Format("'{0}' não é um valor válido", value.ToString());
             };
 
+            // Inicializa o SimpleInjector
+            App_Start.SimpleInjector.Inicializa();
+
             // Inicializa as configurações da camada de aplicação.
             InicializaAplicacao.Inicia();
         }

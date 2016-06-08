@@ -5,7 +5,7 @@ using EduCon.Objetos.DTOs;
 
 namespace EduCon.Api.Controllers
 {
-    [RoutePrefix("api/tipoensino")]
+    [RoutePrefix("api/v1/tiposEnsino")]
     public class TipoEnsinoController : ApiController
     {
         private ITipoEnsinoAplServico _servico;
@@ -16,14 +16,14 @@ namespace EduCon.Api.Controllers
         }
 
         [HttpGet]
-        [Route("ConsultaPorId")]
+        [Route("{id:int}")]
         public TipoEnsinoDTO Consulta(int id)
         {
             return _servico.Consulta(id);
         }
 
         [HttpGet]
-        [Route("Lista")]
+        [Route("")]
         public IEnumerable<TipoEnsinoDTO> Lista()
         {
             return _servico.ListaTodos();

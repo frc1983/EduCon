@@ -159,7 +159,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\SimpleInjectorWebApiInitializer.cs" />
+    <Compile Include="App_Start\SimpleInjector.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DadoController.cs" />

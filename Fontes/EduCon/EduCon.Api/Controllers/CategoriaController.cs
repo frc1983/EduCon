@@ -5,7 +5,7 @@ using EduCon.Objetos.DTOs;
 
 namespace EduCon.Api.Controllers
 {
-    [RoutePrefix("api/categoria")]
+    [RoutePrefix("api/v1/categorias")]
     public class CategoriaController : ApiController
     {
         private ICategoriaAplServico _servico;
@@ -16,14 +16,14 @@ namespace EduCon.Api.Controllers
         }
 
         [HttpGet]
-        [Route("ConsultaPorId")]
+        [Route("{id:int}")]
         public CategoriaDTO Consulta(int id)
         {
             return _servico.Consulta(id);
         }
 
         [HttpGet]
-        [Route("Lista")]
+        [Route("")]
         public IEnumerable<CategoriaDTO> Lista()
         {
             return _servico.ListaTodos();

@@ -5,7 +5,7 @@ using EduCon.Objetos.DTOs;
 
 namespace EduCon.Api.Controllers
 {
-    [RoutePrefix("api/dado")]
+    [RoutePrefix("api/v1/dados")]
     public class DadoController : ApiController
     {
         private IDadoAplServico _servico;
@@ -16,17 +16,17 @@ namespace EduCon.Api.Controllers
         }
 
         [HttpGet]
-        [Route("ConsultaPorId")]
+        [Route("{id:int}")]
         public DadoDTO Consulta(int id)
         {
             return _servico.Consulta(id);
         }
 
         [HttpGet]
-        [Route("Lista")]
-        public IEnumerable<DadoDTO> Lista()
+        [Route("")]
+        public IEnumerable<DadoDTO> Lista([FromUri] DadoDTO dto)
         {
-            return _servico.ListaTodos();
+            return _servico.Lista(dto);
         }
     }
 }

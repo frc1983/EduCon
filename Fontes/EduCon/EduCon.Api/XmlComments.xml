@@ -4,16 +4,42 @@
         <name>EduCon.Api</name>
     </assembly>
     <members>
-        <member name="M:EduCon.Api.App_Start.SimpleInjectorWebApiInitializer.Initialize">
+        <member name="T:EduCon.Api.App_Start.SimpleInjector">
             <summary>
-            Initialize the container and register it as Web API Dependency Resolver.
+            Classe inicializadora do SimpleInjector.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.App_Start.SimpleInjector.Inicializa">
+            <summary>
+            Inicializa o container e carrega do resolvedor de dependências para a Web API.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.App_Start.SimpleInjector.InicializaContainer(SimpleInjector.Container)">
+            <summary>
+            Carrega no container as configurações do projeto de Injeção.
+            </summary>
+            <param name="container"></param>
+        </member>
+        <member name="M:EduCon.Api.SwaggerConfig.Register">
+            <summary>
+            Define as configurações do Swagger.
             </summary>
         </member>
         <member name="M:EduCon.Api.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
             <summary>
-            Web API configuration and services
+            Configuração dos serviços da Web API.
             </summary>
             <param name="config"></param>
+        </member>
+        <member name="M:EduCon.Api.WebApiApplication.Application_Start">
+            <summary>
+            Método análago de inicialização da aplicação Web.
+            </summary>
+        </member>
+        <member name="T:EduCon.Api.Utilitarios.ExceptionFilter">
+            <summary>
+            Classe que determina o tratamento para exceções não tratadas.
+            </summary>
         </member>
     </members>
 </doc>
