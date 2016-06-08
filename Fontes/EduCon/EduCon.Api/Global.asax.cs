@@ -9,10 +9,13 @@ using Newtonsoft.Json.Serialization;
 
 namespace EduCon.Api
 {
+    /// <summary>
+    /// Classe responsável pela inicialização da Web API.
+    /// </summary>
     public class WebApiApplication : System.Web.HttpApplication
     {
         /// <summary>
-        /// Método análago de inicialização da aplicação Web.
+        /// Método análogo de inicialização da aplicação Web.
         /// </summary>
         protected void Application_Start()
         {
@@ -21,7 +24,7 @@ namespace EduCon.Api
             Application_StartConfig();
         }
 
-        protected void Application_StartConfig()
+        private void Application_StartConfig()
         {
             // Remove os formatadores e inclui apenas o de JSON.
             GlobalConfiguration.Configuration.Formatters.Clear();

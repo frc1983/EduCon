@@ -31,9 +31,14 @@
             </summary>
             <param name="config"></param>
         </member>
+        <member name="T:EduCon.Api.WebApiApplication">
+            <summary>
+            Classe responsável pela inicialização da Web API.
+            </summary>
+        </member>
         <member name="M:EduCon.Api.WebApiApplication.Application_Start">
             <summary>
-            Método análago de inicialização da aplicação Web.
+            Método análogo de inicialização da aplicação Web.
             </summary>
         </member>
         <member name="T:EduCon.Api.Utilitarios.ExceptionFilter">

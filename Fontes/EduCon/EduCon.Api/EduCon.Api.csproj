@@ -157,6 +157,7 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="XmlComments.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\SimpleInjector.cs" />
