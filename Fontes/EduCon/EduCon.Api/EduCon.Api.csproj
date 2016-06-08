@@ -168,7 +168,6 @@
     <Compile Include="Controllers\TipoEnsinoController.cs" />
     <Compile Include="Controllers\DataController.cs" />
     <Compile Include="Controllers\MunicipioController.cs" />
-    <Compile Include="Controllers\StubController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
