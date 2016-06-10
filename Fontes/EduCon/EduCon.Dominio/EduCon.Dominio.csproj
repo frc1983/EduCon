@@ -56,11 +56,10 @@
     <Compile Include="Servicos\DadoServico.cs" />
     <Compile Include="Servicos\DataServico.cs" />
     <Compile Include="Servicos\MunicipioServico.cs" />
-    <Compile Include="Validacoes\Base\IRegraValidacao.cs" />
-    <Compile Include="Validacoes\Base\IValidaAltera.cs" />
-    <Compile Include="Validacoes\Base\IValidaInclui.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Validacoes\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EduCon.Base\EduCon.Base.csproj">
       <Project>{7AA3F1E7-8F4F-4C91-8C00-31240F7B62EF}</Project>
