@@ -7,7 +7,7 @@ namespace EduCon.Aplicacao.Servicos.Base
 {
     public class AplServico
     {
-        protected IMapper Mapper { get { return Mapeadores.Mapper; } }
+        protected IMapper Mapeador { get { return Mapeadores.Mapper; } }
 
         protected ITransacao Transacao { get; private set; }
 

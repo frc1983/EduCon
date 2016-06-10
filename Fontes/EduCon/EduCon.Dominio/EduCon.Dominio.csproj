@@ -56,6 +56,9 @@
     <Compile Include="Servicos\DadoServico.cs" />
     <Compile Include="Servicos\DataServico.cs" />
     <Compile Include="Servicos\MunicipioServico.cs" />
+    <Compile Include="Validacoes\Base\IRegraValidacao.cs" />
+    <Compile Include="Validacoes\Base\IValidaAltera.cs" />
+    <Compile Include="Validacoes\Base\IValidaInclui.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

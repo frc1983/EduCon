@@ -27,7 +27,7 @@ namespace EduCon.Aplicacao.Servicos
         {
             Transacao.Begin();
 
-            var ent = Mapper.Map<Municipio>(dto);
+            var ent = Mapeador.Map<Municipio>(dto);
             _servico.Inclui(ent);
 
             Transacao.Commit();
@@ -41,7 +41,7 @@ namespace EduCon.Aplicacao.Servicos
             var entidades = new List<Municipio>();
             foreach (var dto in dtos)
             {
-                entidades.Add(Mapper.Map<Municipio>(dto));
+                entidades.Add(Mapeador.Map<Municipio>(dto));
             }
 
             _servico.Inclui(entidades);
@@ -54,7 +54,7 @@ namespace EduCon.Aplicacao.Servicos
             Transacao.Begin();
 
             var ent = _servico.Consulta(dto.Id);
-            _servico.Altera(Mapper.Map(dto, ent));
+            _servico.Altera(Mapeador.Map(dto, ent));
 
             Transacao.Commit();
         }
@@ -66,23 +66,23 @@ namespace EduCon.Aplicacao.Servicos
 
         public MunicipioDTO Consulta(int id)
         {
-            return Mapper.Map<MunicipioDTO>(_servico.Consulta(id));
+            return Mapeador.Map<MunicipioDTO>(_servico.Consulta(id));
         }
 
         public IEnumerable<MunicipioDTO> ListaTodos()
         {
-            return Mapper.Map<IEnumerable<MunicipioDTO>>(_servico.ListaTodos());
+            return Mapeador.Map<IEnumerable<MunicipioDTO>>(_servico.ListaTodos());
         }
 
         public IEnumerable<MunicipioDTO> Lista(MunicipioDTO filtro)
         {
-            var lista = _servico.Lista(Expressao.CriaExpressao<Municipio>(Filtro.Filtros(Mapper.Map<Municipio>(filtro))));
-            return Mapper.Map<IEnumerable<MunicipioDTO>>(lista);
+            var lista = _servico.Lista(Expressao.CriaExpressao<Municipio>(Filtro.Filtros(Mapeador.Map<Municipio>(filtro))));
+            return Mapeador.Map<IEnumerable<MunicipioDTO>>(lista);
         }
 
         public MunicipioDTO ConsultaPorNome(string municipio)
         {
-            return Mapper.Map<MunicipioDTO>(_servico.ConsultaPorNome(municipio));
+            return Mapeador.Map<MunicipioDTO>(_servico.ConsultaPorNome(municipio));
         }
     }
 }

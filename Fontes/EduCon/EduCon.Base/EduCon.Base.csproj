@@ -57,17 +57,26 @@
     <Compile Include="Contexto\ContextoBase.cs" />
     <Compile Include="Contexto\Interfaces\IContexto.cs" />
     <Compile Include="Contexto\RepositorioBase.cs" />
+    <Compile Include="Dominio\TipoOperacao.cs" />
     <Compile Include="Dominio\Interfaces\IRepositorio.cs" />
     <Compile Include="Dominio\Interfaces\IServico.cs" />
     <Compile Include="Dominio\Interfaces\ITransacao.cs" />
+    <Compile Include="Dominio\Interfaces\Validacoes\IValida.cs" />
+    <Compile Include="Dominio\Interfaces\Validacoes\IValidaExclui.cs" />
     <Compile Include="Dominio\Servico.cs" />
     <Compile Include="Dominio\Transacao.cs" />
+    <Compile Include="Dominio\Interfaces\Validacoes\IRegraValidacao.cs" />
+    <Compile Include="Dominio\Interfaces\Validacoes\IValidaAltera.cs" />
+    <Compile Include="Dominio\Interfaces\Validacoes\IValidaInclui.cs" />
+    <Compile Include="Dominio\Validadores\EntidadeNula.cs" />
+    <Compile Include="Dominio\Validadores\Validador.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

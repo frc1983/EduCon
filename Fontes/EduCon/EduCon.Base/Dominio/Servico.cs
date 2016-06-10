@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using EduCon.Base.Dominio.Interfaces;
+using EduCon.Base.Dominio.Interfaces.Validacoes;
+using EduCon.Base.Dominio.Validadores;
 
 namespace EduCon.Base.Dominio
 {
@@ -10,6 +11,8 @@ namespace EduCon.Base.Dominio
         where T : class
     {
         private readonly IRepositorio<T> _repositorio;
+
+        private readonly IList<IRegraValidacao<T>> _regras;
 
         protected IRepositorio<T> Repositorio
         {
@@ -19,46 +22,41 @@ namespace EduCon.Base.Dominio
         public Servico(IRepositorio<T> repositorio)
         {
             _repositorio = repositorio;
+            _regras = new List<IRegraValidacao<T>>();
         }
 
         #region Inclusão, alteração e exclusão
 
         public virtual void Inclui(T entidade)
         {
-            if (entidade == null)
-            {
-                throw new ArgumentException("Não é possível incluir uma entidade vazia", "entidade");
-            }
+            _regras.Add(new EntidadeNula<T>());
+
+            ExecutaValidacoes(entidade, TipoOperacao.Inclusao);
 
             _repositorio.Inclui(entidade);
         }
 
         public virtual void Inclui(IEnumerable<T> entidades)
         {
-            if (entidades == null || entidades.Count() == 0)
-            {
-                throw new ArgumentException("Não é possível incluir uma lista de entidades vazia", "entidade");
-            }
+            _regras.Add(new EntidadeNula<T>());
 
             _repositorio.Inclui(entidades);
         }
 
         public virtual void Altera(T entidade)
         {
-            if (entidade == null)
-            {
-                throw new ArgumentException("Não é possível alterar uma entidade vazia", "entidade");
-            }
+            _regras.Add(new EntidadeNula<T>());
+
+            ExecutaValidacoes(entidade, TipoOperacao.Alteracao);
 
             _repositorio.Altera(entidade);
         }
 
         public virtual void Exclui(T entidade)
         {
-            if (entidade == null)
-            {
-                throw new ArgumentException("Não é possível excluir uma entidade vazia", "entidade");
-            }
+            _regras.Add(new EntidadeNula<T>());
+
+            ExecutaValidacoes(entidade, TipoOperacao.Exclusao);
 
             _repositorio.Exclui(entidade);
         }
@@ -89,6 +87,17 @@ namespace EduCon.Base.Dominio
         public virtual IEnumerable<T> Lista(Expression<Func<T, bool>> expressao)
         {
             return _repositorio.Lista(expressao);
+        }
+
+        #endregion
+
+        #region Métodos Privados
+
+        private void ExecutaValidacoes(T entidade, TipoOperacao operacao)
+        {
+            var validador = new Validador<T>(entidade);
+            validador.Adiciona(_regras);
+            validador.Executa(operacao);
         }
 
         #endregion

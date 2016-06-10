@@ -27,7 +27,7 @@ namespace EduCon.Aplicacao.Servicos
         {
             Transacao.Begin();
 
-            var ent = Mapper.Map<TipoEnsino>(dto);
+            var ent = Mapeador.Map<TipoEnsino>(dto);
             _servico.Inclui(ent);
 
             Transacao.Commit();
@@ -41,7 +41,7 @@ namespace EduCon.Aplicacao.Servicos
             var entidades = new List<TipoEnsino>();
             foreach (var dto in dtos)
             {
-                entidades.Add(Mapper.Map<TipoEnsino>(dto));
+                entidades.Add(Mapeador.Map<TipoEnsino>(dto));
             }
 
             _servico.Inclui(entidades);
@@ -54,7 +54,7 @@ namespace EduCon.Aplicacao.Servicos
             Transacao.Begin();
 
             var ent = _servico.Consulta(dto.Id);
-            _servico.Altera(Mapper.Map(dto, ent));
+            _servico.Altera(Mapeador.Map(dto, ent));
 
             Transacao.Commit();
         }
@@ -66,18 +66,18 @@ namespace EduCon.Aplicacao.Servicos
 
         public TipoEnsinoDTO Consulta(int id)
         {
-            return Mapper.Map<TipoEnsinoDTO>(_servico.Consulta(id));
+            return Mapeador.Map<TipoEnsinoDTO>(_servico.Consulta(id));
         }
 
         public IEnumerable<TipoEnsinoDTO> ListaTodos()
         {
-            return Mapper.Map<IEnumerable<TipoEnsinoDTO>>(_servico.ListaTodos());
+            return Mapeador.Map<IEnumerable<TipoEnsinoDTO>>(_servico.ListaTodos());
         }
 
         public IEnumerable<TipoEnsinoDTO> Lista(TipoEnsinoDTO filtro)
         {
-            var lista = _servico.Lista(Expressao.CriaExpressao<TipoEnsino>(Filtro.Filtros(Mapper.Map<TipoEnsino>(filtro))));
-            return Mapper.Map<IEnumerable<TipoEnsinoDTO>>(lista);
+            var lista = _servico.Lista(Expressao.CriaExpressao<TipoEnsino>(Filtro.Filtros(Mapeador.Map<TipoEnsino>(filtro))));
+            return Mapeador.Map<IEnumerable<TipoEnsinoDTO>>(lista);
         }
     }
 }
