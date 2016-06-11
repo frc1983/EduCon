@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EduCon.Dominio</RootNamespace>
     <AssemblyName>EduCon.Dominio</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entidades\Categoria.cs" />
+    <Compile Include="Entidades\Dado.cs" />
+    <Compile Include="Entidades\Data.cs" />
+    <Compile Include="Entidades\Municipio.cs" />
+    <Compile Include="Entidades\TipoEnsino.cs" />
     <Compile Include="Interfaces\Repositorio\IDataRepositorio.cs" />
     <Compile Include="Interfaces\Repositorio\ITipoEnsinoRepositorio.cs" />
     <Compile Include="Interfaces\Repositorio\ICategoriaRepositorio.cs" />

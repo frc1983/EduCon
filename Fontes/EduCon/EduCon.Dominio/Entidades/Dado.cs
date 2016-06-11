@@ -1,4 +1,4 @@
-﻿namespace EduCon.Objetos.Entidades
+﻿namespace EduCon.Dominio.Entidades
 {
     public class Dado
     {

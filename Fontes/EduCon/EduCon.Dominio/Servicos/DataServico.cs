@@ -1,7 +1,7 @@
 ﻿using EduCon.Base.Dominio;
 using EduCon.Base.Dominio.Interfaces;
+using EduCon.Dominio.Entidades;
 using EduCon.Dominio.Interfaces.Servico;
-using EduCon.Objetos.Entidades;
 
 namespace EduCon.Dominio.Servicos
 {

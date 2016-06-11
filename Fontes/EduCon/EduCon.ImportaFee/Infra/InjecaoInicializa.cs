@@ -18,7 +18,7 @@ namespace EduCon.ImportaFee.Infra
             {
                 InicializaAplicacao.Inicia();
                 container.Options.DefaultScopedLifestyle = new ExecutionContextScopeLifestyle();
-                Injeta.GetSimpleInjectorModules(container);
+                Injeta.RegistraModulos(container);
                 ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocatorAdapter(container));
                 container.Verify();
             }

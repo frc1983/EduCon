@@ -41,7 +41,7 @@ namespace EduCon.Api.App_Start
         /// <param name="container"></param>
         private static void InicializaContainer(Container container)
         {
-            Injeta.GetSimpleInjectorModules(container);
+            Injeta.RegistraModulos(container);
         }
     }
 }

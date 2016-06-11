@@ -3,18 +3,13 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
 using EduCon.Base.Contexto;
 using EduCon.Contexto.Mapeadores;
-using EduCon.Objetos.Entidades;
+using EduCon.Dominio.Entidades;
 
 namespace EduCon.Contexto
 {
     public class ContextoEF
         : ContextoBase
     {
-        static ContextoEF()
-        {
-            Database.SetInitializer<ContextoEF>(null);
-        }
-
         public ContextoEF()
             : base("Name=EduConBD")
         {
@@ -35,7 +30,7 @@ namespace EduCon.Contexto
         }
 
         /// <summary>
-        /// Loga as queries do Entity
+        /// Método que intercepta as queries executadas pelo EF e as imprime no console de debug.
         /// </summary>
         /// <param name="query"></param>
         protected void GravaLog(string query)

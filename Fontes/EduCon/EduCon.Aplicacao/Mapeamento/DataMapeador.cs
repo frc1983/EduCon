@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using EduCon.Dominio.Entidades;
 using EduCon.Objetos.DTOs;
-using EduCon.Objetos.Entidades;
 
 namespace EduCon.Aplicacao.Mapeamento
 {

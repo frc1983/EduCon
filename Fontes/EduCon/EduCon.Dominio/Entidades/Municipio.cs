@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EduCon.Objetos.Entidades
+namespace EduCon.Dominio.Entidades
 {
     public class Municipio
     {

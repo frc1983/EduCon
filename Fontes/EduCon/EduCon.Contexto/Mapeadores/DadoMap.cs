@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity.ModelConfiguration;
-using EduCon.Objetos.Entidades;
+using EduCon.Dominio.Entidades;
 
 namespace EduCon.Contexto.Mapeadores
 {

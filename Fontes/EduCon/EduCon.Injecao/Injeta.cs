@@ -6,7 +6,7 @@ namespace EduCon.Injecao
 {
     public class Injeta
     {
-        public static void GetSimpleInjectorModules(Container container)
+        public static void RegistraModulos(Container container)
         {
             (new Modulos.Contexto()).RegisterServices(container);
             (new Modulos.Repositorio()).RegisterServices(container);

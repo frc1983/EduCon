@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EduCon.Contexto</RootNamespace>
     <AssemblyName>EduCon.Contexto</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,6 +67,10 @@
     <ProjectReference Include="..\EduCon.Base\EduCon.Base.csproj">
       <Project>{7AA3F1E7-8F4F-4C91-8C00-31240F7B62EF}</Project>
       <Name>EduCon.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EduCon.Dominio\EduCon.Dominio.csproj">
+      <Project>{a7f7fca5-810c-4bd3-97cd-716b08adbc79}</Project>
+      <Name>EduCon.Dominio</Name>
     </ProjectReference>
     <ProjectReference Include="..\EduCon.Objetos\EduCon.Objetos.csproj">
       <Project>{d8b7c32c-6a3f-4af1-b0cf-df34f74f2806}</Project>

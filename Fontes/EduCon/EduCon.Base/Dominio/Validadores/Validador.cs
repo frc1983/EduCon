@@ -8,17 +8,17 @@ namespace EduCon.Base.Dominio.Validadores
     {
         private T _entidade;
 
-        private IList<IRegraValidacao<T>> _validacoes;
+        private IList<IRegraValidacao<T>> _regras;
 
         public Validador(T entidade)
         {
             _entidade = entidade;
-            _validacoes = new List<IRegraValidacao<T>>();
+            _regras = new List<IRegraValidacao<T>>();
         }
 
         public void Adiciona(IRegraValidacao<T> regra)
         {
-            _validacoes.Add(regra);
+            _regras.Add(regra);
         }
 
         public void Adiciona(IList<IRegraValidacao<T>> regras)
@@ -47,43 +47,43 @@ namespace EduCon.Base.Dominio.Validadores
             }
         }
 
-        private void ExecutarValidacoes(Action<object> executor)
+        private void ExecutarValidacoes(Action<object> metodo)
         {
-            foreach (var validator in _validacoes)
+            foreach (var regra in _regras)
             {
-                executor(validator);
+                metodo(regra);
             }
         }
 
-        private void ExecutaValidacaoGenerica(object validador)
+        private void ExecutaValidacaoGenerica(object regra)
         {
-            if (validador is IValida<T>)
+            if (regra is IValida<T>)
             {
-                ((IValida<T>)validador).Valida(_entidade);
+                ((IValida<T>)regra).Valida(_entidade);
             }
         }
 
-        private void ExecutaValidacaoInclui(object validador)
+        private void ExecutaValidacaoInclui(object regra)
         {
-            if (validador is IValidaInclui<T>)
+            if (regra is IValidaInclui<T>)
             {
-                ((IValidaInclui<T>)validador).ValidaInclui(_entidade);
+                ((IValidaInclui<T>)regra).ValidaInclui(_entidade);
             }
         }
 
-        private void ExecutaValidacaoAltera(object validador)
+        private void ExecutaValidacaoAltera(object regra)
         {
-            if (validador is IValidaAltera<T>)
+            if (regra is IValidaAltera<T>)
             {
-                ((IValidaAltera<T>)validador).ValidaAltera(_entidade);
+                ((IValidaAltera<T>)regra).ValidaAltera(_entidade);
             }
         }
 
-        private void ExecutaValidacaoExclui(object validador)
+        private void ExecutaValidacaoExclui(object regra)
         {
-            if (validador is IValidaExclui<T>)
+            if (regra is IValidaExclui<T>)
             {
-                ((IValidaExclui<T>)validador).ValidaExclui(_entidade);
+                ((IValidaExclui<T>)regra).ValidaExclui(_entidade);
             }
         }
     }

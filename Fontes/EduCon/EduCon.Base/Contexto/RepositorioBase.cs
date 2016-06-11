@@ -75,7 +75,6 @@ namespace EduCon.Base.Contexto
 
         public T Consulta(Expression<Func<T, bool>> expressao)
         {
-            var query = DbSet.Where(expressao);
             return DbSet.Where(expressao).SingleOrDefault();
         }
 
