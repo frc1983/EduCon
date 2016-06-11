@@ -27,8 +27,8 @@ namespace EduCon.Utilitarios.Api
 
             if (token.Type == JTokenType.String)
             {
-                // convertido para formato pt-BR
-                return Decimal.Parse(token.ToString(), CultureInfo.GetCultureInfo("pt-BR"));
+                // Convertido para formato pt-BR
+                return decimal.Parse(token.ToString(), CultureInfo.GetCultureInfo("pt-BR"));
             }
 
             throw new JsonSerializationException("Tipo inesperado: " + token.Type.ToString());
