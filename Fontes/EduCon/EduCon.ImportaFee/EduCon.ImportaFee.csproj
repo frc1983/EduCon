@@ -77,7 +77,6 @@
     <Compile Include="Infra\ConfigManager.cs" />
     <Compile Include="Infra\Executor.cs" />
     <Compile Include="Infra\InjecaoInicializa.cs" />
-    <Compile Include="Infra\Log.cs" />
     <Compile Include="Objetos\AnoValor.cs" />
     <Compile Include="Objetos\Arquivo.cs" />
     <Compile Include="Objetos\Dado.cs" />

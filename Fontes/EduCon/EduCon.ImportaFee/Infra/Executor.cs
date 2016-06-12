@@ -7,6 +7,7 @@ using EduCon.ImportaFee.Objetos;
 using EduCon.Objetos.DTOs;
 using EduCon.Utilitarios.Conversores;
 using Microsoft.Practices.ServiceLocation;
+using Newtonsoft.Json;
 
 namespace EduCon.ImportaFee.Infra
 {
@@ -39,22 +40,22 @@ namespace EduCon.ImportaFee.Infra
             {
                 ValidaDiretorio();
 
-                var diretorioEntrada = new DirectoryInfo(AppContext.BaseDirectory + @"entrada\");
-                if (!diretorioEntrada.Exists)
+                var diretorioProcessamento = new DirectoryInfo(AppContext.BaseDirectory + @"processamento\");
+                if (!diretorioProcessamento.Exists)
                 {
-                    diretorioEntrada.Create();
+                    diretorioProcessamento.Create();
                 }
 
                 if (copia)
                 {
-                    CopiaArquivosEntrada(diretorioEntrada);
+                    CopiaArquivosProcessamento(diretorioProcessamento);
                 }
 
                 var atualArquivo = 1;
-                var totalArquivos = diretorioEntrada.GetFiles().Count();
+                var totalArquivos = diretorioProcessamento.GetFiles().Count();
 
                 Console.WriteLine(DateTime.Now.ToString() + " - Arquivos encontrados: " + totalArquivos);
-                foreach (var arquivo in diretorioEntrada.GetFiles())
+                foreach (var arquivo in diretorioProcessamento.GetFiles())
                 {
                     Console.WriteLine(DateTime.Now.ToString() + " - Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
 
@@ -68,7 +69,7 @@ namespace EduCon.ImportaFee.Infra
 
                     IncluiDados();
 
-                    MoverArquivo(arquivo);
+                    ExcluirArquivo(arquivo);
 
                     atualArquivo++;
                 }
@@ -79,12 +80,19 @@ namespace EduCon.ImportaFee.Infra
             }
         }
 
-        private void CopiaArquivosEntrada(DirectoryInfo diretorioEntrada)
+        private void CopiaArquivosProcessamento(DirectoryInfo diretorioProcessamento)
         {
             var diretorioFonte = new DirectoryInfo(ConfigManager.DiretorioArquivos);
             foreach (var arquivo in diretorioFonte.GetFiles())
             {
-                arquivo.CopyTo(Path.Combine(diretorioEntrada.FullName, arquivo.Name), false);
+                try
+                {
+                    arquivo.CopyTo(Path.Combine(diretorioProcessamento.FullName, arquivo.Name), false);
+                }
+                catch (IOException ioEx)
+                {
+                    Console.WriteLine(DateTime.Now.ToString() + " - Arquivo {0} já existente na pasta", arquivo.Name);
+                }
             }
         }
 
@@ -105,7 +113,7 @@ namespace EduCon.ImportaFee.Infra
         private void CarregaDados(FileInfo arquivo)
         {
             var stream = UTF8.Converte(arquivo.FullName);
-            var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Objetos.Arquivo>(stream);
+            var obj = JsonConvert.DeserializeObject<Arquivo>(stream);
 
             var variavel = obj.Variavel.First();
 
@@ -449,15 +457,9 @@ namespace EduCon.ImportaFee.Infra
             Console.Write(quantidade);
         }
 
-        private void MoverArquivo(FileInfo arquivo)
+        private void ExcluirArquivo(FileInfo arquivo)
         {
-            var diretorioSaida = new DirectoryInfo(AppContext.BaseDirectory + @"saida\");
-            if (!diretorioSaida.Exists)
-            {
-                diretorioSaida.Create();
-            }
-
-            File.Move(arquivo.FullName, diretorioSaida.FullName + "/" + arquivo.Name);
+            arquivo.Delete();
         }
     }
 }
