@@ -4,6 +4,14 @@ go
 use educon_bd;
 go
 
+/*
+drop table EDC_DADO;
+drop table EDC_MUNICIPIO;
+drop table EDC_TIPO_ENSINO;
+drop table EDC_CATEGORIA;
+drop table EDC_DATA;
+*/
+
 create table EDC_MUNICIPIO (
     ID int primary key identity,
     COD_IBGE int,

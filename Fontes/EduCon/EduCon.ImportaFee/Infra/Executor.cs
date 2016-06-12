@@ -125,148 +125,148 @@ namespace EduCon.ImportaFee.Infra
                 CategoriaDTO Subcategoria = null;
                 DataDTO Data = null;
 
-                foreach (var valor in unidadeGeografica.Valores)
-                {
-                    #region Município
+                #region Município
 
-                    if (Municipio == null || Municipio.CodIBGE != int.Parse(unidadeGeografica.Ibge))
+                if (Municipio == null || Municipio.CodIBGE != int.Parse(unidadeGeografica.Ibge))
+                {
+                    Municipio = new MunicipioDTO();
+                    var munic = municipios.Where(o => o.CodIBGE == int.Parse(unidadeGeografica.Ibge)).FirstOrDefault();
+                    if (munic == null)
                     {
-                        Municipio = new MunicipioDTO();
-                        var munic = municipios.Where(o => o.CodIBGE == int.Parse(unidadeGeografica.Ibge)).FirstOrDefault();
-                        if (munic == null)
+                        munic = _municipioServico.Lista(new MunicipioDTO() { CodIBGE = int.Parse(unidadeGeografica.Ibge) }).FirstOrDefault();
+                    }
+
+                    if (munic == null)
+                    {
+                        var municipio = new MunicipioDTO()
                         {
-                            munic = _municipioServico.Lista(new MunicipioDTO() { CodIBGE = int.Parse(unidadeGeografica.Ibge) }).FirstOrDefault();
+                            CodIBGE = int.Parse(unidadeGeografica.Ibge),
+                            Nome = unidadeGeografica.Nome.Trim(),
+                            Latitude = decimal.Parse(unidadeGeografica.Latitude),
+                            Longitude = decimal.Parse(unidadeGeografica.Longitude)
+                        };
+
+                        municipios.Add(municipio);
+                        Municipio = municipio;
+                    }
+                    else
+                    {
+                        Municipio = munic;
+                    }
+                }
+
+                #endregion
+
+                var caminho = variavel.Caminho.Split('/');
+
+                #region Tipo de Ensino
+
+                var tipoEnsinoDescr = (caminho.Length > 3 ? caminho[2] : string.Empty).Trim();
+
+                if (TipoEnsino == null || !TipoEnsino.Nome.Equals(tipoEnsinoDescr))
+                {
+                    TipoEnsino = new TipoEnsinoDTO();
+                    if (!string.IsNullOrEmpty(tipoEnsinoDescr))
+                    {
+                        var tipoEns = tiposEnsino.Where(o => o.Nome.Equals(tipoEnsinoDescr)).FirstOrDefault();
+                        if (tipoEns == null)
+                        {
+                            tipoEns = _tipoEnsinoServico.Lista(new TipoEnsinoDTO() { Nome = tipoEnsinoDescr }).FirstOrDefault();
                         }
 
-                        if (munic == null)
+                        if (tipoEns == null)
                         {
-                            var municipio = new MunicipioDTO()
+                            var tipoEnsino = new TipoEnsinoDTO()
                             {
-                                CodIBGE = int.Parse(unidadeGeografica.Ibge),
-                                Nome = unidadeGeografica.Nome.Trim(),
-                                Latitude = decimal.Parse(unidadeGeografica.Latitude),
-                                Longitude = decimal.Parse(unidadeGeografica.Longitude)
+                                Nome = tipoEnsinoDescr
                             };
 
-                            municipios.Add(municipio);
-                            Municipio = municipio;
+                            tiposEnsino.Add(tipoEnsino);
+                            TipoEnsino = tipoEnsino;
                         }
                         else
                         {
-                            Municipio = munic;
+                            TipoEnsino = tipoEns;
                         }
                     }
+                }
 
-                    #endregion
+                #endregion
 
-                    var caminho = variavel.Caminho.Split('/');
+                #region Categoria
 
-                    #region Tipo de Ensino
+                var categoriaDescr = (caminho.Length > 4 ? caminho[3] : string.Empty).Trim();
 
-                    var tipoEnsinoDescr = (caminho.Length > 3 ? caminho[2] : string.Empty).Trim();
-
-                    if (TipoEnsino == null || !TipoEnsino.Nome.Equals(tipoEnsinoDescr))
+                if (Categoria == null || !Categoria.Nome.Equals(categoriaDescr))
+                {
+                    Categoria = new CategoriaDTO();
+                    if (!string.IsNullOrEmpty(categoriaDescr))
                     {
-                        TipoEnsino = new TipoEnsinoDTO();
-                        if (!string.IsNullOrEmpty(tipoEnsinoDescr))
+                        var categ = categorias.Where(o => o.Nome.Equals(categoriaDescr)).FirstOrDefault();
+                        if (categ == null)
                         {
-                            var tipoEns = tiposEnsino.Where(o => o.Nome.Equals(tipoEnsinoDescr)).FirstOrDefault();
-                            if (tipoEns == null)
-                            {
-                                tipoEns = _tipoEnsinoServico.Lista(new TipoEnsinoDTO() { Nome = tipoEnsinoDescr }).FirstOrDefault();
-                            }
-
-                            if (tipoEns == null)
-                            {
-                                var tipoEnsino = new TipoEnsinoDTO()
-                                {
-                                    Nome = tipoEnsinoDescr
-                                };
-
-                                tiposEnsino.Add(tipoEnsino);
-                                TipoEnsino = tipoEnsino;
-                            }
-                            else
-                            {
-                                TipoEnsino = tipoEns;
-                            }
+                            categ = _categoriaServico.Lista(new CategoriaDTO() { Nome = categoriaDescr }).FirstOrDefault();
                         }
-                    }
 
-                    #endregion
-
-                    #region Categoria
-
-                    var categoriaDescr = (caminho.Length > 4 ? caminho[3] : string.Empty).Trim();
-
-                    if (Categoria == null || !Categoria.Nome.Equals(categoriaDescr))
-                    {
-                        Categoria = new CategoriaDTO();
-                        if (!string.IsNullOrEmpty(categoriaDescr))
+                        if (categ == null)
                         {
-                            var categ = categorias.Where(o => o.Nome.Equals(categoriaDescr)).FirstOrDefault();
-                            if (categ == null)
+                            var categoria = new CategoriaDTO()
                             {
-                                categ = _categoriaServico.Lista(new CategoriaDTO() { Nome = categoriaDescr }).FirstOrDefault();
-                            }
+                                Nome = categoriaDescr
+                            };
 
-                            if (categ == null)
-                            {
-                                var categoria = new CategoriaDTO()
-                                {
-                                    Nome = categoriaDescr
-                                };
-
-                                categorias.Add(categoria);
-                                Categoria = categoria;
-                            }
-                            else
-                            {
-                                Categoria = categ;
-                            }
+                            categorias.Add(categoria);
+                            Categoria = categoria;
                         }
-                    }
-
-                    var subcategoriaDescr = string.Empty;
-                    if (caminho.Length == 5)
-                    {
-                        subcategoriaDescr = caminho[4].Trim();
-                    }
-                    else if (caminho.Length > 5)
-                    {
-                        subcategoriaDescr = caminho[4].Trim() + ' ' + caminho[5].Trim();
-                    }
-
-                    if (Subcategoria == null || !Subcategoria.Nome.Equals(subcategoriaDescr))
-                    {
-                        Subcategoria = new CategoriaDTO();
-                        if (!string.IsNullOrEmpty(subcategoriaDescr))
+                        else
                         {
-                            var subcateg = categorias.Where(o => o.Nome.Equals(subcategoriaDescr)).FirstOrDefault();
-                            if (subcateg == null)
-                            {
-                                subcateg = _categoriaServico.Lista(new CategoriaDTO() { Nome = subcategoriaDescr }).FirstOrDefault();
-                            }
-
-                            if (subcateg == null)
-                            {
-                                var subcategoria = new CategoriaDTO()
-                                {
-                                    Nome = subcategoriaDescr
-                                };
-
-                                categorias.Add(subcategoria);
-                                Subcategoria = subcategoria;
-                            }
-                            else
-                            {
-                                Subcategoria = subcateg;
-                            }
+                            Categoria = categ;
                         }
                     }
+                }
 
-                    #endregion
+                var subcategoriaDescr = string.Empty;
+                if (caminho.Length == 5)
+                {
+                    subcategoriaDescr = caminho[4].Trim();
+                }
+                else if (caminho.Length > 5)
+                {
+                    subcategoriaDescr = caminho[4].Trim() + ' ' + caminho[5].Trim();
+                }
 
+                if (Subcategoria == null || !Subcategoria.Nome.Equals(subcategoriaDescr))
+                {
+                    Subcategoria = new CategoriaDTO();
+                    if (!string.IsNullOrEmpty(subcategoriaDescr))
+                    {
+                        var subcateg = categorias.Where(o => o.Nome.Equals(subcategoriaDescr)).FirstOrDefault();
+                        if (subcateg == null)
+                        {
+                            subcateg = _categoriaServico.Lista(new CategoriaDTO() { Nome = subcategoriaDescr }).FirstOrDefault();
+                        }
+
+                        if (subcateg == null)
+                        {
+                            var subcategoria = new CategoriaDTO()
+                            {
+                                Nome = subcategoriaDescr
+                            };
+
+                            categorias.Add(subcategoria);
+                            Subcategoria = subcategoria;
+                        }
+                        else
+                        {
+                            Subcategoria = subcateg;
+                        }
+                    }
+                }
+
+                #endregion
+
+                foreach (var valor in unidadeGeografica.Valores)
+                {
                     #region Ano
 
                     if (Data == null || Data.Ano != int.Parse(valor.Ano))

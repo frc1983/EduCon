@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="EduCon.Dominio.Entidades.Categoria">
+    <Position X="2.75" Y="3.25" Width="3.5" />
+    <AssociationLine Name="DadosCategoria" Type="EduCon.Dominio.Entidades.Dado" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.375" Y="4.546" />
+        <Point X="3.375" Y="4.688" />
+        <Point X="7.25" Y="4.688" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.464" Y="-0.221" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="DadosSubcategoria" Type="EduCon.Dominio.Entidades.Dado" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.062" Y="4.546" />
+        <Point X="3.062" Y="4.938" />
+        <Point X="7.25" Y="4.938" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.547" Y="-0.222" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAMAAAA=</HashCode>
+      <FileName>Entidades\Categoria.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="DadosCategoria" />
+      <Property Name="DadosSubcategoria" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="EduCon.Dominio.Entidades.Dado">
+    <Position X="7.25" Y="2.75" Width="2.75" />
+    <AssociationLine Name="Categoria" Type="EduCon.Dominio.Entidades.Categoria" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="3.062" />
+        <Point X="5.125" Y="3.062" />
+        <Point X="5.125" Y="3.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-2.044" Y="-0.088" Height="0.182" Width="0.92" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Subcategoria" Type="EduCon.Dominio.Entidades.Categoria" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="2.875" />
+        <Point X="4.562" Y="2.875" />
+        <Point X="4.562" Y="3.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.076" Y="0.454" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ACACAAAACAAAAAAgCQQAAAAEAAAAABAABABAAAAAAEA=</HashCode>
+      <FileName>Entidades\Dado.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Municipio" />
+      <Property Name="TipoEnsino" />
+      <Property Name="Categoria" />
+      <Property Name="Subcategoria" />
+      <Property Name="Data" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EduCon.Dominio.Entidades.Data">
+    <Position X="7.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Entidades\Data.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Dados" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="EduCon.Dominio.Entidades.Municipio">
+    <Position X="7.25" Y="6" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAEAAAAAAAAAIAEAAAAAAAAAAAAAAgAEABAA=</HashCode>
+      <FileName>Entidades\Municipio.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Dados" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="EduCon.Dominio.Entidades.TipoEnsino">
+    <Position X="12" Y="3.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAEAAAA=</HashCode>
+      <FileName>Entidades\TipoEnsino.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Dados" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

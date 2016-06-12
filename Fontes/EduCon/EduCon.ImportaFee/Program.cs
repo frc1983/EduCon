@@ -13,7 +13,7 @@ namespace EduCon.ImportaFee
 
             try
             {
-                var container = InjecaoInicializa.Initialize();
+                var container = Infra.Injecao.Inicializa();
                 using (container.BeginExecutionContextScope())
                 {
                     var resposta = string.Empty;

@@ -8,9 +8,9 @@ using SimpleInjector.Extensions.ExecutionContextScoping;
 
 namespace EduCon.ImportaFee.Infra
 {
-    public static class InjecaoInicializa
+    public static class Injecao
     {
-        public static Container Initialize()
+        public static Container Inicializa()
         {
             var container = new Container();
 
@@ -22,10 +22,10 @@ namespace EduCon.ImportaFee.Infra
                 ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocatorAdapter(container));
                 container.Verify();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 container.Dispose();
-                throw ex;
+                throw;
             }
 
             return container;
