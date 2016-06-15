@@ -17,5 +17,7 @@ namespace EduCon.Base.Aplicacao.Interfaces
         // Lista
         IEnumerable<T> ListaTodos();
         IEnumerable<T> Lista(T filtro);
+
+        bool Existe(T filtro);
     }
 }

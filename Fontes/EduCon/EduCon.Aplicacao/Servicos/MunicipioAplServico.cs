@@ -80,6 +80,11 @@ namespace EduCon.Aplicacao.Servicos
             return Mapeador.Map<IEnumerable<MunicipioDTO>>(lista);
         }
 
+        public bool Existe(MunicipioDTO filtro)
+        {
+            return _servico.Existe(Expressao.CriaExpressao<Municipio>(Filtro.Filtros(Mapeador.Map<Municipio>(filtro))));
+        }
+
         public MunicipioDTO ConsultaPorNome(string municipio)
         {
             return Mapeador.Map<MunicipioDTO>(_servico.ConsultaPorNome(municipio));

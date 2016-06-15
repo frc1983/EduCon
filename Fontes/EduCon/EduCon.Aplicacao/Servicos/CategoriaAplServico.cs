@@ -79,5 +79,10 @@ namespace EduCon.Aplicacao.Servicos
             var lista = _servico.Lista(Expressao.CriaExpressao<Categoria>(Filtro.Filtros(Mapeador.Map<Categoria>(filtro))));
             return Mapeador.Map<IEnumerable<CategoriaDTO>>(lista);
         }
+
+        public bool Existe(CategoriaDTO filtro)
+        {
+            return _servico.Existe(Expressao.CriaExpressao<Categoria>(Filtro.Filtros(Mapeador.Map<Categoria>(filtro))));
+        }
     }
 }

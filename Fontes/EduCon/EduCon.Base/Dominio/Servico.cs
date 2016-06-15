@@ -91,6 +91,15 @@ namespace EduCon.Base.Dominio
 
         #endregion
 
+        #region Informações
+
+        public virtual bool Existe(Expression<Func<T, bool>> expressao)
+        {
+            return _repositorio.Existe(expressao);
+        }
+
+        #endregion
+
         #region Métodos Privados
 
         private void ExecutaValidacoes(T entidade, TipoOperacao operacao)

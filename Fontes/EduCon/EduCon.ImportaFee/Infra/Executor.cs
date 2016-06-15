@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using EduCon.Aplicacao.Interfaces;
 using EduCon.ImportaFee.Objetos;
 using EduCon.Objetos.DTOs;
@@ -46,8 +48,30 @@ namespace EduCon.ImportaFee.Infra
                     diretorioProcessamento.Create();
                 }
 
+                var qtdArquivos = diretorioProcessamento.GetFiles().Count();
+
                 if (copia)
                 {
+                    if (qtdArquivos > 0)
+                    {
+                        var resposta = string.Empty;
+                        do
+                        {
+                            Console.WriteLine(DateTime.Now.ToString() + " - Diretório de processamento já possui {0} arquivos carregados.", qtdArquivos);
+                            Console.Write(@"Deseja excluir os arquivos e realizar novo carregamento? (S/N) \> ");
+                            resposta = Console.ReadLine().ToLower();
+                        } while (!resposta.Equals("s") && !resposta.Equals("n"));
+
+                        var apaga = resposta.Equals("s");
+                        if (apaga)
+                        {
+                            foreach (var arquivo in diretorioProcessamento.GetFiles())
+                            {
+                                arquivo.Delete();
+                            }
+                        }
+                    }
+
                     CopiaArquivosProcessamento(diretorioProcessamento);
                 }
 
@@ -57,21 +81,39 @@ namespace EduCon.ImportaFee.Infra
                 Console.WriteLine(DateTime.Now.ToString() + " - Arquivos encontrados: " + totalArquivos);
                 foreach (var arquivo in diretorioProcessamento.GetFiles())
                 {
-                    Console.WriteLine(DateTime.Now.ToString() + " - Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
+                    try
+                    {
+                        ValidaArquivo(arquivo);
 
-                    dados = new List<Dado>();
-                    tiposEnsino = new List<TipoEnsinoDTO>();
-                    categorias = new List<CategoriaDTO>();
-                    municipios = new List<MunicipioDTO>();
-                    datas = new List<DataDTO>();
+                        Console.WriteLine(DateTime.Now.ToString() + " - Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
 
-                    CarregaDados(arquivo);
+                        dados = new List<Dado>();
+                        tiposEnsino = new List<TipoEnsinoDTO>();
+                        categorias = new List<CategoriaDTO>();
+                        municipios = new List<MunicipioDTO>();
+                        datas = new List<DataDTO>();
 
-                    IncluiDados();
+                        if (arquivo.Extension.Equals(".json"))
+                        {
+                            CarregaDadosJson(arquivo);
+                        }
 
-                    ExcluirArquivo(arquivo);
+                        if (arquivo.Extension.Equals(".csv"))
+                        {
+                            CarregaDadosCsv(arquivo);
+                        }
 
-                    atualArquivo++;
+                        IncluiDados();
+
+                        ExcluirArquivo(arquivo);
+
+                        atualArquivo++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(string.Format(DateTime.Now.ToString() + " - Erro ao processar arquivo {0}:", arquivo.Name));
+                        Console.WriteLine(ex.Message);
+                    }
                 }
             }
             catch (Exception ex)
@@ -110,7 +152,20 @@ namespace EduCon.ImportaFee.Infra
             }
         }
 
-        private void CarregaDados(FileInfo arquivo)
+        private void ValidaArquivo(FileInfo arquivo)
+        {
+            if (!arquivo.Extension.Equals(".json") && !arquivo.Extension.Equals(".csv"))
+            {
+                throw new Exception(string.Format("Extensão {0} não é válida para esta importação.", arquivo.Extension));
+            }
+
+            if (arquivo.Length == 0)
+            {
+                throw new Exception("O arquivo está vazio.");
+            }
+        }
+
+        private void CarregaDadosJson(FileInfo arquivo)
         {
             var stream = UTF8.Converte(arquivo.FullName);
             var obj = JsonConvert.DeserializeObject<Arquivo>(stream);
@@ -339,6 +394,296 @@ namespace EduCon.ImportaFee.Infra
                         dados.Add(dado);
                     }
                 }
+            }
+        }
+
+        private void CarregaDadosCsv(FileInfo arquivo)
+        {
+            MunicipioDTO Municipio = null;
+            TipoEnsinoDTO TipoEnsino = null;
+            CategoriaDTO Categoria = null;
+            CategoriaDTO Subcategoria = null;
+            DataDTO Data = null;
+
+            var ordemAnos = new List<DataDTO>();
+
+            using (var reader = new StreamReader(arquivo.FullName, Encoding.Default))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var linha = reader.ReadLine();
+
+                    //variavel: Estadual
+                    //caminho: / Educação / Educação Infantil / Funções Docentes / Estadual
+                    //fonte: Secretaria de Educação do Rio Grande do Sul.
+                    //agrupador: Município
+                    //descricao: 
+
+
+                    if (linha.StartsWith("variavel:")
+                        || linha.StartsWith("agrupador:")
+                        || linha.StartsWith("descricao:"))
+                    {
+                        continue;
+                    }
+
+                    if (linha.StartsWith("caminho:"))
+                    {
+                        var registro = linha.Replace("caminho:", "").Trim();
+                        var caminho = registro.Split('/');
+
+                        #region Tipo de Ensino
+
+                        var tipoEnsinoDescr = (caminho.Length > 3 ? caminho[2] : string.Empty).Trim();
+
+                        if (TipoEnsino == null || !TipoEnsino.Nome.Equals(tipoEnsinoDescr))
+                        {
+                            TipoEnsino = new TipoEnsinoDTO();
+                            if (!string.IsNullOrEmpty(tipoEnsinoDescr))
+                            {
+                                var tipoEns = tiposEnsino.Where(o => o.Nome.Equals(tipoEnsinoDescr)).FirstOrDefault();
+                                if (tipoEns == null)
+                                {
+                                    tipoEns = _tipoEnsinoServico.Lista(new TipoEnsinoDTO() { Nome = tipoEnsinoDescr }).FirstOrDefault();
+                                }
+
+                                if (tipoEns == null)
+                                {
+                                    var tipoEnsino = new TipoEnsinoDTO()
+                                    {
+                                        Nome = tipoEnsinoDescr
+                                    };
+
+                                    tiposEnsino.Add(tipoEnsino);
+                                    TipoEnsino = tipoEnsino;
+                                }
+                                else
+                                {
+                                    TipoEnsino = tipoEns;
+                                }
+                            }
+                        }
+
+                        #endregion
+
+                        #region Categoria
+
+                        var categoriaDescr = (caminho.Length > 4 ? caminho[3] : string.Empty).Trim();
+
+                        if (Categoria == null || !Categoria.Nome.Equals(categoriaDescr))
+                        {
+                            Categoria = new CategoriaDTO();
+                            if (!string.IsNullOrEmpty(categoriaDescr))
+                            {
+                                var categ = categorias.Where(o => o.Nome.Equals(categoriaDescr)).FirstOrDefault();
+                                if (categ == null)
+                                {
+                                    categ = _categoriaServico.Lista(new CategoriaDTO() { Nome = categoriaDescr }).FirstOrDefault();
+                                }
+
+                                if (categ == null)
+                                {
+                                    var categoria = new CategoriaDTO()
+                                    {
+                                        Nome = categoriaDescr
+                                    };
+
+                                    categorias.Add(categoria);
+                                    Categoria = categoria;
+                                }
+                                else
+                                {
+                                    Categoria = categ;
+                                }
+                            }
+                        }
+
+                        var subcategoriaDescr = string.Empty;
+                        if (caminho.Length == 5)
+                        {
+                            subcategoriaDescr = caminho[4].Trim();
+                        }
+                        else if (caminho.Length > 5)
+                        {
+                            subcategoriaDescr = caminho[4].Trim() + ' ' + caminho[5].Trim();
+                        }
+
+                        if (Subcategoria == null || !Subcategoria.Nome.Equals(subcategoriaDescr))
+                        {
+                            Subcategoria = new CategoriaDTO();
+                            if (!string.IsNullOrEmpty(subcategoriaDescr))
+                            {
+                                var subcateg = categorias.Where(o => o.Nome.Equals(subcategoriaDescr)).FirstOrDefault();
+                                if (subcateg == null)
+                                {
+                                    subcateg = _categoriaServico.Lista(new CategoriaDTO() { Nome = subcategoriaDescr }).FirstOrDefault();
+                                }
+
+                                if (subcateg == null)
+                                {
+                                    var subcategoria = new CategoriaDTO()
+                                    {
+                                        Nome = subcategoriaDescr
+                                    };
+
+                                    categorias.Add(subcategoria);
+                                    Subcategoria = subcategoria;
+                                }
+                                else
+                                {
+                                    Subcategoria = subcateg;
+                                }
+                            }
+                        }
+
+                        #endregion
+
+                        continue;
+                    }
+
+                    if (linha.StartsWith("fonte:"))
+                    {
+                        continue;
+                    }
+
+                    if (linha.StartsWith("Município"))
+                    {
+                        var cabecalho = linha.Split(';');
+                        for (int i = 4; i < cabecalho.Length; i++)
+                        {
+                            var valorAno = cabecalho[i].Replace("\"", "");
+
+                            var match = Regex.Match(cabecalho[i], @"[0-9]{4}");
+                            if (match.Success)
+                            {
+                                #region Ano
+
+                                var ano = match.Value;
+
+                                if (Data == null || Data.Ano != int.Parse(ano))
+                                {
+                                    Data = new DataDTO();
+
+                                    var dt = datas.Where(o => o.Ano == int.Parse(ano)).FirstOrDefault();
+                                    if (dt == null)
+                                    {
+                                        dt = _dataServico.Lista(new DataDTO() { Ano = int.Parse(ano) }).FirstOrDefault();
+                                    }
+
+                                    if (dt == null)
+                                    {
+                                        var data = new DataDTO()
+                                        {
+                                            Ano = int.Parse(ano)
+                                        };
+
+                                        datas.Add(data);
+                                        Data = data;
+                                    }
+                                    else
+                                    {
+                                        Data = dt;
+                                    }
+
+                                    ordemAnos.Add(Data);
+                                }
+
+                                #endregion
+                            }
+                        }
+
+                        continue;
+                    }
+
+                    var registroMunicipio = linha.Split(';');
+
+                    var codIbge = int.Parse(registroMunicipio[1]);
+
+                    #region Município
+
+                    if (Municipio == null || Municipio.CodIBGE != codIbge)
+                    {
+                        Municipio = new MunicipioDTO();
+                        var munic = municipios.Where(o => o.CodIBGE == int.Parse(registroMunicipio[1])).FirstOrDefault();
+                        if (munic == null)
+                        {
+                            munic = _municipioServico.Lista(new MunicipioDTO() { CodIBGE = codIbge }).FirstOrDefault();
+                        }
+
+                        if (munic == null)
+                        {
+                            var municipio = new MunicipioDTO()
+                            {
+                                CodIBGE = codIbge,
+                                Nome = registroMunicipio[0].Trim(),
+                                Latitude = decimal.Parse(registroMunicipio[2]),
+                                Longitude = decimal.Parse(registroMunicipio[3])
+                            };
+
+                            municipios.Add(municipio);
+                            Municipio = municipio;
+                        }
+                        else
+                        {
+                            Municipio = munic;
+                        }
+                    }
+
+                    #endregion
+
+                    #region Dados
+
+                    for (int i = 4; i < registroMunicipio.Length; i++)
+                    {
+                        Data = ordemAnos[i - 4];
+
+                        var existe = dados.Any(o => o.Municipio.Nome == Municipio.Nome
+                            && o.TipoEnsino.Nome == TipoEnsino.Nome
+                            && o.Categoria.Nome == Categoria.Nome
+                            && o.Subcategoria.Nome == Subcategoria.Nome
+                            && o.Data.Ano == Data.Ano);
+
+                        if (!existe)
+                        {
+                            if (Municipio.Id != 0
+                                && TipoEnsino.Id != 0
+                                && Categoria.Id != 0
+                                && Subcategoria.Id != 0
+                                && Data.Id != 0)
+                            {
+                                var d = new DadoDTO()
+                                {
+                                    IdMunicipio = Municipio.Id,
+                                    IdTipoEnsino = TipoEnsino.Id,
+                                    IdCategoria = Categoria.Id,
+                                    IdSubcategoria = Subcategoria.Id,
+                                    IdData = Data.Id
+                                };
+
+                                existe = _dadoServico.Existe(d);
+                            }
+                        }
+
+                        if (!existe)
+                        {
+                            var dado = new Dado()
+                            {
+                                TipoEnsino = TipoEnsino,
+                                Categoria = Categoria,
+                                Subcategoria = Subcategoria,
+                                Municipio = Municipio,
+                                Data = Data,
+                                Valor = registroMunicipio[i].Trim()
+                            };
+
+                            dados.Add(dado);
+                        }
+                    }
+
+                    #endregion
+                }
+
+                reader.Close();
             }
         }
 

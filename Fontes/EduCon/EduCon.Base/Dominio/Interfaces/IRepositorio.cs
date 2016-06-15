@@ -19,5 +19,8 @@ namespace EduCon.Base.Dominio.Interfaces
         // Lista
         IEnumerable<T> ListaTodos();
         IEnumerable<T> Lista(Expression<Func<T, bool>> expressao);
+
+        // Informações
+        bool Existe(Expression<Func<T, bool>> expressao);
     }
 }

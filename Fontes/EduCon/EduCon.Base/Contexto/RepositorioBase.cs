@@ -94,6 +94,15 @@ namespace EduCon.Base.Contexto
 
         #endregion
 
+        #region Informações
+
+        public virtual bool Existe(Expression<Func<T, bool>> expressao)
+        {
+            return DbSet.Any(expressao);
+        }
+
+        #endregion
+
         #region Dispose
 
         public void Dispose()
