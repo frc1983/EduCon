@@ -22,6 +22,7 @@ namespace EduCon.Contexto
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Configurations.Add(new FonteMap());
             modelBuilder.Configurations.Add(new MunicipioMap());
             modelBuilder.Configurations.Add(new DataMap());
             modelBuilder.Configurations.Add(new TipoEnsinoMap());
@@ -40,6 +41,7 @@ namespace EduCon.Contexto
 
         #region DbSets
 
+        public DbSet<Fonte> Fontes { get; set; }
         public DbSet<Municipio> Municipios { get; set; }
         public DbSet<Data> Datas { get; set; }
         public DbSet<TipoEnsino> TiposEnsino { get; set; }

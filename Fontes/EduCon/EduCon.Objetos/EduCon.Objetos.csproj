@@ -54,6 +54,7 @@
     <Compile Include="DTOs\DadoDTO.cs" />
     <Compile Include="DTOs\DataDTO.cs" />
     <Compile Include="DTOs\MunicipioDTO.cs" />
+    <Compile Include="DTOs\FonteDTO.cs" />
     <Compile Include="DTOs\TipoEnsinoDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

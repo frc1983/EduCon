@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\Repositorio.cs" />
+    <Compile Include="FonteRepositorio.cs" />
     <Compile Include="TipoEnsinoRepositorio.cs" />
     <Compile Include="CategoriaRepositorio.cs" />
     <Compile Include="DadoRepositorio.cs" />

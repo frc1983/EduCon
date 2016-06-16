@@ -55,6 +55,7 @@
     <Compile Include="Mapeadores\DadoMap.cs" />
     <Compile Include="Mapeadores\DataMap.cs" />
     <Compile Include="Mapeadores\MunicipioMap.cs" />
+    <Compile Include="Mapeadores\FonteMap.cs" />
     <Compile Include="Mapeadores\TipoEnsinoMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

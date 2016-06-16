@@ -6,6 +6,7 @@ go
 
 /*
 drop table EDC_DADO;
+drop table EDC_FONTE;
 drop table EDC_MUNICIPIO;
 drop table EDC_TIPO_ENSINO;
 drop table EDC_CATEGORIA;
@@ -36,14 +37,21 @@ create table EDC_DATA (
     ANO int
 );
 
+create table EDC_FONTE (
+    ID int primary key identity,
+    NOME varchar(500)
+);
+
 create table EDC_DADO (
     ID int primary key identity,
+    ID_FONTE int,
     ID_MUNICIPIO int,
     ID_TIPO_ENSINO int,
     ID_CATEGORIA int,
     ID_SUBCATEGORIA int,
     ID_DATA int,
     VALOR varchar(200),
+    foreign key (ID_FONTE) references EDC_FONTE,
     foreign key (ID_MUNICIPIO) references EDC_MUNICIPIO,
     foreign key (ID_TIPO_ENSINO) references EDC_TIPO_ENSINO,
     foreign key (ID_CATEGORIA) references EDC_CATEGORIA,

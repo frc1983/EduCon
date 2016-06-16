@@ -4,12 +4,13 @@ namespace EduCon.Aplicacao.Mapeamento.Base
 {
     internal class Mapeadores
     {
-        public static IMapper Mapper { get; private set; }
+        public static IMapper Mapeador { get; private set; }
 
         public static void Registra()
         {
-            Mapper = new MapperConfiguration((m) =>
+            Mapeador = new MapperConfiguration((m) =>
             {
+                m.AddProfile<FonteMapeador>();
                 m.AddProfile<MunicipioMapeador>();
                 m.AddProfile<TipoEnsinoMapeador>();
                 m.AddProfile<DataMapeador>();
