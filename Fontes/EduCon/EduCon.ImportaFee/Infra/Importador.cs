@@ -13,81 +13,89 @@ using Newtonsoft.Json;
 
 namespace EduCon.ImportaFee.Infra
 {
-    public class Executor
+    public class Importador
     {
+        private DirectoryInfo dirVariaveis;
+        private DirectoryInfo dirArquivos;
+
         private IList<Dado> dados;
+        private IList<FonteDTO> fontes;
         private IList<TipoEnsinoDTO> tiposEnsino;
         private IList<CategoriaDTO> categorias;
         private IList<MunicipioDTO> municipios;
         private IList<DataDTO> datas;
 
+        private IFonteAplServico _fonteServico;
         private IMunicipioAplServico _municipioServico;
         private IDataAplServico _dataServico;
         private ITipoEnsinoAplServico _tipoEnsinoServico;
         private ICategoriaAplServico _categoriaServico;
         private IDadoAplServico _dadoServico;
 
-        public Executor()
+        public Importador()
         {
+            _fonteServico = ServiceLocator.Current.GetInstance<IFonteAplServico>();
             _municipioServico = ServiceLocator.Current.GetInstance<IMunicipioAplServico>();
             _dataServico = ServiceLocator.Current.GetInstance<IDataAplServico>();
             _tipoEnsinoServico = ServiceLocator.Current.GetInstance<ITipoEnsinoAplServico>();
             _categoriaServico = ServiceLocator.Current.GetInstance<ICategoriaAplServico>();
             _dadoServico = ServiceLocator.Current.GetInstance<IDadoAplServico>();
+
+            ObtemDiretorios();
         }
 
-        public void Executa(bool copia)
+        public void ImportaArquivos(string texto, int? anoIni, int? anoFim)
         {
+            var arquivo = ImportaVariaveis();
+            var variaveis = new List<int>();
+
+            ConsoleExp.WriteLine("Variáveis encontradas: " + arquivo.Variavel.Count);
+
+            // Obtem ids das variáveis a serem importadas
+            foreach (var variavel in arquivo.Variavel)
+            {
+                if (variavel.Caminho.Contains(texto))
+                {
+                    variaveis.Add(variavel.Id);
+                }
+            }
+
+            ConsoleExp.WriteLine("Variáveis para o assunto escolhido: " + variaveis.Count);
+
+            ConsoleExp.WriteLine("Fazendo download dos arquivos...");
+            // Limpa pasta de arquivos
+            dirArquivos.GetFiles().ToList().ForEach(o => o.Delete());
+
+            // Faz o download e descompacta os arquivos
+            foreach (var id in variaveis)
+            {
+                ObtemArquivo(id, anoIni, anoFim);
+            }
+
+            ConsoleExp.WriteLine("Download concluído. {0} arquivos disponíveis.", dirArquivos.GetFiles().Count());
+
+            ImportaDados();
+        }
+
+        public void ImportaDados()
+        {
+            ConsoleExp.WriteLine("Iniciando importação de dados...");
+
             try
             {
-                ValidaDiretorio();
-
-                var diretorioProcessamento = new DirectoryInfo(AppContext.BaseDirectory + @"processamento\");
-                if (!diretorioProcessamento.Exists)
-                {
-                    diretorioProcessamento.Create();
-                }
-
-                var qtdArquivos = diretorioProcessamento.GetFiles().Count();
-
-                if (copia)
-                {
-                    if (qtdArquivos > 0)
-                    {
-                        var resposta = string.Empty;
-                        do
-                        {
-                            Console.WriteLine(DateTime.Now.ToString() + " - Diretório de processamento já possui {0} arquivos carregados.", qtdArquivos);
-                            Console.Write(@"Deseja excluir os arquivos e realizar novo carregamento? (S/N) \> ");
-                            resposta = Console.ReadLine().ToLower();
-                        } while (!resposta.Equals("s") && !resposta.Equals("n"));
-
-                        var apaga = resposta.Equals("s");
-                        if (apaga)
-                        {
-                            foreach (var arquivo in diretorioProcessamento.GetFiles())
-                            {
-                                arquivo.Delete();
-                            }
-                        }
-                    }
-
-                    CopiaArquivosProcessamento(diretorioProcessamento);
-                }
-
                 var atualArquivo = 1;
-                var totalArquivos = diretorioProcessamento.GetFiles().Count();
+                var totalArquivos = dirArquivos.GetFiles().Count();
 
-                Console.WriteLine(DateTime.Now.ToString() + " - Arquivos encontrados: " + totalArquivos);
-                foreach (var arquivo in diretorioProcessamento.GetFiles())
+                foreach (var arquivo in dirArquivos.GetFiles())
                 {
                     try
                     {
                         ValidaArquivo(arquivo);
 
-                        Console.WriteLine(DateTime.Now.ToString() + " - Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
+                        ConsoleExp.WriteLine("Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
 
                         dados = new List<Dado>();
+                        fontes = new List<FonteDTO>();
                         tiposEnsino = new List<TipoEnsinoDTO>();
                         categorias = new List<CategoriaDTO>();
                         municipios = new List<MunicipioDTO>();
@@ -111,45 +119,104 @@ namespace EduCon.ImportaFee.Infra
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(string.Format(DateTime.Now.ToString() + " - Erro ao processar arquivo {0}:", arquivo.Name));
+                        Console.WriteLine();
+                        ConsoleExp.WriteLine("Erro ao processar arquivo {0}:", arquivo.Name);
                         Console.WriteLine(ex.Message);
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
         }
 
-        private void CopiaArquivosProcessamento(DirectoryInfo diretorioProcessamento)
+        private void ObtemDiretorios()
         {
-            var diretorioFonte = new DirectoryInfo(ConfigManager.DiretorioArquivos);
-            foreach (var arquivo in diretorioFonte.GetFiles())
+            var diretorioProcessamento = new DirectoryInfo(AppContext.BaseDirectory + @"processamento\");
+            if (!diretorioProcessamento.Exists)
             {
-                try
-                {
-                    arquivo.CopyTo(Path.Combine(diretorioProcessamento.FullName, arquivo.Name), false);
-                }
-                catch (IOException ioEx)
-                {
-                    Console.WriteLine(DateTime.Now.ToString() + " - Arquivo {0} já existente na pasta", arquivo.Name);
-                }
+                diretorioProcessamento.Create();
+                dirVariaveis = diretorioProcessamento.CreateSubdirectory("variaveis");
+                dirArquivos = diretorioProcessamento.CreateSubdirectory("arquivos");
+            }
+            else
+            {
+                dirVariaveis = diretorioProcessamento.GetDirectories().First(o => o.Name.Equals("variaveis"));
+                dirArquivos = diretorioProcessamento.GetDirectories().First(o => o.Name.Equals("arquivos"));
             }
         }
 
-        private void ValidaDiretorio()
+        private ArquivoVariaveis ImportaVariaveis()
         {
-            var pasta = new DirectoryInfo(ConfigManager.DiretorioArquivos);
-            if (!pasta.Exists)
+            // Limpa diretório de variáveis
+            dirVariaveis.GetFiles().ToList().ForEach(o => o.Delete());
+
+            // Busca na url indicada
+            var urlVariaveis = ConfigManager.UrlVariaveis;
+            Download.BaixarEDescompactar(urlVariaveis, dirVariaveis.FullName);
+            if (!dirVariaveis.GetFiles().Any())
             {
-                throw new Exception("Diretório de arquivos não encontrado.");
+                throw new Exception("Não foi encontrado o arquivo de variáveis");
             }
 
-            if (!pasta.GetFiles().Any())
+            // Recupera o arquivo .json das variáveis
+            var arquivoVariaveis = new FileInfo(dirVariaveis.GetFiles().First(o => o.Extension.Equals(".json")).FullName);
+
+            ArquivoVariaveis obj = null;
+            using (var reader = new StreamReader(arquivoVariaveis.FullName, Encoding.UTF8))
             {
-                throw new Exception("Nenhum arquivo encontrado no diretório informado.");
+                var textoArquivo = reader.ReadToEnd();
+                obj = JsonConvert.DeserializeObject<ArquivoVariaveis>(textoArquivo);
             }
+
+            if (obj == null)
+            {
+                throw new Exception("Nenhuma variável encontrada no arquivo.");
+            }
+
+            return obj;
+        }
+
+        private void ObtemArquivo(int id, int? anoIni, int? anoFim)
+        {
+            var paramAno = MontaParametroAno(anoIni, anoFim);
+            var url = string.Format(@"{0}/{1}/{2}", ConfigManager.UrlArquivos, id, paramAno);
+
+            Download.BaixarEDescompactar(url, dirArquivos.FullName);
+        }
+
+        private string MontaParametroAno(int? anoIni, int? anoFim)
+        {
+            var anos = new List<int>();
+
+            if (!anoIni.HasValue)
+            {
+                anoIni = 1990;
+            }
+
+            if (!anoFim.HasValue)
+            {
+                anoFim = DateTime.Now.Year;
+            }
+
+            if (anoIni.Value > anoFim.Value)
+            {
+                throw new Exception("Ano inicial não pode ser maior que ano final.");
+            }
+
+            for (int i = anoIni.Value; i < anoFim.Value; i++)
+            {
+                anos.Add(i);
+            }
+
+            var paramAno = string.Join(",", anos);
+            if (string.IsNullOrEmpty(paramAno))
+            {
+                throw new Exception("Ano para pesquisa de arquivos não informado.");
+            }
+
+            return paramAno;
         }
 
         private void ValidaArquivo(FileInfo arquivo)
@@ -171,6 +238,35 @@ namespace EduCon.ImportaFee.Infra
             var obj = JsonConvert.DeserializeObject<Arquivo>(stream);
 
             var variavel = obj.Variavel.First();
+
+            #region Fonte
+
+            var Fonte = new FonteDTO();
+            if (!string.IsNullOrEmpty(variavel.Fonte.Trim()))
+            {
+                var font = fontes.Where(o => o.Nome.Equals(variavel.Fonte.Trim())).FirstOrDefault();
+                if (font == null)
+                {
+                    font = _fonteServico.Lista(new FonteDTO() { Nome = variavel.Fonte.Trim() }).FirstOrDefault();
+                }
+
+                if (font == null)
+                {
+                    var fonte = new FonteDTO()
+                    {
+                        Nome = variavel.Fonte.Trim()
+                    };
+
+                    fontes.Add(fonte);
+                    Fonte = fonte;
+                }
+                else
+                {
+                    Fonte = font;
+                }
+            }
+
+            #endregion
 
             foreach (var unidadeGeografica in obj.UnidadesGeograficas)
             {
@@ -352,7 +448,10 @@ namespace EduCon.ImportaFee.Infra
 
                     #endregion
 
-                    var existe = dados.Any(o => o.Municipio.Nome == Municipio.Nome
+                    #region Dados
+
+                    var existe = dados.Any(o => o.Fonte.Nome == Fonte.Nome
+                        && o.Municipio.Nome == Municipio.Nome
                         && o.TipoEnsino.Nome == TipoEnsino.Nome
                         && o.Categoria.Nome == Categoria.Nome
                         && o.Subcategoria.Nome == Subcategoria.Nome
@@ -360,7 +459,8 @@ namespace EduCon.ImportaFee.Infra
 
                     if (!existe)
                     {
-                        if (Municipio.Id != 0
+                        if (Fonte.Id != 0
+                            && Municipio.Id != 0
                             && TipoEnsino.Id != 0
                             && Categoria.Id != 0
                             && Subcategoria.Id != 0
@@ -368,6 +468,7 @@ namespace EduCon.ImportaFee.Infra
                         {
                             var d = new DadoDTO()
                             {
+                                IdFonte = Fonte.Id,
                                 IdMunicipio = Municipio.Id,
                                 IdTipoEnsino = TipoEnsino.Id,
                                 IdCategoria = Categoria.Id,
@@ -375,7 +476,7 @@ namespace EduCon.ImportaFee.Infra
                                 IdData = Data.Id
                             };
 
-                            existe = _dadoServico.Lista(d).Any();
+                            existe = _dadoServico.Existe(d);
                         }
                     }
 
@@ -383,6 +484,7 @@ namespace EduCon.ImportaFee.Infra
                     {
                         var dado = new Dado()
                         {
+                            Fonte = Fonte,
                             TipoEnsino = TipoEnsino,
                             Categoria = Categoria,
                             Subcategoria = Subcategoria,
@@ -393,12 +495,15 @@ namespace EduCon.ImportaFee.Infra
 
                         dados.Add(dado);
                     }
+
+                    #endregion
                 }
             }
         }
 
         private void CarregaDadosCsv(FileInfo arquivo)
         {
+            FonteDTO Fonte = null;
             MunicipioDTO Municipio = null;
             TipoEnsinoDTO TipoEnsino = null;
             CategoriaDTO Categoria = null;
@@ -412,13 +517,6 @@ namespace EduCon.ImportaFee.Infra
                 while (!reader.EndOfStream)
                 {
                     var linha = reader.ReadLine();
-
-                    //variavel: Estadual
-                    //caminho: / Educação / Educação Infantil / Funções Docentes / Estadual
-                    //fonte: Secretaria de Educação do Rio Grande do Sul.
-                    //agrupador: Município
-                    //descricao: 
-
 
                     if (linha.StartsWith("variavel:")
                         || linha.StartsWith("agrupador:")
@@ -543,11 +641,47 @@ namespace EduCon.ImportaFee.Infra
 
                     if (linha.StartsWith("fonte:"))
                     {
+                        var registro = linha.Replace("fonte:", "").Trim();
+
+                        #region Fonte
+
+                        if (Fonte == null || !TipoEnsino.Nome.Equals(registro))
+                        {
+                            if (!string.IsNullOrEmpty(registro))
+                            {
+                                var font = fontes.Where(o => o.Nome.Equals(registro)).FirstOrDefault();
+                                if (font == null)
+                                {
+                                    font = _fonteServico.Lista(new FonteDTO() { Nome = registro }).FirstOrDefault();
+                                }
+
+                                if (font == null)
+                                {
+                                    var fonte = new FonteDTO()
+                                    {
+                                        Nome = registro
+                                    };
+
+                                    fontes.Add(fonte);
+                                    Fonte = fonte;
+                                }
+                                else
+                                {
+                                    Fonte = font;
+                                }
+                            }
+                        }
+
+                        #endregion
+
                         continue;
                     }
 
                     if (linha.StartsWith("Município"))
                     {
+                        #region Ano
+
+                        var ano = string.Empty;
                         var cabecalho = linha.Split(';');
                         for (int i = 4; i < cabecalho.Length; i++)
                         {
@@ -556,41 +690,44 @@ namespace EduCon.ImportaFee.Infra
                             var match = Regex.Match(cabecalho[i], @"[0-9]{4}");
                             if (match.Success)
                             {
-                                #region Ano
-
-                                var ano = match.Value;
-
-                                if (Data == null || Data.Ano != int.Parse(ano))
-                                {
-                                    Data = new DataDTO();
-
-                                    var dt = datas.Where(o => o.Ano == int.Parse(ano)).FirstOrDefault();
-                                    if (dt == null)
-                                    {
-                                        dt = _dataServico.Lista(new DataDTO() { Ano = int.Parse(ano) }).FirstOrDefault();
-                                    }
-
-                                    if (dt == null)
-                                    {
-                                        var data = new DataDTO()
-                                        {
-                                            Ano = int.Parse(ano)
-                                        };
-
-                                        datas.Add(data);
-                                        Data = data;
-                                    }
-                                    else
-                                    {
-                                        Data = dt;
-                                    }
-
-                                    ordemAnos.Add(Data);
-                                }
-
-                                #endregion
+                                ano = match.Value;
                             }
                         }
+
+                        if (string.IsNullOrEmpty(ano))
+                        {
+                            throw new Exception("Ano não encontrado");
+                        }
+
+                        if (Data == null || Data.Ano != int.Parse(ano))
+                        {
+                            Data = new DataDTO();
+
+                            var dt = datas.Where(o => o.Ano == int.Parse(ano)).FirstOrDefault();
+                            if (dt == null)
+                            {
+                                dt = _dataServico.Lista(new DataDTO() { Ano = int.Parse(ano) }).FirstOrDefault();
+                            }
+
+                            if (dt == null)
+                            {
+                                var data = new DataDTO()
+                                {
+                                    Ano = int.Parse(ano)
+                                };
+
+                                datas.Add(data);
+                                Data = data;
+                            }
+                            else
+                            {
+                                Data = dt;
+                            }
+
+                            ordemAnos.Add(Data);
+                        }
+
+                        #endregion
 
                         continue;
                     }
@@ -637,7 +774,8 @@ namespace EduCon.ImportaFee.Infra
                     {
                         Data = ordemAnos[i - 4];
 
-                        var existe = dados.Any(o => o.Municipio.Nome == Municipio.Nome
+                        var existe = dados.Any(o => o.Fonte.Nome == Fonte.Nome
+                            && o.Municipio.Nome == Municipio.Nome
                             && o.TipoEnsino.Nome == TipoEnsino.Nome
                             && o.Categoria.Nome == Categoria.Nome
                             && o.Subcategoria.Nome == Subcategoria.Nome
@@ -645,7 +783,8 @@ namespace EduCon.ImportaFee.Infra
 
                         if (!existe)
                         {
-                            if (Municipio.Id != 0
+                            if (Fonte.Id != 0
+                                && Municipio.Id != 0
                                 && TipoEnsino.Id != 0
                                 && Categoria.Id != 0
                                 && Subcategoria.Id != 0
@@ -653,6 +792,7 @@ namespace EduCon.ImportaFee.Infra
                             {
                                 var d = new DadoDTO()
                                 {
+                                    IdFonte = Fonte.Id,
                                     IdMunicipio = Municipio.Id,
                                     IdTipoEnsino = TipoEnsino.Id,
                                     IdCategoria = Categoria.Id,
@@ -668,6 +808,7 @@ namespace EduCon.ImportaFee.Infra
                         {
                             var dado = new Dado()
                             {
+                                Fonte = Fonte,
                                 TipoEnsino = TipoEnsino,
                                 Categoria = Categoria,
                                 Subcategoria = Subcategoria,
@@ -691,6 +832,20 @@ namespace EduCon.ImportaFee.Infra
         {
             var text = string.Empty;
             var count = 1;
+
+            if (fontes.Count > 0)
+            {
+                text = DateTime.Now.ToString() + " - Fontes a incluir: " + fontes.Count + " | ";
+                count = 1;
+                Console.Write(text);
+                foreach (var fonte in fontes)
+                {
+                    AtualizaStatus(text.Length, count);
+                    _fonteServico.Inclui(fonte);
+                    count++;
+                }
+                Console.WriteLine();
+            }
 
             if (municipios.Count > 0)
             {
@@ -755,6 +910,7 @@ namespace EduCon.ImportaFee.Infra
                 {
                     var d = new DadoDTO()
                     {
+                        IdFonte = dado.Fonte.Id,
                         IdMunicipio = dado.Municipio.Id,
                         IdTipoEnsino = dado.TipoEnsino.Id,
                         IdCategoria = dado.Categoria.Id,

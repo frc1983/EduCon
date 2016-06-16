@@ -17,6 +17,10 @@ namespace EduCon.Contexto.Mapeadores
                 .HasColumnName("ID")
                 .IsRequired();
 
+            Property(t => t.IdFonte)
+                .HasColumnName("ID_FONTE")
+                .IsRequired();
+
             Property(t => t.IdMunicipio)
                 .HasColumnName("ID_MUNICIPIO")
                 .IsRequired();

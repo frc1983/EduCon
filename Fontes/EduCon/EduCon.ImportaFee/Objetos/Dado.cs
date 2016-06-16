@@ -4,6 +4,7 @@ namespace EduCon.ImportaFee.Objetos
 {
     public class Dado
     {
+        public FonteDTO Fonte { get; set; }
         public MunicipioDTO Municipio { get; set; }
         public TipoEnsinoDTO TipoEnsino { get; set; }
         public CategoriaDTO Categoria { get; set; }

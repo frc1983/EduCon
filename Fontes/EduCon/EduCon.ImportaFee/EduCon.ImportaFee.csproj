@@ -66,6 +66,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,10 +76,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infra\ConfigManager.cs" />
-    <Compile Include="Infra\Executor.cs" />
+    <Compile Include="Infra\ConsoleExp.cs" />
+    <Compile Include="Infra\Download.cs" />
+    <Compile Include="Infra\Importador.cs" />
     <Compile Include="Infra\Injecao.cs" />
     <Compile Include="Objetos\AnoValor.cs" />
     <Compile Include="Objetos\Arquivo.cs" />
+    <Compile Include="Objetos\ArquivoVariaveis.cs" />
     <Compile Include="Objetos\Dado.cs" />
     <Compile Include="Objetos\UnidadesGeograficas.cs" />
     <Compile Include="Objetos\Variavel.cs" />
