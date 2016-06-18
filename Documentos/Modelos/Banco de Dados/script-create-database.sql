@@ -11,35 +11,36 @@ drop table EDC_MUNICIPIO;
 drop table EDC_TIPO_ENSINO;
 drop table EDC_CATEGORIA;
 drop table EDC_DATA;
+drop table EDC_PROCESSAMENTO;
 */
 
 create table EDC_MUNICIPIO (
     ID int primary key identity,
-    COD_IBGE int,
+    COD_IBGE int not null,
     AGRUPADOR int,
-    NOME varchar(200),
+    NOME varchar(200) not null,
     LATITUDE decimal(17, 12),
     LONGITUDE decimal(17, 12)
 );
 
 create table EDC_TIPO_ENSINO (
     ID int primary key identity,
-    NOME varchar(200)
+    NOME varchar(200) not null
 );
 
 create table EDC_CATEGORIA (
     ID int primary key identity,
-    NOME varchar(200)
+    NOME varchar(200) not null
 );
 
 create table EDC_DATA (
     ID int primary key identity,
-    ANO int
+    ANO int not null
 );
 
 create table EDC_FONTE (
     ID int primary key identity,
-    NOME varchar(500)
+    NOME varchar(500) not null
 );
 
 create table EDC_DADO (
@@ -50,7 +51,7 @@ create table EDC_DADO (
     ID_CATEGORIA int,
     ID_SUBCATEGORIA int,
     ID_DATA int,
-    VALOR varchar(200),
+    VALOR varchar(200) not null,
     foreign key (ID_FONTE) references EDC_FONTE,
     foreign key (ID_MUNICIPIO) references EDC_MUNICIPIO,
     foreign key (ID_TIPO_ENSINO) references EDC_TIPO_ENSINO,
@@ -58,4 +59,15 @@ create table EDC_DADO (
     foreign key (ID_SUBCATEGORIA) references EDC_CATEGORIA,
     foreign key (ID_DATA) references EDC_DATA
 );
+
+create table EDC_PROCESSAMENTO (
+    ID int primary key identity,
+    TEXTO varchar(100) null,
+    ANO_INI int not null,
+    ANO_FIM int not null,
+    SITUACAO int not null,
+    DATA datetime null,
+    QTD_REGISTROS int
+);
+
 go

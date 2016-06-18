@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="InicializaAplicacao.cs" />
     <Compile Include="Interfaces\IDataAplServico.cs" />
+    <Compile Include="Interfaces\IProcessamentoAplServico.cs" />
     <Compile Include="Interfaces\IFonteAplServico.cs" />
     <Compile Include="Interfaces\ITipoEnsinoAplServico.cs" />
     <Compile Include="Interfaces\IDadoAplServico.cs" />
@@ -60,12 +61,14 @@
     <Compile Include="Mapeamento\CategoriaMapeador.cs" />
     <Compile Include="Mapeamento\DataMapeador.cs" />
     <Compile Include="Mapeamento\DadoMapeador.cs" />
+    <Compile Include="Mapeamento\ProcessamentoMapeador.cs" />
     <Compile Include="Mapeamento\FonteMapeador.cs" />
     <Compile Include="Mapeamento\TipoEnsinoMapeador.cs" />
     <Compile Include="Mapeamento\MunicipioMapeador.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicos\Base\AplServico.cs" />
     <Compile Include="Servicos\DadoAplServico.cs" />
+    <Compile Include="Servicos\ProcessamentoAplServico.cs" />
     <Compile Include="Servicos\FonteAplServico.cs" />
     <Compile Include="Servicos\TipoEnsinoAplServico.cs" />
     <Compile Include="Servicos\CategoriaAplServico.cs" />

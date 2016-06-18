@@ -54,6 +54,7 @@
     <Compile Include="Mapeadores\CategoriaMap.cs" />
     <Compile Include="Mapeadores\DadoMap.cs" />
     <Compile Include="Mapeadores\DataMap.cs" />
+    <Compile Include="Mapeadores\ProcessamentoMap.cs" />
     <Compile Include="Mapeadores\MunicipioMap.cs" />
     <Compile Include="Mapeadores\FonteMap.cs" />
     <Compile Include="Mapeadores\TipoEnsinoMap.cs" />

@@ -16,6 +16,7 @@ namespace EduCon.Aplicacao.Mapeamento.Base
                 m.AddProfile<DataMapeador>();
                 m.AddProfile<CategoriaMapeador>();
                 m.AddProfile<DadoMapeador>();
+                m.AddProfile<ProcessamentoMapeador>();
             }).CreateMapper();
         }
     }

@@ -2,7 +2,7 @@
 
 namespace EduCon.ImportaFee
 {
-    internal class ConfigManager
+    internal class Configuracao
     {
         public static string UrlVariaveis
         {

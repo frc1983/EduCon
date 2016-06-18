@@ -28,6 +28,7 @@ namespace EduCon.Contexto
             modelBuilder.Configurations.Add(new TipoEnsinoMap());
             modelBuilder.Configurations.Add(new CategoriaMapMap());
             modelBuilder.Configurations.Add(new DadoMap());
+            modelBuilder.Configurations.Add(new ProcessamentoMap());
         }
 
         /// <summary>
@@ -47,6 +48,8 @@ namespace EduCon.Contexto
         public DbSet<TipoEnsino> TiposEnsino { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Dado> Dados { get; set; }
+
+        public DbSet<Processamento> Processamentos { get; set; }
 
         #endregion
     }

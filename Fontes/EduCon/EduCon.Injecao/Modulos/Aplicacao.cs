@@ -15,6 +15,8 @@ namespace EduCon.Injecao.Modulos
             container.Register<ITipoEnsinoAplServico, TipoEnsinoAplServico>(Lifestyle.Scoped);
             container.Register<ICategoriaAplServico, CategoriaAplServico>(Lifestyle.Scoped);
             container.Register<IDadoAplServico, DadoAplServico>(Lifestyle.Scoped);
+
+            container.Register<IProcessamentoAplServico, ProcessamentoAplServico>(Lifestyle.Scoped);
         }
     }
 }

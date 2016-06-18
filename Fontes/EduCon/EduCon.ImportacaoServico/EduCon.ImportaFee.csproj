@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B720A9CF-6AE5-4828-8D3F-D8A94A49621E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{E83E9475-358C-444B-AB7F-DFADB6ADA9DF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EduCon.ImportaFee</RootNamespace>
-    <AssemblyName>EduCon.ImportaFee</AssemblyName>
+    <RootNamespace>EduCon.ImportacaoServico</RootNamespace>
+    <AssemblyName>EduCon.ImportacaoServico</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,6 +32,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>EduCon.ImportacaoServico.Infra.ServicoTeste</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator.SimpleInjectorAdapter, Version=2.8.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
@@ -65,34 +68,59 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infra\Configuracao.cs" />
-    <Compile Include="Infra\ConsoleExp.cs" />
     <Compile Include="Infra\Download.cs" />
+    <Compile Include="Infra\Evento.cs" />
     <Compile Include="Infra\Importador.cs" />
+    <Compile Include="Infra\ImportadorArquivos.cs" />
     <Compile Include="Infra\Injecao.cs" />
+    <Compile Include="Infra\ServicoTeste.cs" />
     <Compile Include="Objetos\AnoValor.cs" />
     <Compile Include="Objetos\Arquivo.cs" />
     <Compile Include="Objetos\ArquivoVariaveis.cs" />
     <Compile Include="Objetos\Dado.cs" />
     <Compile Include="Objetos\UnidadesGeograficas.cs" />
     <Compile Include="Objetos\Variavel.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Servico.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Servico.Designer.cs">
+      <DependentUpon>Servico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="diagramaObjetos.cd" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Servico.resx">
+      <DependentUpon>Servico.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EduCon.Aplicacao\EduCon.Aplicacao.csproj">
@@ -108,11 +136,11 @@
       <Name>EduCon.Injecao</Name>
     </ProjectReference>
     <ProjectReference Include="..\EduCon.Objetos\EduCon.Objetos.csproj">
-      <Project>{D8B7C32C-6A3F-4AF1-B0CF-DF34F74F2806}</Project>
+      <Project>{d8b7c32c-6a3f-4af1-b0cf-df34f74f2806}</Project>
       <Name>EduCon.Objetos</Name>
     </ProjectReference>
     <ProjectReference Include="..\EduCon.Utilitarios\EduCon.Utilitarios.csproj">
-      <Project>{F601B786-8136-4BBA-9B82-44FF0383C08E}</Project>
+      <Project>{f601b786-8136-4bba-9b82-44ff0383c08e}</Project>
       <Name>EduCon.Utilitarios</Name>
     </ProjectReference>
   </ItemGroup>

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\DecimalConverter.cs" />
+    <Compile Include="Aplicacao\DescricaoEnum.cs" />
     <Compile Include="Aplicacao\EnumOperador.cs" />
     <Compile Include="Aplicacao\Expressao.cs" />
     <Compile Include="Aplicacao\Filtro.cs" />
