@@ -26,8 +26,7 @@ namespace EduCon.Contexto.Mapeadores
                 .IsRequired();
 
             Property(t => t.IdTipoEnsino)
-                .HasColumnName("ID_TIPO_ENSINO")
-                .IsRequired();
+                .HasColumnName("ID_TIPO_ENSINO");
 
             Property(t => t.IdCategoria)
                 .HasColumnName("ID_CATEGORIA")

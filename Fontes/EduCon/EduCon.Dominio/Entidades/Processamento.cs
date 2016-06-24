@@ -11,6 +11,6 @@ namespace EduCon.Dominio.Entidades
         public int AnoFinal { get; set; }
         public DateTime? Data { get; set; }
         public SituacaoProcessamento Situacao { get; set; }
-        public int QtdRegistros { get; set; }
+        public int? QtdRegistros { get; set; }
     }
 }

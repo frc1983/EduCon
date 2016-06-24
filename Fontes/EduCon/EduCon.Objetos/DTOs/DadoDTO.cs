@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public int IdFonte { get; set; }
         public int IdMunicipio { get; set; }
-        public int IdTipoEnsino { get; set; }
+        public int? IdTipoEnsino { get; set; }
         public int IdCategoria { get; set; }
         public int? IdSubcategoria { get; set; }
         public int IdData { get; set; }
