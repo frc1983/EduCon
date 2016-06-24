@@ -49,8 +49,6 @@ namespace EduCon.ImportacaoServico.Infra
             var arquivo = ImportaVariaveis();
             var variaveis = new List<int>();
 
-            //ConsoleExp.WriteLine("Variáveis encontradas: " + arquivo.Variavel.Count);
-
             // Obtem ids das variáveis a serem importadas
             foreach (var variavel in arquivo.Variavel)
             {
@@ -60,9 +58,6 @@ namespace EduCon.ImportacaoServico.Infra
                 }
             }
 
-            //ConsoleExp.WriteLine("Variáveis para o assunto escolhido: " + variaveis.Count);
-
-            //ConsoleExp.WriteLine("Fazendo download dos arquivos...");
             // Limpa pasta de arquivos
             dirArquivos.GetFiles().ToList().ForEach(o => o.Delete());
 
@@ -72,29 +67,20 @@ namespace EduCon.ImportacaoServico.Infra
                 ObtemArquivo(id, processamento.AnoInicial, processamento.AnoFinal);
             }
 
-            //ConsoleExp.WriteLine("Download concluído. {0} arquivos disponíveis.", dirArquivos.GetFiles().Count());
-
             processamento.QtdRegistros = ImportaDados();
         }
 
         public int ImportaDados()
         {
-            //ConsoleExp.WriteLine("Iniciando importação de dados...");
-
             var qtdRegistros = 0;
 
             try
             {
-                var atualArquivo = 1;
-                var totalArquivos = dirArquivos.GetFiles().Count();
-
                 foreach (var arquivo in dirArquivos.GetFiles())
                 {
                     try
                     {
                         ValidaArquivo(arquivo);
-
-                        //ConsoleExp.WriteLine("Processando arquivo {0} de {1}: {2}", atualArquivo, totalArquivos, arquivo.Name);
 
                         dados = new List<Dado>();
                         fontes = new List<FonteDTO>();
@@ -117,7 +103,6 @@ namespace EduCon.ImportacaoServico.Infra
 
                         ExcluirArquivo(arquivo);
 
-                        atualArquivo++;
                         qtdRegistros += dados.Count + fontes.Count + tiposEnsino.Count + categorias.Count + municipios.Count + datas.Count;
                     }
                     catch (Exception ex)
@@ -174,6 +159,8 @@ namespace EduCon.ImportacaoServico.Infra
                 var textoArquivo = reader.ReadToEnd();
                 obj = JsonConvert.DeserializeObject<ArquivoVariaveis>(textoArquivo);
             }
+
+            ExcluirArquivo(arquivoVariaveis);
 
             if (obj == null)
             {
@@ -273,13 +260,6 @@ namespace EduCon.ImportacaoServico.Infra
 
             #endregion
 
-            var count = 1;
-            var total = obj.UnidadesGeograficas.Length * 1.0;
-            var text = DateTime.Now.ToString() + " - Validar arquivo: ";
-            var textFim = " concluído";
-
-            //ConsoleWrite(text + (count / total).ToString("0%") + textFim);
-
             foreach (var unidadeGeografica in obj.UnidadesGeograficas)
             {
                 MunicipioDTO Municipio = null;
@@ -324,7 +304,7 @@ namespace EduCon.ImportacaoServico.Infra
 
                 #region Tipo de Ensino
 
-                var tipoEnsinoDescr = (caminho.Length > 3 ? caminho[2] : string.Empty).Trim();
+                var tipoEnsinoDescr = (caminho.Length > 4 ? caminho[2] : string.Empty).Trim();
 
                 if (TipoEnsino == null || !TipoEnsino.Nome.Equals(tipoEnsinoDescr))
                 {
@@ -358,7 +338,7 @@ namespace EduCon.ImportacaoServico.Infra
 
                 #region Categoria
 
-                var categoriaDescr = (caminho.Length > 4 ? caminho[3] : string.Empty).Trim();
+                var categoriaDescr = (caminho.Length == 4 ? caminho[2] : (caminho.Length > 4 ? caminho[3] : string.Empty)).Trim();
 
                 if (Categoria == null || !Categoria.Nome.Equals(categoriaDescr))
                 {
@@ -389,6 +369,11 @@ namespace EduCon.ImportacaoServico.Infra
                 }
 
                 var subcategoriaDescr = string.Empty;
+
+                if (caminho.Length == 4)
+                {
+                    subcategoriaDescr = caminho[3].Trim();
+                }
                 if (caminho.Length == 5)
                 {
                     subcategoriaDescr = caminho[4].Trim();
@@ -520,12 +505,7 @@ namespace EduCon.ImportacaoServico.Infra
 
                     #endregion
                 }
-
-                AtualizaStatus(text.Length, (count / total).ToString("0%"), textFim);
-                count++;
             }
-
-            //ConsoleWriteLine();
         }
 
         private void CarregaDadosCsv(FileInfo arquivo)
@@ -867,77 +847,29 @@ namespace EduCon.ImportacaoServico.Infra
 
         private void IncluiDados()
         {
-            var text = string.Empty;
-            var count = 1;
-
-            if (fontes.Count > 0)
+            foreach (var fonte in fontes)
             {
-                text = DateTime.Now.ToString() + " - Fontes a incluir: " + fontes.Count + " | ";
-                count = 1;
-                //ConsoleWrite(text);
-                foreach (var fonte in fontes)
-                {
-                    AtualizaStatus(text.Length, count);
-                    _fonteServico.Inclui(fonte);
-                    count++;
-                }
-                //ConsoleWriteLine();
+                _fonteServico.Inclui(fonte);
             }
 
-            if (municipios.Count > 0)
+            foreach (var municipio in municipios)
             {
-                text = DateTime.Now.ToString() + " - Municípios a incluir: " + municipios.Count + " | ";
-                count = 1;
-                //ConsoleWrite(text);
-                foreach (var municipio in municipios)
-                {
-                    AtualizaStatus(text.Length, count);
-                    _municipioServico.Inclui(municipio);
-                    count++;
-                }
-                //ConsoleWriteLine();
+                _municipioServico.Inclui(municipio);
             }
 
-            if (tiposEnsino.Count > 0)
+            foreach (var tipoEnsino in tiposEnsino)
             {
-                text = DateTime.Now.ToString() + " - Tipos de ensino a incluir: " + tiposEnsino.Count + " | ";
-                count = 1;
-                //ConsoleWrite(text);
-                foreach (var tipoEnsino in tiposEnsino)
-                {
-                    AtualizaStatus(text.Length, count);
-                    _tipoEnsinoServico.Inclui(tipoEnsino);
-                    count++;
-                }
-                //ConsoleWriteLine();
+                _tipoEnsinoServico.Inclui(tipoEnsino);
             }
 
-            if (categorias.Count > 0)
+            foreach (var categoria in categorias)
             {
-                text = DateTime.Now.ToString() + " - Categorias a incluir: " + categorias.Count + " | ";
-                count = 1;
-                //ConsoleWrite(text);
-                foreach (var categoria in categorias)
-                {
-                    AtualizaStatus(text.Length, count);
-                    _categoriaServico.Inclui(categoria);
-                    count++;
-                }
-                //ConsoleWriteLine();
+                _categoriaServico.Inclui(categoria);
             }
 
-            if (datas.Count > 0)
+            foreach (var data in datas)
             {
-                text = DateTime.Now.ToString() + " - Datas a incluir: " + datas.Count + " | ";
-                count = 1;
-                //ConsoleWrite(text);
-                foreach (var data in datas)
-                {
-                    AtualizaStatus(text.Length, count);
-                    _dataServico.Inclui(data);
-                    count++;
-                }
-                //ConsoleWriteLine();
+                _dataServico.Inclui(data);
             }
 
             if (dados.Count > 0)
@@ -956,6 +888,11 @@ namespace EduCon.ImportacaoServico.Infra
                         Valor = dado.Valor
                     };
 
+                    if (d.IdTipoEnsino.HasValue && d.IdTipoEnsino.Value == 0)
+                    {
+                        d.IdTipoEnsino = null;
+                    }
+
                     if (d.IdSubcategoria.HasValue && d.IdSubcategoria.Value == 0)
                     {
                         d.IdSubcategoria = null;
@@ -964,41 +901,18 @@ namespace EduCon.ImportacaoServico.Infra
                     dtos.Add(d);
                 }
 
-                text = DateTime.Now.ToString() + " - Dados a incluir: " + dtos.Count + " | ";
-                count = 0;
-                //ConsoleWrite(text);
                 do
                 {
-                    AtualizaStatus(text.Length, count);
-
                     var extrato = dtos.Take(100).ToList();
                     foreach (var dado in extrato)
                     {
                         dtos.Remove(dado);
                     }
 
-                    count += extrato.Count();
-
                     _dadoServico.Inclui(extrato);
                 }
                 while (dtos.Count > 0);
-
-                AtualizaStatus(text.Length, count);
-
-                //ConsoleWriteLine();
             }
-        }
-
-        private void AtualizaStatus(int tamanho, int quantidade)
-        {
-            //ConsoleSetCursorPosition(tamanho, //ConsoleCursorTop);
-            //ConsoleWrite(quantidade);
-        }
-
-        private void AtualizaStatus(int tamanho, object valor, string fim)
-        {
-            //ConsoleSetCursorPosition(tamanho, //ConsoleCursorTop);
-            //ConsoleWrite(valor + fim);
         }
 
         private void ExcluirArquivo(FileInfo arquivo)
