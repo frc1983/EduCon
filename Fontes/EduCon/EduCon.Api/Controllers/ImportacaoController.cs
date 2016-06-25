@@ -18,25 +18,31 @@ namespace EduCon.Api.Controllers
         }
 
         [HttpPost]
-        [Route("nova")]
-        public HttpResponseMessage Nova([FromBody]ProcessamentoDTO dto)
+        [Route("nova/{ano:int}")]
+        public HttpResponseMessage Nova(int ano)
         {
-            if (dto != null)
+            var dto = new ProcessamentoDTO()
             {
-                _servico.Inclui(dto);
-            }
+                Texto = "\\Educação",
+                AnoInicial = ano,
+                AnoFinal = ano
+            };
+
+            _servico.Inclui(dto);
 
             return Request.CreateResponse(HttpStatusCode.Created, dto);
         }
 
         [HttpPut]
-        [Route("reprocessar")]
-        public HttpResponseMessage Reprocessar([FromBody]ProcessamentoDTO dto)
+        [Route("reprocessar/{id:int}")]
+        public HttpResponseMessage Reprocessar(int id)
         {
-            if (dto != null)
+            var dto = new ProcessamentoDTO()
             {
-                _servico.Reprocessar(dto);
-            }
+                Id = id
+            };
+
+            _servico.Reprocessar(dto);
 
             return Request.CreateResponse(HttpStatusCode.OK, dto);
         }
