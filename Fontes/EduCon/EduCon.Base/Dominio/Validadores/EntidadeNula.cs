@@ -9,7 +9,7 @@ namespace EduCon.Base.Dominio.Validadores
         {
             if (entidade == null)
             {
-                throw new ArgumentException("Não é possível realizar operação sobre uma entidade nula.", "entidade");
+                throw new InvalidOperationException("Não é possível realizar operação sobre uma entidade nula.");
             }
         }
     }

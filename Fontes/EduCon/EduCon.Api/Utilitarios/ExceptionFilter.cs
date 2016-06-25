@@ -15,7 +15,13 @@ namespace EduCon.Api.Utilitarios
             // Se for uma exception de código não implementado, retornar o código Http respectivo.
             if (context.Exception is NotImplementedException)
             {
-                context.Response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                context.Response = context.Request.CreateResponse(HttpStatusCode.NotImplemented);
+                return;
+            }
+
+            if (context.Exception is InvalidOperationException)
+            {
+                context.Response = context.Request.CreateResponse(HttpStatusCode.InternalServerError, new Erro { Mensagem = context.Exception.Message });
                 return;
             }
 
@@ -23,10 +29,10 @@ namespace EduCon.Api.Utilitarios
             //context.Exception;
 
             // Devolve uma mensagem customizada para o usuário, sob o código de erro no servidor (500).
-            var mensagemErro = "Um erro inesperado aconteceu ao realizar a operação. A equipe responsável será notificada. Tente novamente mais tarde";
+            var mensagemErro = "Um erro ocorreu ao processar a solicitação. Por favor, tente novamente.";
             mensagemErro += Environment.NewLine + context.Exception.Message;
             mensagemErro += Environment.NewLine + context.Exception.StackTrace;
-            context.Response = context.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Mensagem = mensagemErro });
+            context.Response = context.Request.CreateResponse(HttpStatusCode.InternalServerError, new Erro { Mensagem = mensagemErro });
         }
     }
 }

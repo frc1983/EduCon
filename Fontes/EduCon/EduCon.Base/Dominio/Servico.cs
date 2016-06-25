@@ -14,6 +14,8 @@ namespace EduCon.Base.Dominio
 
         private readonly IList<IRegraValidacao<T>> _regras;
 
+        private readonly IList<IRegraValidacao<T>> _regrasEspec;
+
         protected IRepositorio<T> Repositorio
         {
             get { return _repositorio; }
@@ -23,13 +25,14 @@ namespace EduCon.Base.Dominio
         {
             _repositorio = repositorio;
             _regras = new List<IRegraValidacao<T>>();
+            _regrasEspec = new List<IRegraValidacao<T>>();
         }
 
         #region Inclusão, alteração e exclusão
 
         public virtual void Inclui(T entidade)
         {
-            _regras.Add(new EntidadeNula<T>());
+            InsereValidacoes();
 
             ExecutaValidacoes(entidade, TipoOperacao.Inclusao);
 
@@ -38,14 +41,14 @@ namespace EduCon.Base.Dominio
 
         public virtual void Inclui(IEnumerable<T> entidades)
         {
-            _regras.Add(new EntidadeNula<T>());
+            InsereValidacoes();
 
             _repositorio.Inclui(entidades);
         }
 
         public virtual void Altera(T entidade)
         {
-            _regras.Add(new EntidadeNula<T>());
+            InsereValidacoes();
 
             ExecutaValidacoes(entidade, TipoOperacao.Alteracao);
 
@@ -54,7 +57,7 @@ namespace EduCon.Base.Dominio
 
         public virtual void Exclui(T entidade)
         {
-            _regras.Add(new EntidadeNula<T>());
+            InsereValidacoes();
 
             ExecutaValidacoes(entidade, TipoOperacao.Exclusao);
 
@@ -100,7 +103,40 @@ namespace EduCon.Base.Dominio
 
         #endregion
 
+        #region Regras
+
+        protected void AdicionaRegra(IRegraValidacao<T> regra)
+        {
+            if (regra == null)
+                throw new ArgumentNullException("Regra não informada.");
+
+            _regrasEspec.Add(regra);
+        }
+
+        protected void LimpaRegras()
+        {
+            _regrasEspec.Clear();
+        }
+
+        #endregion
+
         #region Métodos Privados
+
+        private void InsereValidacoes()
+        {
+            _regras.Clear();
+            _regras.Add(new EntidadeNula<T>());
+
+            InsereValidacoesEspecificas();
+        }
+
+        private void InsereValidacoesEspecificas()
+        {
+            foreach (var regra in _regrasEspec)
+            {
+                _regras.Add(regra);
+            }
+        }
 
         private void ExecutaValidacoes(T entidade, TipoOperacao operacao)
         {

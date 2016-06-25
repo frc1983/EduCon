@@ -6,6 +6,7 @@ using EduCon.Base.Dominio.Interfaces;
 using EduCon.Dominio.Entidades;
 using EduCon.Dominio.Entidades.Enums;
 using EduCon.Dominio.Interfaces.Servico;
+using EduCon.Dominio.Validacoes;
 
 namespace EduCon.Dominio.Servicos
 {
@@ -17,6 +18,8 @@ namespace EduCon.Dominio.Servicos
 
         public override void Inclui(Processamento entidade)
         {
+            AdicionaRegra(new ImportacaoJaExiste());
+
             entidade.Situacao = SituacaoProcessamento.Aguardando;
             base.Inclui(entidade);
         }
