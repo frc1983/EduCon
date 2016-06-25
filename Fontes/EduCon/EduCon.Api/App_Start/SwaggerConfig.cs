@@ -40,7 +40,7 @@ namespace EduCon.Api
                         c.SingleApiVersion("v1", "EduCon.Api")
                             .Contact(cc =>
                                 cc.Name("Equipe EduCon")
-                                .Email("equipe@educon.com.br")
+                                .Email("fabiorochadacosta@gmail.com;lucas.cunha2104@gmail.com")
                             );
 
                         // If your API has multiple versions, use "MultipleApiVersions" instead of "SingleApiVersion".
