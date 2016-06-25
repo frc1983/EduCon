@@ -12,7 +12,9 @@ namespace EduCon.Aplicacao.Mapeamento
             CreateMap<MunicipioDTO, Municipio>();
 
             // Entidade > DTO
-            CreateMap<Municipio, MunicipioDTO>();
+            CreateMap<Municipio, MunicipioDTO>()
+                .ForMember(dto => dto.Latitude, o => o.MapFrom(ent => decimal.Round(ent.Latitude, 5)))
+                .ForMember(dto => dto.Longitude, o => o.MapFrom(ent => decimal.Round(ent.Longitude, 5)));
         }
     }
 }

@@ -28,5 +28,19 @@ namespace EduCon.Api.Controllers
         {
             return _servico.ListaTodos();
         }
+
+        [HttpGet]
+        [Route("categorias")]
+        public IEnumerable<CategoriaDTO> ListaCategorias()
+        {
+            return _servico.ListaCategorias();
+        }
+
+        [HttpGet]
+        [Route("subcategorias")]
+        public IEnumerable<CategoriaDTO> ListaSubcategorias()
+        {
+            return _servico.ListaSubcategorias();
+        }
     }
 }

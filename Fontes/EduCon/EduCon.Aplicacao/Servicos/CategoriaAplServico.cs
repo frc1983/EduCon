@@ -74,6 +74,16 @@ namespace EduCon.Aplicacao.Servicos
             return Mapeador.Map<IEnumerable<CategoriaDTO>>(_servico.ListaTodos());
         }
 
+        public IEnumerable<CategoriaDTO> ListaCategorias()
+        {
+            return Mapeador.Map<IEnumerable<CategoriaDTO>>(_servico.ListaCategorias());
+        }
+
+        public IEnumerable<CategoriaDTO> ListaSubcategorias()
+        {
+            return Mapeador.Map<IEnumerable<CategoriaDTO>>(_servico.ListaSubcategorias());
+        }
+
         public IEnumerable<CategoriaDTO> Lista(CategoriaDTO filtro)
         {
             var lista = _servico.Lista(Expressao.CriaExpressao<Categoria>(Filtro.Filtros(Mapeador.Map<Categoria>(filtro))));
