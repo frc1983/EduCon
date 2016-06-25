@@ -61,6 +61,8 @@ namespace EduCon.Dominio.Servicos
 
         public void Reprocessar(Processamento entidade)
         {
+            AdicionaRegra(new ImportacaoReprocessar(entidade.Situacao));
+
             entidade.Situacao = SituacaoProcessamento.Reprocessar;
             base.Altera(entidade);
         }

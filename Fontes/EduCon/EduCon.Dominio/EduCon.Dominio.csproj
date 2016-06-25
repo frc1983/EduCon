@@ -75,6 +75,7 @@
     <Compile Include="Servicos\DadoServico.cs" />
     <Compile Include="Servicos\DataServico.cs" />
     <Compile Include="Servicos\MunicipioServico.cs" />
+    <Compile Include="Validacoes\ImportacaoReprocessar.cs" />
     <Compile Include="Validacoes\ImportacaoJaExiste.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -15,6 +15,8 @@ namespace EduCon.Dominio.Entidades.Enums
         [Description("Reprocessamento")]
         Reprocessando,
         [Description("Reprocessamento finalizado")]
-        Reprocessado
+        Reprocessado,
+        [Description("Erro no processamento")]
+        Erro
     }
 }

@@ -6,9 +6,9 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace EduCon.Dominio.Validacoes
 {
-    public class ImportacaoJaExiste : IValida<Processamento>
+    public class ImportacaoJaExiste : IValidaInclui<Processamento>
     {
-        public void Valida(Processamento entidade)
+        public void ValidaInclui(Processamento entidade)
         {
             var servico = ServiceLocator.Current.GetInstance<IProcessamentoServico>();
 
