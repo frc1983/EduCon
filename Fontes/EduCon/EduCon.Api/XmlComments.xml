@@ -31,6 +31,141 @@
             </summary>
             <param name="config"></param>
         </member>
+        <member name="T:EduCon.Api.Controllers.DadoController">
+            <summary>
+            Interface de consulta de dados.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.Controllers.DadoController.Consulta(System.Int32)">
+            <summary>
+            Consulta de dado por código identificador.
+            </summary>
+            <param name="id">Código identificador do dado</param>
+            <returns>Informações do dado, caso encontrado</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.DadoController.Lista(EduCon.Objetos.DTOs.DadoDTO)">
+            <summary>
+            Lista de todos os dados cadastrados, conforme o filtro informado.
+            </summary>
+            <param name="dto">Objeto de filtro</param>
+            <returns>Coleção com todos os dados a partir do filtro selecionado</returns>
+        </member>
+        <member name="T:EduCon.Api.Controllers.CategoriaController">
+            <summary>
+            Interface de consulta de categorias.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.Controllers.CategoriaController.Consulta(System.Int32)">
+            <summary>
+            Consulta de categoria por código identificador.
+            </summary>
+            <param name="id">Código identificador da categoria</param>
+            <returns>Informações da categoria, caso encontrado</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.CategoriaController.Lista">
+            <summary>
+            Lista de todas as categorias cadastradas.
+            </summary>
+            <returns>Coleção com todas as categorias</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.CategoriaController.ListaCategorias">
+            <summary>
+            Lista de categorias classificadas como categorias do dado.
+            </summary>
+            <returns>Coleção com categorias</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.CategoriaController.ListaSubcategorias">
+            <summary>
+            Lista de categorias classificadas como subcategorias do dado.
+            </summary>
+            <returns>Coleção com subcategorias</returns>
+        </member>
+        <member name="T:EduCon.Api.Controllers.ImportacaoController">
+            <summary>
+            Interface de consulta e inclusão de solicitações de importação.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.Controllers.ImportacaoController.Nova(System.Int32)">
+            <summary>
+            Insere nova solicitação de importação de dados.
+            </summary>
+            <param name="ano">Ano base para realizar a importação</param>
+            <returns>Objeto com código identificador da solicitação de importação incluída</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.ImportacaoController.Reprocessar(System.Int32)">
+            <summary>
+            Altera uma solicitação de importação existente para que esta seja reprocessada.
+            </summary>
+            <param name="id">Código identificador da importação</param>
+            <returns>Objeto atualizado da solicitação de importação</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.ImportacaoController.Consulta(System.Int32)">
+            <summary>
+            Consulta de importação por código identificador.
+            </summary>
+            <param name="id">Código identificador da importação</param>
+            <returns>Informações da importação, caso encontrado</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.ImportacaoController.Lista">
+            <summary>
+            Lista de todas as importações cadastradas.
+            </summary>
+            <returns>Coleção com todos as importações</returns>
+        </member>
+        <member name="T:EduCon.Api.Controllers.FonteController">
+            <summary>
+            Interface de consulta de fontes.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.Controllers.FonteController.Consulta(System.Int32)">
+            <summary>
+            Consulta de fonte por código identificador.
+            </summary>
+            <param name="id">Código identificador da fonte</param>
+            <returns>Informações da fonte, caso encontrado</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.FonteController.Lista">
+            <summary>
+            Lista de todas as fontes cadastradas.
+            </summary>
+            <returns>Coleção com todas as fontes</returns>
+        </member>
+        <member name="T:EduCon.Api.Controllers.TipoEnsinoController">
+            <summary>
+            Interface de consulta de tipos de ensino.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.Controllers.TipoEnsinoController.Consulta(System.Int32)">
+            <summary>
+            Consulta de tipo de ensino por código identificador.
+            </summary>
+            <param name="id">Código identificador do tipo de ensino</param>
+            <returns>Informações do tipo de ensino, caso encontrado</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.TipoEnsinoController.Lista">
+            <summary>
+            Lista de todos os tipos de ensino cadastrados.
+            </summary>
+            <returns>Coleção com todos os tipos de ensino</returns>
+        </member>
+        <member name="T:EduCon.Api.Controllers.AnoController">
+            <summary>
+            Interface de consulta de anos.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.Controllers.AnoController.Consulta(System.Int32)">
+            <summary>
+            Consulta de ano por código identificador.
+            </summary>
+            <param name="id">Código identificador do ano</param>
+            <returns>Informações do ano, caso encontrado</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.AnoController.Lista">
+            <summary>
+            Lista de todos os anos cadastrados.
+            </summary>
+            <returns>Coleção com todos os anos</returns>
+        </member>
         <member name="T:EduCon.Api.Controllers.MunicipioController">
             <summary>
             Interface de consulta de municípios.
@@ -41,13 +176,13 @@
             Consulta de município por código identificador.
             </summary>
             <param name="id">Código identificador do município</param>
-            <returns>Informações de um município, caso encontrado</returns>
+            <returns>Informações do município, caso encontrado</returns>
         </member>
         <member name="M:EduCon.Api.Controllers.MunicipioController.Lista">
             <summary>
             Lista de todos os municípios cadastrados.
             </summary>
-            <returns>Lista com todos os municípios</returns>
+            <returns>Coleção com todos os municípios</returns>
         </member>
         <member name="M:EduCon.Api.Controllers.MunicipioController.ConsultaPorCodIBGE(System.Int32)">
             <summary>
@@ -61,7 +196,7 @@
             Lista municípios por trecho de nome informado.
             </summary>
             <param name="nome">Nome ou trecho de nome do município</param>
-            <returns>Lista de municípios com o nome ou trecho informado, caso encontrado</returns>
+            <returns>Coleção de municípios com o nome ou trecho informado, caso encontrado</returns>
         </member>
         <member name="T:EduCon.Api.WebApiApplication">
             <summary>

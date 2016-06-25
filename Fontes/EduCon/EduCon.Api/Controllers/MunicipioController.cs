@@ -25,7 +25,7 @@ namespace EduCon.Api.Controllers
         /// Consulta de município por código identificador.
         /// </summary>
         /// <param name="id">Código identificador do município</param>
-        /// <returns>Informações de um município, caso encontrado</returns>
+        /// <returns>Informações do município, caso encontrado</returns>
         [HttpGet]
         [Route("{id:int}")]
         public MunicipioDTO Consulta(int id)
@@ -36,7 +36,7 @@ namespace EduCon.Api.Controllers
         /// <summary>
         /// Lista de todos os municípios cadastrados.
         /// </summary>
-        /// <returns>Lista com todos os municípios</returns>
+        /// <returns>Coleção com todos os municípios</returns>
         [HttpGet]
         [Route("")]
         public IEnumerable<MunicipioDTO> Lista()
@@ -64,7 +64,7 @@ namespace EduCon.Api.Controllers
         /// Lista municípios por trecho de nome informado.
         /// </summary>
         /// <param name="nome">Nome ou trecho de nome do município</param>
-        /// <returns>Lista de municípios com o nome ou trecho informado, caso encontrado</returns>
+        /// <returns>Coleção de municípios com o nome ou trecho informado, caso encontrado</returns>
         [HttpGet]
         [Route("porNome/{nome}")]
         public IEnumerable<MunicipioDTO> ListaPorNome(string nome)

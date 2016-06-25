@@ -5,6 +5,9 @@ using EduCon.Objetos.DTOs;
 
 namespace EduCon.Api.Controllers
 {
+    /// <summary>
+    /// Interface de consulta de fontes.
+    /// </summary>
     [RoutePrefix("api/v1/fontes")]
     public class FonteController : ApiController
     {
@@ -15,6 +18,11 @@ namespace EduCon.Api.Controllers
             _servico = FonteServico;
         }
 
+        /// <summary>
+        /// Consulta de fonte por código identificador.
+        /// </summary>
+        /// <param name="id">Código identificador da fonte</param>
+        /// <returns>Informações da fonte, caso encontrado</returns>
         [HttpGet]
         [Route("{id:int}")]
         public FonteDTO Consulta(int id)
@@ -22,6 +30,10 @@ namespace EduCon.Api.Controllers
             return _servico.Consulta(id);
         }
 
+        /// <summary>
+        /// Lista de todas as fontes cadastradas.
+        /// </summary>
+        /// <returns>Coleção com todas as fontes</returns>
         [HttpGet]
         [Route("")]
         public IEnumerable<FonteDTO> Lista()
