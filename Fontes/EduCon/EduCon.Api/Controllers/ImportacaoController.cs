@@ -17,7 +17,7 @@ namespace EduCon.Api.Controllers
             _servico = processamentoServico;
         }
 
-        [HttpOptions]
+        [HttpPost]
         [Route("nova")]
         public HttpResponseMessage Nova([FromBody]ProcessamentoDTO dto)
         {
