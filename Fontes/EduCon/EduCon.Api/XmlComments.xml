@@ -31,6 +31,38 @@
             </summary>
             <param name="config"></param>
         </member>
+        <member name="T:EduCon.Api.Controllers.MunicipioController">
+            <summary>
+            Interface de consulta de municípios.
+            </summary>
+        </member>
+        <member name="M:EduCon.Api.Controllers.MunicipioController.Consulta(System.Int32)">
+            <summary>
+            Consulta de município por código identificador.
+            </summary>
+            <param name="id">Código identificador do município</param>
+            <returns>Informações de um município, caso encontrado</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.MunicipioController.Lista">
+            <summary>
+            Lista de todos os municípios cadastrados.
+            </summary>
+            <returns>Lista com todos os municípios</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.MunicipioController.ConsultaPorCodIBGE(System.Int32)">
+            <summary>
+            Consulta de município por código IBGE.
+            </summary>
+            <param name="codIbge">Código identificador do IBGE</param>
+            <returns>Informações de um município, caso encontrado</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.MunicipioController.ListaPorNome(System.String)">
+            <summary>
+            Lista municípios por trecho de nome informado.
+            </summary>
+            <param name="nome">Nome ou trecho de nome do município</param>
+            <returns>Lista de municípios com o nome ou trecho informado, caso encontrado</returns>
+        </member>
         <member name="T:EduCon.Api.WebApiApplication">
             <summary>
             Classe responsável pela inicialização da Web API.

@@ -43,10 +43,12 @@ namespace EduCon.Base.Contexto
             Contexto.Configuration.AutoDetectChangesEnabled = false;
             Contexto.Configuration.ValidateOnSaveEnabled = false;
 
-            foreach (var entidade in entidades)
-            {
-                DbSet.Add(entidade);
-            }
+            //foreach (var entidade in entidades)
+            //{
+            //    DbSet.Add(entidade);
+            //}
+
+            Contexto.InsertRange<T>(entidades);
 
             Contexto.Configuration.AutoDetectChangesEnabled = true;
             Contexto.Configuration.ValidateOnSaveEnabled = true;

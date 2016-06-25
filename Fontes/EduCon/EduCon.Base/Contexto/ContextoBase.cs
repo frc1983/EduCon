@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using EduCon.Base.Contexto.Interfaces;
 
 namespace EduCon.Base.Contexto
@@ -15,10 +16,16 @@ namespace EduCon.Base.Contexto
             return base.Set<T>();
         }
 
+        public void InsertRange<T>(IEnumerable<T> entidades) where T : class
+        {
+            this.BulkInsert(entidades);
+        }
+
         public void DiscardChanges()
         {
             foreach (var entry in ChangeTracker.Entries())
             {
+                // Se foi modificado, volta os valores iniciais
                 if (entry.State == EntityState.Modified)
                 {
                     entry.CurrentValues.SetValues(entry.OriginalValues);
@@ -26,12 +33,14 @@ namespace EduCon.Base.Contexto
                     continue;
                 }
 
+                // Se foi excluído, volta para não modificado
                 if (entry.State == EntityState.Deleted)
                 {
                     entry.State = EntityState.Unchanged;
                     continue;
                 }
 
+                // Se foi incluído, remove do contexto
                 if (entry.State == EntityState.Added)
                 {
                     entry.State = EntityState.Detached;
