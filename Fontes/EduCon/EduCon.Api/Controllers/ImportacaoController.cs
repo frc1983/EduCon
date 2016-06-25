@@ -34,6 +34,7 @@ namespace EduCon.Api.Controllers
         }
 
         [HttpPut]
+        [HttpOptions]
         [Route("reprocessar/{id:int}")]
         public HttpResponseMessage Reprocessar(int id)
         {
