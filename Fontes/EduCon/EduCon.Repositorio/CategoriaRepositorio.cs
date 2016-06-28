@@ -11,16 +11,16 @@ namespace EduCon.Repositorio
     {
         public IEnumerable<Categoria> ListaCategorias()
         {
-            return from c in DbSet.AsNoTracking()
+            return (from c in DbSet.AsNoTracking()
                    where c.DadosCategoria.Any()
-                   select c;
+                   select c).ToList();
         }
 
         public IEnumerable<Categoria> ListaSubcategorias()
         {
-            return from s in DbSet.AsNoTracking()
+            return (from s in DbSet.AsNoTracking()
                    where s.DadosSubcategoria.Any()
-                   select s;
+                   select s).ToList();
         }
     }
 }
