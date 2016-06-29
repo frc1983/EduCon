@@ -163,6 +163,7 @@
     <Compile Include="App_Start\SimpleInjector.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\PesquisaController.cs" />
     <Compile Include="Controllers\DadoController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\ImportacaoController.cs" />

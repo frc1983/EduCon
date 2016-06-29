@@ -7,7 +7,7 @@
         public string TipoEnsino { get; set; }
         public string Categoria { get; set; }
         public string Subcategoria { get; set; }
-        public int Ano { get; set; }
-        public string Valor { get; set; }
+        public string Ano { get; set; }
+        public int Valor { get; set; }
     }
 }
