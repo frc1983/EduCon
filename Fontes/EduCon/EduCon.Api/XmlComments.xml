@@ -50,6 +50,12 @@
             <param name="dto">Objeto de filtro</param>
             <returns>Coleção com todos os dados a partir do filtro selecionado</returns>
         </member>
+        <member name="M:EduCon.Api.Controllers.DadoController.ListaOlap">
+            <summary>
+            Lista para exibição OLAP.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:EduCon.Api.Controllers.CategoriaController">
             <summary>
             Interface de consulta de categorias.

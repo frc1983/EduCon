@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using EduCon.Aplicacao.Interfaces;
 using EduCon.Objetos.DTOs;
+using Newtonsoft.Json;
 
 namespace EduCon.Api.Controllers
 {
@@ -39,7 +43,41 @@ namespace EduCon.Api.Controllers
         [Route("")]
         public IEnumerable<DadoDTO> Lista([FromUri] DadoDTO dto)
         {
-            return _servico.Lista(dto);
+            if (dto != null)
+            {
+                return _servico.Lista(dto);
+            }
+
+            return _servico.ListaTodos();
+        }
+
+        /// <summary>
+        /// Lista para exibição OLAP.
+        /// </summary>
+        /// <returns>Lista de dados para exibição OLAP</returns>
+        [HttpGet]
+        [Route("olap")]
+        public IEnumerable<DadoOLAP> ListaOlap()
+        {
+            return _servico.ListaOlap();
+        }
+
+        /// <summary>
+        /// Realizar o download do arquivo json para exibição OLAP.
+        /// </summary>
+        /// <returns>Arquivo json com todo os dados para o OLAP</returns>
+        [HttpGet]
+        [Route("olap/download")]
+        public HttpResponseMessage DownloadOlap()
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(_servico.ListaOlap()));
+
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Headers.AcceptRanges.Add("bytes");
+            response.Content = content;
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = "dadosOlap.json" };
+            return response;
         }
     }
 }

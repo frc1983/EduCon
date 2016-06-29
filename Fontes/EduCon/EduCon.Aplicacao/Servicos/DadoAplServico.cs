@@ -80,6 +80,11 @@ namespace EduCon.Aplicacao.Servicos
             return Mapeador.Map<IEnumerable<DadoDTO>>(lista);
         }
 
+        public IEnumerable<DadoOLAP> ListaOlap()
+        {
+            return _servico.ListaOlap();
+        }
+
         public bool Existe(DadoDTO filtro)
         {
             return _servico.Existe(Expressao.CriaExpressao<Dado>(Filtro.Filtros(Mapeador.Map<Dado>(filtro))));

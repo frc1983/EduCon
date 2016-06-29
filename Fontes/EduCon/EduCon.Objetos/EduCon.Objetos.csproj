@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DTOs\CategoriaDTO.cs" />
     <Compile Include="DTOs\DadoDTO.cs" />
+    <Compile Include="DTOs\DadoOLAP.cs" />
     <Compile Include="DTOs\DataDTO.cs" />
     <Compile Include="DTOs\MunicipioDTO.cs" />
     <Compile Include="DTOs\FonteDTO.cs" />

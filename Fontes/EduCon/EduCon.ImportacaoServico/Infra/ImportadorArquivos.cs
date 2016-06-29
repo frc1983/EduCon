@@ -478,9 +478,9 @@ namespace EduCon.ImportacaoServico.Infra
                             if (existe)
                             {
                                 var dadoAntigo = _dadoServico.Lista(d).FirstOrDefault();
-                                if (dadoAntigo.Valor != valor.Valor)
+                                if (dadoAntigo.Valor.Replace(".", "") != valor.Valor.Replace(".", ""))
                                 {
-                                    dadoAntigo.Valor = valor.Valor;
+                                    dadoAntigo.Valor = valor.Valor.Replace(".", "");
                                     _dadoServico.Altera(dadoAntigo);
                                 }
                             }
@@ -497,7 +497,7 @@ namespace EduCon.ImportacaoServico.Infra
                             Subcategoria = Subcategoria,
                             Municipio = Municipio,
                             Data = Data,
-                            Valor = valor.Valor
+                            Valor = valor.Valor.Replace(".", "")
                         };
 
                         dados.Add(dado);
@@ -812,9 +812,9 @@ namespace EduCon.ImportacaoServico.Infra
                                 if (existe)
                                 {
                                     var dadoAntigo = _dadoServico.Lista(d).FirstOrDefault();
-                                    if (dadoAntigo.Valor != registroMunicipio[i].Trim())
+                                    if (dadoAntigo.Valor.Replace(".", "") != registroMunicipio[i].Trim().Replace(".", ""))
                                     {
-                                        dadoAntigo.Valor = registroMunicipio[i].Trim();
+                                        dadoAntigo.Valor = registroMunicipio[i].Trim().Replace(".", "");
                                         _dadoServico.Altera(dadoAntigo);
                                     }
                                 }
@@ -831,7 +831,7 @@ namespace EduCon.ImportacaoServico.Infra
                                 Subcategoria = Subcategoria,
                                 Municipio = Municipio,
                                 Data = Data,
-                                Valor = registroMunicipio[i].Trim()
+                                Valor = registroMunicipio[i].Trim().Replace(".", "")
                             };
 
                             dados.Add(dado);
