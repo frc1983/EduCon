@@ -54,7 +54,13 @@
             <summary>
             Lista para exibição OLAP.
             </summary>
-            <returns></returns>
+            <returns>Lista de dados para exibição OLAP</returns>
+        </member>
+        <member name="M:EduCon.Api.Controllers.DadoController.DownloadOlap">
+            <summary>
+            Realizar o download do arquivo json para exibição OLAP.
+            </summary>
+            <returns>Arquivo json com todo os dados para o OLAP</returns>
         </member>
         <member name="T:EduCon.Api.Controllers.CategoriaController">
             <summary>

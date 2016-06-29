@@ -19,6 +19,7 @@ namespace EduCon.Repositorio
                 join categoria in Contexto.Set<Categoria>() on dado.IdCategoria equals categoria.Id
                 join subcategoria in Contexto.Set<Categoria>() on dado.IdSubcategoria equals subcategoria.Id
                 join data in Contexto.Set<Data>() on dado.IdData equals data.Id
+                where !categoria.Nome.Contains("%Taxa%")
                 select new DadoOLAP()
                 {
                     Fonte = fonte.Nome,
