@@ -20,6 +20,11 @@ namespace EduCon.Api.Controllers
             _servicoCategoria = servicoCategoria;
         }
 
+        /// <summary>
+        /// Realiza pesquisa nos dados disponíveis
+        /// </summary>
+        /// <param name="texto">Texto a ser procurado no sistema</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("")]
         public object Pesquisa(string texto)

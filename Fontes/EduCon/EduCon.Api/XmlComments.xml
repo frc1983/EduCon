@@ -31,6 +31,13 @@
             </summary>
             <param name="config"></param>
         </member>
+        <member name="M:EduCon.Api.Controllers.PesquisaController.Pesquisa(System.String)">
+            <summary>
+            Realiza pesquisa nos dados disponíveis
+            </summary>
+            <param name="texto">Texto a ser procurado no sistema</param>
+            <returns></returns>
+        </member>
         <member name="T:EduCon.Api.Controllers.DadoController">
             <summary>
             Interface de consulta de dados.

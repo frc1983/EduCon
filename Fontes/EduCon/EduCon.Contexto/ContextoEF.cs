@@ -13,8 +13,8 @@ namespace EduCon.Contexto
         public ContextoEF()
             : base("Name=EduConBD")
         {
+            // Define o método de log SQL.
             Database.Log = GravaLog;
-            var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
